@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.ui.basic.label {
+    min-width: 80% !important;
+    background: none #e6e6e6 !important;
+}
+
+.ui.input>input {
+    max-width: 20% !important;
+    background-color: #f9f9f9 !important;
+}
+
+/*.ui.menu .item {
+  padding: 0px !important;
+}*/
+
+.ui.input>input {
+  border-radius: 0px !important;
+}
+
+.ui.label {
+  border-radius: 0px !important;
+}
+
+.ui.icon.menu .item {
+    text-align: left !important;
+}
+
+.ui.header {
+	margin-top: 0.5rem !important;
+	margin-bottom: 0.5rem !important;
+}
+
+.ui.segment, .ui.segments .segment {
+    font-size: 0.9rem !important;
+}
+
+.pushable>.pusher {
+	min-height: 1900px !important;
+}
+
+.ui.mini.input {
+    min-width: 100% !important;
+}
+
+.ui.table {
+    font-size: 0.85em !important;
+}
+
+.ui.table thead th {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.ui[class*="very compact"].table td {
+    padding: 0.2rem !important;
+}
+
+.ui.labeled.input>.label {
+  font-size: 1.1em !important;
+}
+
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+ 
+input[type="number"] {
+    -moz-appearance: textfield !important;
+}
+
+/*.ui.menu {
+  font-family: 'Source Code Pro', monospace !important;
+  font-size: 1.1rem;
+  min-height: 1.2rem !important;
+}*/
+
+/*.ui.menu .item {
+  padding: 0.7rem !important;
+}
+
+.ui.inverted.menu .item:hover {
+  background: rgb(249, 104, 94) !important;
+  color: black !important;
+}
+
+.ui.inverted.menu .active.item {
+  background: rgb(249, 104, 94) !important;
+  color: black !important;
+}*/
+
+.current {
+  padding: 1rem;
+  color: white;
+  background-color: red; 
+}
+
+.notCurrent {
+  padding: 1rem;
+  color: black;
+  background-color: blue; 
+}
+
+/*.topmenuitem {
+  padding: 1rem !important;
+}*/

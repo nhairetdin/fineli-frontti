@@ -11,7 +11,9 @@ const initialState = {
   },
   filters: {},
   sortCode: 'ENERC',
-  components: []
+  components: [],
+  activetab: 'search',
+  basedata: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -26,13 +28,22 @@ const reducer = (state = initialState, action) => {
   	  //const filters = { ...state.filters, action.data }
   	  const newState = { ...state }
   	  newState.filters = { ...state.filters, ...action.data }
+      newState.sortCode = action.sortCode
   	  return newState
   	}
   	case 'REMOVE_FILTER': {
-	  const newState = { ...state }
-	  delete newState.filters[action.data]
-	  return newState
+	    const newState = { ...state, filters: { ...state.filters } }
+	    delete newState.filters[action.data]
+	    return newState
   	}
+    case 'CHANGE_ACTIVE_TAB': {
+      const newState = { ...state }
+      newState.activetab = action.data
+      return newState
+    }
+    case 'SET_SORTCODE': {
+      return { ...state, sortCode: action.data }
+    }
   	default:
       return state
   }
@@ -58,17 +69,33 @@ export const initBasedata = () => {
   }
 }
 
-export const addFilter = (data) => {
+export const addFilter = (data, code) => {
   return {
   	type: 'ADD_FILTER',
-  	data: data
+  	data: data,
+    sortCode: code
   }
 }
 
 export const removeFilter = (data) => {
+  //console.log(data)
   return {
   	type: 'REMOVE_FILTER',
   	data: data
+  }
+}
+
+export const changeTab = (data) => {
+  return {
+    type: 'CHANGE_ACTIVE_TAB',
+    data: data
+  }
+}
+
+export const setSortcode = (data) => {
+  return {
+    type: 'SET_SORTCODE',
+    data: data
   }
 }
 
