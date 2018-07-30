@@ -23,18 +23,19 @@ class App extends Component {
         <Container fluid>
           <Topmenu />
 
-          <Route exact path="/" render={ () => <Foodsearch />}/>
+          <Route exact path="/" render={() => <Foodsearch />} />
 
-          <Route path="/ruokapaivakirja" render={ () =>
-            <h1>Ruokapaivakirja</h1>
-          }/>        
+          <Route
+            path="/ruokapaivakirja"
+            render={() => <h1>Ruokapaivakirja</h1>}
+          />
         </Container>
       </Router>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     storecomponents: state.components
   }

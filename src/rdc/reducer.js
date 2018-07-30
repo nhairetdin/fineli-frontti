@@ -13,7 +13,8 @@ const initialState = {
   sortCode: 'ENERC',
   components: [],
   activetab: 'search',
-  basedata: []
+  basedata: [],
+  user: true
 }
 
 const reducer = (state = initialState, action) => {
@@ -43,6 +44,14 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_SORTCODE': {
       return { ...state, sortCode: action.data }
+    }
+    case 'SET_USER': {
+      return { ...state, user: action.data}
+    }
+    case 'LOGOUT': {
+      const newState = { ...state, user: false }
+      newState.activetab = action.data
+      return newState
     }
   	default:
       return state
@@ -95,6 +104,13 @@ export const changeTab = (data) => {
 export const setSortcode = (data) => {
   return {
     type: 'SET_SORTCODE',
+    data: data
+  }
+}
+
+export const logout = (data) => {
+  return {
+    type: 'LOGOUT',
     data: data
   }
 }

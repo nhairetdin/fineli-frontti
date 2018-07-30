@@ -8,9 +8,7 @@ const BarChart = ({ color, width }) => {
     float: 'left'
   }
 
-  return (
-    <div style={style}></div>
-  )
+  return <div style={style} />
 }
 
 export default BarChart
