@@ -22,4 +22,25 @@ const getBasedata = async (endpoint) => {
   return copy//.data.sort((a, b) => parseFloat(a['ENERC']) > parseFloat(b['ENERC']))
 }
 
-export default { getBasedata }
+const registerUser = async (user) => {
+  let data
+  // axios.post(`${url}user`, user)
+  //   .then(res => {
+  //     console.log(res)
+  //     data = res
+  //     return data
+  //   })
+  //   .catch(err => {
+  //     data = err.res
+  //   })
+
+  try {
+    data = await axios.post(`${url}user`, user)
+  } catch(e) {
+    console.log(e, e.response)
+    data = e.response
+  }
+  return data
+}
+
+export default { getBasedata, registerUser }

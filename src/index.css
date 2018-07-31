@@ -5,13 +5,18 @@ body {
 }
 
 .ui.basic.label {
-    min-width: 80% !important;
-    background: none #e6e6e6 !important;
+  min-width: 80% !important;
+  background: none #e6e6e6 !important;
 }
 
+/*.ui.input>input {
+  max-width: 20% !important;
+  background-color: #f9f9f9 !important;
+}*/
+
 .ui.input>input {
-    max-width: 20% !important;
-    background-color: #f9f9f9 !important;
+  max-width: 20% !important;
+  background-color: #f9f9f9 !important;
 }
 
 /*.ui.menu .item {
@@ -47,6 +52,14 @@ body {
     min-width: 100% !important;
 }
 
+.ui.large.input {
+    min-width: 100% !important;
+}
+
+.ui.fluid.input>input {
+  max-width: 100% !important;
+}
+
 .ui.table {
     font-size: 0.85em !important;
 }
@@ -73,6 +86,22 @@ body {
   padding-right: 1rem !important;
 }
 
+.clearTopBorder {
+  border-top: 0px !important;
+  border-bottom: 0px !important;
+}
+
+.ui.tabular.menu {
+  min-height: 3.3rem !important;
+}
+
+.leftColumn {
+  max-width:  25rem !important;
+}
+
+.rightColumn {
+  flex-grow: 1 !important;
+}
 /* Hide HTML5 Up and Down arrows. */
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none !important;

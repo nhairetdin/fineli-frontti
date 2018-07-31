@@ -21,7 +21,7 @@ class Foodsearch extends Component {
     return (
       <Grid celled="internally">
         <Grid.Row>
-          <Grid.Column width={5}>
+          <Grid.Column width={5} className={'leftColumn'}>
             {this.props.storecomponents.map((group, index) => {
               return (
                 <Table compact="very" color="black" key={index}>
@@ -56,7 +56,7 @@ class Foodsearch extends Component {
             })}
           </Grid.Column>
 
-          <Grid.Column width={11}>
+          <Grid.Column width={11} className={'rightColumn'}>
             <Table compact="very" color={'black'}>
               <Table.Header>
                 <Table.Row>
@@ -100,7 +100,7 @@ const applyFilters = (basedata, filters, sortCode) => {
   })
   return filteredArray
     .sort((a, b) => parseFloat(b[sortCode]) - parseFloat(a[sortCode]))
-    .slice(0, 50)
+    .slice(0, 100)
 }
 
 const mapStateToProps = state => {

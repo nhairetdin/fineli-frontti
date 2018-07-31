@@ -14,7 +14,8 @@ const initialState = {
   components: [],
   activetab: 'search',
   basedata: [],
-  user: true
+  user: false,
+  registerModalOpen: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -52,6 +53,12 @@ const reducer = (state = initialState, action) => {
       const newState = { ...state, user: false }
       newState.activetab = action.data
       return newState
+    }
+    case 'TOGGLE_REGISTERMODAL': {
+      return { ...state, registerModalOpen: !state.registerModalOpen }
+    }
+    case 'LOGIN_USER': {
+      return { ...state, user: action.data}
     }
   	default:
       return state
@@ -113,6 +120,34 @@ export const logout = (data) => {
     type: 'LOGOUT',
     data: data
   }
+}
+
+export const login = (data) => {
+  return {
+    type: 'SET_USER',
+    data: data
+  }
+}
+
+export const toggleRegisterModal = () => {
+  return {
+    type: 'TOGGLE_REGISTERMODAL'
+  }
+}
+
+export const registerUser = (data) => {
+  // return async (dispatch) => {
+  //   try {
+  //     const user = await dataservice.registerUser(data)
+  //     console.log(user)
+  //     dispatch({
+  //       type: 'LOGIN_USER',
+  //       data: { email: user.data.email, token: user.data.token }
+  //     })
+  //   } catch (e) {
+  //     //console.log(e)
+  //   }
+  // }
 }
 
 export default reducer
