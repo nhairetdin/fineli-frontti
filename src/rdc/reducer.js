@@ -15,7 +15,8 @@ const initialState = {
   activetab: 'search',
   basedata: [],
   user: false,
-  registerModalOpen: false
+  registerModalOpen: false,
+  loginModalOpen: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -56,6 +57,9 @@ const reducer = (state = initialState, action) => {
     }
     case 'TOGGLE_REGISTERMODAL': {
       return { ...state, registerModalOpen: !state.registerModalOpen }
+    }
+    case 'TOGGLE_LOGINMODAL': {
+      return { ...state, loginModalOpen: !state.loginModalOpen }
     }
     case 'LOGIN_USER': {
       return { ...state, user: action.data}
@@ -116,22 +120,30 @@ export const setSortcode = (data) => {
 }
 
 export const logout = (data) => {
+  window.localStorage.removeItem('user')
   return {
     type: 'LOGOUT',
     data: data
   }
 }
 
-export const login = (data) => {
+export const login = () => {
+  //window.localStorage.setItem('user', JSON.stringify(data))
   return {
     type: 'SET_USER',
-    data: data
+    data: JSON.parse(window.localStorage.getItem('user'))
   }
 }
 
 export const toggleRegisterModal = () => {
   return {
     type: 'TOGGLE_REGISTERMODAL'
+  }
+}
+
+export const toggleLoginModal = () => {
+  return {
+    type: 'TOGGLE_LOGINMODAL'
   }
 }
 

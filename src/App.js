@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 
-import { initBasedata, changeTab } from './rdc/reducer'
+import { initBasedata, changeTab, login } from './rdc/reducer'
 import Topmenu from './cmp/Topmenu'
 import Foodsearch from './cmp/Foodsearch'
 
 class App extends Component {
   componentDidMount() {
     this.props.initBasedata()
+    if(window.localStorage.getItem('user')) {
+      // user is logged in
+      this.props.login()
+    }
   }
 
   clickListener = () => {
@@ -43,5 +47,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { initBasedata, changeTab }
+  { initBasedata, changeTab, login }
 )(App)

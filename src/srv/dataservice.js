@@ -36,11 +36,21 @@ const registerUser = async (user) => {
 
   try {
     data = await axios.post(`${url}user`, user)
-  } catch(e) {
+  } catch (e) {
     console.log(e, e.response)
-    data = e.response
+    data = e.response.data
   }
   return data
 }
 
-export default { getBasedata, registerUser }
+const loginUser = async (user) => {
+  let data
+  try {
+    data = await axios.post(`${url}user/session`, user)
+  } catch (e) {
+    data = e.response.data
+  }
+  return data
+}
+
+export default { getBasedata, registerUser, loginUser }

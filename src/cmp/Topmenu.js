@@ -1,17 +1,12 @@
 import React, { Component } from 'react'
-import { Menu, Button, Dropdown, Icon, Modal } from 'semantic-ui-react'
-import { Link, NavLink } from 'react-router-dom'
+import { Menu, Dropdown, Icon } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { changeTab, logout, toggleRegisterModal } from '../rdc/reducer'
+import { changeTab, logout, toggleRegisterModal, toggleLoginModal } from '../rdc/reducer'
 import RegisterModal from './RegisterModal'
+import LoginModal from './LoginModal'
 
 class Topmenu extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      modal: false
-    }
-  }
   handleItemClick = activetab => {
     this.props.changeTab(activetab)
   }
@@ -20,22 +15,17 @@ class Topmenu extends Component {
     this.props.logout(activetab)
   }
 
-  modalSignInToggle = () => {
-    console.log("test")
-    this.setState({ modal: !this.state.modal })
-  }
-
   render() {
     const activeItem = this.props.activetab
     const options = [
-      { key: 1, text: 'Kirjaudu', value: 1 },
+      { key: 1, text: 'Kirjaudu', value: 1, onClick: this.props.toggleLoginModal },
       { key: 2, text: 'Uusi tunnus', value: 2, onClick: this.props.toggleRegisterModal }
     ]
 
     return (
       <Menu stackable tabular mini="true">
-        <SignInModal open={ this.state.modal } onClose={ this.modalSignInToggle } />
         <RegisterModal />
+        <LoginModal />
         <Menu.Item
           name="search"
           active={activeItem === 'search'}
@@ -88,14 +78,6 @@ class Topmenu extends Component {
   }
 }
 
-const SignInModal = ({ open, onClose }) => (
-  <Modal open={ open } onClose={ onClose } dimmer={'blurring'}>
-    <Modal.Content>
-      <h1>Modali, h1</h1>
-    </Modal.Content>
-  </Modal>
-)
-
 const mapStateToProps = state => {
   return {
     activetab: state.activetab,
@@ -106,5 +88,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { changeTab, logout, toggleRegisterModal }
+  { changeTab, logout, toggleRegisterModal, toggleLoginModal }
 )(Topmenu)
