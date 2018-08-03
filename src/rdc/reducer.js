@@ -16,7 +16,8 @@ const initialState = {
   basedata: [],
   user: false,
   registerModalOpen: false,
-  loginModalOpen: false
+  loginModalOpen: false,
+  openedFoodItem: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -63,6 +64,9 @@ const reducer = (state = initialState, action) => {
     }
     case 'LOGIN_USER': {
       return { ...state, user: action.data}
+    }
+    case 'SET_OPENED_FOOD_ITEM': {
+      return { ...state, openedFoodItem: action.data}
     }
   	default:
       return state
@@ -144,6 +148,13 @@ export const toggleRegisterModal = () => {
 export const toggleLoginModal = () => {
   return {
     type: 'TOGGLE_LOGINMODAL'
+  }
+}
+
+export const openFoodItem = (data) => {
+  return {
+    type: 'SET_OPENED_FOOD_ITEM',
+    data: data
   }
 }
 

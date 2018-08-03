@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Grid, Table, Input } from 'semantic-ui-react'
+import { Grid, Table, Input, Button, Icon } from 'semantic-ui-react'
 import BarChart from './BarChart'
-//import Filtergroup from './Filtergroup'
 import { connect } from 'react-redux'
 import reducer from '../rdc/reducer'
-import { addFilter, removeFilter, setSortcode } from '../rdc/reducer'
+import { addFilter, removeFilter, setSortcode, openFoodItem } from '../rdc/reducer'
 
 class Foodsearch extends Component {
   onChangeListener = event => {
@@ -15,6 +14,12 @@ class Foodsearch extends Component {
     } else {
       this.props.addFilter({ [code]: value }, code)
     }
+  }
+
+  onRowClick = (foodid, event) => {
+  	event.nativeEvent.stopImmediatePropagation()
+  	console.log("row clicked", event, event.bubbles)
+  	this.props.openFoodItem(foodid)
   }
 
   render() {
@@ -35,6 +40,7 @@ class Foodsearch extends Component {
 
                   <Table.Body>
                     {group.data.map(item => {
+                      const style = this.props.filters[item.koodi] ? 'activeStyle' : ''
                       return (
                         <Table.Row key={item.koodi}>
                           <Table.Cell>
@@ -45,6 +51,7 @@ class Foodsearch extends Component {
                               name={item.koodi}
                               type="number"
                               onChange={this.onChangeListener}
+                              className={'filterInput ' + style}
                             />
                           </Table.Cell>
                         </Table.Row>
@@ -61,22 +68,29 @@ class Foodsearch extends Component {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Elintarvike</Table.HeaderCell>
-                  <Table.HeaderCell width={4}>
+                  <Table.HeaderCell></Table.HeaderCell>
+                  <Table.HeaderCell>
                     Prot / HH / Rasva
                   </Table.HeaderCell>
-                  <Table.HeaderCell>Notes</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
                 {this.props.results.map(food => (
-                  <Table.Row key={food.foodid}>
-                    <Table.Cell>{food.foodname}</Table.Cell>
-                    <Table.Cell>
+                  <Table.Row key={food.foodid} className={'resultRow'} onClick={ (event) => this.onRowClick(food.foodid, event) }>
+                    <Table.Cell width={9}>{food.foodname.slice(0,45) + '...'}</Table.Cell>
+                    <Table.Cell width={2} className="inputCell">
+                      { food.foodid === this.props.openedFoodItem ? (
+                      	<div className={'rowEditContainer'}>
+                      	  <Input size="mini" placeholder="määrä" className={'rowInput'} onClick={ (e) => e.stopPropagation() }/>
+                      	  <Button className={'rowButton'} positive size='mini' onClick={ (e) => e.stopPropagation() }>Add</Button>
+                      	</div>
+                      ) : null}
+                    </Table.Cell>
+                    <Table.Cell width={5}>
                       <BarChart width={food.PROT} color={'#c2ffc2'} />
                       <BarChart width={food.CHOAVL} color={'#c4c4ff'} />
                       <BarChart width={food.FAT} color={'#ffb7b7'} />
                     </Table.Cell>
-                    <Table.Cell>{food[this.props.sortcode]}</Table.Cell>
                   </Table.Row>
                 ))}
               </Table.Body>
@@ -100,7 +114,7 @@ const applyFilters = (basedata, filters, sortCode) => {
   })
   return filteredArray
     .sort((a, b) => parseFloat(b[sortCode]) - parseFloat(a[sortCode]))
-    .slice(0, 100)
+    .slice(0, 50)
 }
 
 const mapStateToProps = state => {
@@ -108,11 +122,12 @@ const mapStateToProps = state => {
     storecomponents: state.components,
     filters: state.filters,
     results: applyFilters(state.basedata, state.filters, state.sortCode),
-    sortcode: state.sortCode
+    sortcode: state.sortCode,
+    openedFoodItem: state.openedFoodItem
   }
 }
 
 export default connect(
   mapStateToProps,
-  { addFilter, removeFilter, setSortcode }
+  { addFilter, removeFilter, setSortcode, openFoodItem }
 )(Foodsearch)

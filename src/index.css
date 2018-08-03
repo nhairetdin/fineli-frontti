@@ -14,9 +14,20 @@ body {
   background-color: #f9f9f9 !important;
 }*/
 
-.ui.input>input {
+/*.ui.input>input {
   max-width: 20% !important;
   background-color: #f9f9f9 !important;
+}*/
+.filterInput>input {
+  max-width: 20% !important;
+  background-color: #f9f9f9 !important;
+  font-size: 0.9rem !important;
+  padding: 0px !important;
+}
+
+.filterInput {
+  border-left: 4px solid #f9f9f9 !important;
+  border-right: 4px solid #f9f9f9 !important;
 }
 
 /*.ui.menu .item {
@@ -32,7 +43,7 @@ body {
 }
 
 .ui.icon.menu .item {
-    text-align: left !important;
+  text-align: left !important;
 }
 
 .ui.header {
@@ -41,23 +52,23 @@ body {
 }
 
 .ui.segment, .ui.segments .segment {
-    font-size: 0.9rem !important;
+  font-size: 0.9rem !important;
 }
 
 .pushable>.pusher {
 	min-height: 1900px !important;
 }
 
-.ui.mini.input {
-    min-width: 100% !important;
+.ui.mini.input.filterInput {
+  min-width: 100% !important;
 }
 
 .ui.large.input {
-    min-width: 100% !important;
+  min-width: 100% !important;
 }
 
 .ui.fluid.input>input {
-  max-width: 100% !important;
+  /*max-width: 100% !important;*/
 }
 
 .ui.table {
@@ -71,6 +82,10 @@ body {
 
 .ui[class*="very compact"].table td {
     padding: 0.2rem !important;
+}
+
+.ui[class*="very compact"].table td.inputCell {
+    padding: 0px !important;
 }
 
 .ui.labeled.input>.label {
@@ -102,6 +117,46 @@ body {
 .rightColumn {
   flex-grow: 1 !important;
 }
+
+tr.resultRow:hover {
+  background-color: #f1f1f1 !important; 
+}
+
+.ui.mini.input.rowInput>input {
+  /*max-width: 100% !important;*/
+  max-width: 4rem !important;
+  /*line-height: 1.5rem !important;*/
+  padding: 0px !important;
+  border: 1px solid #f9f9f9 !important;
+  font-size: 1.1rem;
+}
+
+.ui.mini.input.rowInput>input:focus {
+  border: 1px solid #85b7d9 !important;
+}
+
+.ui.mini.input.rowInput {
+  /*max-width: 100% !important;*/
+  width: 4rem !important;
+}
+
+.inputCell {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  border-bottom: 0px !important;
+}
+
+.rowButton {
+  /*width: 25%;
+  background-color: #56e469;
+  border: 1px solid #ffffff00;
+  border-radius: 2px;
+  height: 1.4rem;
+  padding: 0px;*/
+  position: absolute !important;
+  height: 100% !important;
+  padding-top: 0.4rem !important;
+}
 /* Hide HTML5 Up and Down arrows. */
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
@@ -110,6 +165,14 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
  
 input[type="number"] {
     -moz-appearance: textfield !important;
+}
+
+.activeStyle {
+  border-left: 4px solid #44e674 !important;
+}
+
+.rowEditContainer {
+  position: relative !important;
 }
 
 /*.ui.menu {
