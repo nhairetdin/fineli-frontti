@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Grid, Table, Input, Button, Icon } from 'semantic-ui-react'
+import { Grid, Table, Input, Button, Icon, Container } from 'semantic-ui-react'
 import BarChart from './BarChart'
+import SearchOptions from './SearchOptions'
 import { connect } from 'react-redux'
 import reducer from '../rdc/reducer'
 import { addFilter, removeFilter, setSortcode, openFoodItem } from '../rdc/reducer'
@@ -25,6 +26,12 @@ class Foodsearch extends Component {
   render() {
     return (
       <Grid celled="internally">
+        <Grid.Row>
+          <Grid.Column width={16}>
+            <SearchOptions />
+          </Grid.Column>
+        </Grid.Row>
+
         <Grid.Row>
           <Grid.Column width={5} className={'leftColumn'}>
             {this.props.storecomponents.map((group, index) => {
@@ -102,10 +109,19 @@ class Foodsearch extends Component {
   }
 }
 
-const applyFilters = (basedata, filters, sortCode) => {
+const applyFilters = (basedata, filters, sortCode, searchKeyword) => {
+  const keyword = searchKeyword.toUpperCase()
   const filterKeys = Object.keys(filters)
   const filteredArray = basedata.filter(food => {
+  	if (keyword.length > 2) {
+  	  if (!food.foodname.includes(keyword)) {
+  	  	return false
+  	  }
+  	}
     for (let i = 0; i < filterKeys.length; i++) {
+      // if (food.foodname.toLowerCase().includes(searchKeyword)) {
+      // 	console.log(true)
+      // }
       if (food[filterKeys[i]] < filters[filterKeys[i]]) {
         return false
       }
@@ -118,10 +134,11 @@ const applyFilters = (basedata, filters, sortCode) => {
 }
 
 const mapStateToProps = state => {
+	console.log(state.searchKeyword)
   return {
     storecomponents: state.components,
     filters: state.filters,
-    results: applyFilters(state.basedata, state.filters, state.sortCode),
+    results: applyFilters(state.basedata, state.filters, state.sortCode, state.searchKeyword),
     sortcode: state.sortCode,
     openedFoodItem: state.openedFoodItem
   }

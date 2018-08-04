@@ -17,7 +17,8 @@ const initialState = {
   user: false,
   registerModalOpen: false,
   loginModalOpen: false,
-  openedFoodItem: null
+  openedFoodItem: null,
+  searchKeyword: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -67,6 +68,9 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_OPENED_FOOD_ITEM': {
       return { ...state, openedFoodItem: action.data}
+    }
+    case 'SET_SEARCHKEYWORD': {
+      return { ...state, searchKeyword: action.data}
     }
   	default:
       return state
@@ -154,6 +158,13 @@ export const toggleLoginModal = () => {
 export const openFoodItem = (data) => {
   return {
     type: 'SET_OPENED_FOOD_ITEM',
+    data: data
+  }
+}
+
+export const setSearchKeyword = (data) => {
+  return {
+    type: 'SET_SEARCHKEYWORD',
     data: data
   }
 }
