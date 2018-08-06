@@ -175,6 +175,9 @@ input[type="number"] {
   position: relative !important;
 }
 
+.ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer:focus {
+  outline: none !important;
+}
 /*.ui.menu {
   font-family: 'Source Code Pro', monospace !important;
   font-size: 1.1rem;

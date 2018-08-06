@@ -4,6 +4,10 @@ import { connect } from 'react-redux'
 import { setSearchKeyword } from '../rdc/reducer'
 
 class SearchOptions extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
   onChange = (event) => {
     this.props.setSearchKeyword(event.target.value)
   }
@@ -12,7 +16,7 @@ class SearchOptions extends React.Component {
     return (
       <Form>
         <Form.Group inline>
-          <Form.Input placeholder='Hakusana' onChange={ this.onChange } />
+          <Form.Input placeholder='Hakusana' onChange={ this.props.listener } />
           <Form.Checkbox label='Laktoositon' />
           <Form.Checkbox label='Kolesteroliton' />
           <Form.Checkbox label='Gluteeniton' />

@@ -12,6 +12,7 @@ const initialState = {
   filters: {},
   sortCode: 'ENERC',
   components: [],
+  componentsOriginalRows: [],
   activetab: 'search',
   basedata: [],
   user: false,
@@ -27,7 +28,8 @@ const reducer = (state = initialState, action) => {
   	  return {
   	    ...state, 
   	  	basedata: action.data,
-  	  	components: action.components 
+        components: action.components, 
+  	  	componentsOriginalRows: action.componentsOriginalRows 
   	  }
   	case 'ADD_FILTER': {
   	  //const filters = { ...state.filters, action.data }
@@ -84,7 +86,8 @@ export const initBasedata = () => {
     if (!window.localStorage.getItem('basedata')) {
       console.log("Loading data from the server.")
       window.localStorage.setItem('basedata', JSON.stringify(await dataservice.getBasedata('food')))
-      window.localStorage.setItem('components', JSON.stringify(await dataservice.getBasedata('components')))
+      //window.localStorage.setItem('components', JSON.stringify(await dataservice.getBasedata('components')))
+      window.localStorage.setItem('components', JSON.stringify(await dataservice.getComponents()))
     }
     basedata = JSON.parse(window.localStorage.getItem('basedata'))
     components = JSON.parse(window.localStorage.getItem('components'))
@@ -92,7 +95,8 @@ export const initBasedata = () => {
     dispatch({
       type: 'INIT_BASEDATA',
       data: basedata,
-      components: components
+      components: components.classifiedRows,
+      componentsOriginalRows: components.originalRows
     })
   }
 }

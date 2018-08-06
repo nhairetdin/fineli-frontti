@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { Grid, Table, Input, Button, Icon, Container } from 'semantic-ui-react'
+import { Grid, Table, Input, Button, Icon, Container, List } from 'semantic-ui-react'
 import BarChart from './BarChart'
 import SearchOptions from './SearchOptions'
 import { connect } from 'react-redux'
 import reducer from '../rdc/reducer'
 import { addFilter, removeFilter, setSortcode, openFoodItem } from '../rdc/reducer'
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
+import tablestyles from '../styles/tablestyles'
 
 class Foodsearch extends Component {
   onChangeListener = event => {
@@ -17,18 +20,33 @@ class Foodsearch extends Component {
     }
   }
 
+  firstColumn = {
+  	Header: 'Elintarvike',
+  	accessor: 'foodname',
+  	id: 666
+  }
+
   onRowClick = (foodid, event) => {
   	event.nativeEvent.stopImmediatePropagation()
   	console.log("row clicked", event, event.bubbles)
   	this.props.openFoodItem(foodid)
   }
 
+  tableColumnSortOverride = (a, b) => parseFloat(b) - parseFloat(a)
+  
+  searchphraseInputchange = (e) => {
+  	//this.refs.reactTable.filterColumn(this.refs.reactTable.state.columns[1], e.target.value)
+  	this.refs.reactTable.filterColumn(this.firstColumn, e.target.value)
+  	//console.log(this.refs.reactTable)
+  }
+
   render() {
+  	console.log("foodsearch")
     return (
       <Grid celled="internally">
         <Grid.Row>
           <Grid.Column width={16}>
-            <SearchOptions />
+            <SearchOptions listener={ this.searchphraseInputchange }/>
           </Grid.Column>
         </Grid.Row>
 
@@ -71,37 +89,59 @@ class Foodsearch extends Component {
           </Grid.Column>
 
           <Grid.Column width={11} className={'rightColumn'}>
-            <Table compact="very" color={'black'}>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>Elintarvike</Table.HeaderCell>
-                  <Table.HeaderCell></Table.HeaderCell>
-                  <Table.HeaderCell>
-                    Prot / HH / Rasva
-                  </Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                {this.props.results.map(food => (
-                  <Table.Row key={food.foodid} className={'resultRow'} onClick={ (event) => this.onRowClick(food.foodid, event) }>
-                    <Table.Cell width={9}>{food.foodname.slice(0,45) + '...'}</Table.Cell>
-                    <Table.Cell width={2} className="inputCell">
-                      { food.foodid === this.props.openedFoodItem ? (
-                      	<div className={'rowEditContainer'}>
-                      	  <Input size="mini" placeholder="määrä" className={'rowInput'} onClick={ (e) => e.stopPropagation() }/>
-                      	  <Button className={'rowButton'} positive size='mini' onClick={ (e) => e.stopPropagation() }>Add</Button>
-                      	</div>
-                      ) : null}
-                    </Table.Cell>
-                    <Table.Cell width={5}>
-                      <BarChart width={food.PROT} color={'#c2ffc2'} />
-                      <BarChart width={food.CHOAVL} color={'#c4c4ff'} />
-                      <BarChart width={food.FAT} color={'#ffb7b7'} />
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
+            <ReactTable
+              ref="reactTable"
+              data={ this.props.results }
+              columns={[this.firstColumn, {
+              	Header: 'prot',
+              	accessor: 'PROT',
+              	width: 50,
+              	sortMethod: this.tableColumnSortOverride
+              },{
+              	Header: 'fat',
+              	accessor: 'FAT',
+              	width: 50,
+              	sortMethod: this.tableColumnSortOverride
+              },{
+              	Header: 'hh',
+              	accessor: 'CHOAVL',
+              	width: 50,
+              	sortMethod: this.tableColumnSortOverride
+              },{
+              	Header: 'kcal',
+              	accessor: 'ENERC',
+              	width: 50,
+              	sortMethod: this.tableColumnSortOverride,
+              	Cell: row => (<div>{ Math.round(0.2388 * parseFloat(row.value)) }</div>)
+              }, {
+              	Header: 'Jakauma (prot, fat, hh)',
+              	Cell: row => (<BarChart prot={ row.original.PROT } fat={ row.original.FAT } hh={ row.original.CHOAVL }/>)
+              }]}
+              getTdProps={ () => { return tablestyles.tabledata } }
+              getTheadFilterProps={ () => { return tablestyles.filterrow } }
+              previousText={'Edellinen'}
+        	  nextText={'Seuraava'}
+        	  pageText={'Sivu'}
+       		  rowsText={'riviä'}
+        	  ofText={'...'}
+        	  pageSizeOptions={[20, 25, 30, 35, 40, 45, 50, 100, 200]}
+        	  defaultPageSize={35}
+        	  className={'-highlight'}
+        	  filterable
+        	  defaultFilterMethod={(filter, row) => String(row[filter.id]).includes(filter.value.toUpperCase())}
+        	  SubComponent={row => {
+        	  	return (
+        	  	  <Container fluid>
+        	  	    <Grid.Row>
+        	  	      <Grid.Column width={16}>
+	        	  	    <List style={ tablestyles.list } items={ this.props.componentsOriginalRows.map((component) => {
+	        	  	      return component.nimi + ": " + row.original[component.koodi] + " (" + row.original[component.koodi] + ")"
+	        	  	    }) }/>
+        	  	      </Grid.Column>
+        	  	    </Grid.Row>
+        	  	  </Container>
+        	  	)
+        	  }}/>
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -130,14 +170,14 @@ const applyFilters = (basedata, filters, sortCode, searchKeyword) => {
   })
   return filteredArray
     .sort((a, b) => parseFloat(b[sortCode]) - parseFloat(a[sortCode]))
-    .slice(0, 50)
 }
 
 const mapStateToProps = state => {
-	console.log(state.searchKeyword)
   return {
     storecomponents: state.components,
+    componentsOriginalRows: state.componentsOriginalRows,
     filters: state.filters,
+    basedata: state.basedata, // for react-table
     results: applyFilters(state.basedata, state.filters, state.sortCode, state.searchKeyword),
     sortcode: state.sortCode,
     openedFoodItem: state.openedFoodItem
