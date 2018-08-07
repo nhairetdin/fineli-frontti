@@ -14,9 +14,22 @@ const filterrow = {
   }
 }
 
+const pagination = {
+  style: {
+    maxHeight: '2.3rem',
+    fontSize: '0.9rem'
+  }
+}
+
+const headerrow = {
+  style: {
+    fontStyle: 'bold'
+  }
+}
+
 const list = { 
   	fontSize: '0.85em',
   	paddingLeft: '3rem'
 }
 
-export default { tabledata, filterrow, list }
+export default { tabledata, filterrow, list, pagination, headerrow }

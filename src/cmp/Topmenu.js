@@ -81,8 +81,7 @@ class Topmenu extends Component {
 const mapStateToProps = state => {
   return {
     activetab: state.activetab,
-    user: state.user,
-    registerModalOpen: state.registerModalOpen
+    user: state.user
   }
 }
 

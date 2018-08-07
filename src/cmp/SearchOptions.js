@@ -13,6 +13,7 @@ class SearchOptions extends React.Component {
   }
 
   render() {
+    console.log("SearchOptions render")
     return (
       <Form>
         <Form.Group inline>

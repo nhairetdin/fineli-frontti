@@ -4,7 +4,7 @@ import BarChart from './BarChart'
 import SearchOptions from './SearchOptions'
 import { connect } from 'react-redux'
 import reducer from '../rdc/reducer'
-import { addFilter, removeFilter, setSortcode, openFoodItem } from '../rdc/reducer'
+import { addFilter, removeFilter, setSortcode } from '../rdc/reducer'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import tablestyles from '../styles/tablestyles'
@@ -38,6 +38,16 @@ class Foodsearch extends Component {
   	//this.refs.reactTable.filterColumn(this.refs.reactTable.state.columns[1], e.target.value)
   	this.refs.reactTable.filterColumn(this.firstColumn, e.target.value)
   	//console.log(this.refs.reactTable)
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextProps, nextState)
+    console.log(this.props, this.state)
+    if (nextProps.loginModalOpen !== this.props.loginModalOpen) {
+      console.log(false)
+      return false
+    }
+    return true
   }
 
   render() {
@@ -96,17 +106,20 @@ class Foodsearch extends Component {
               	Header: 'prot',
               	accessor: 'PROT',
               	width: 50,
-              	sortMethod: this.tableColumnSortOverride
+              	sortMethod: this.tableColumnSortOverride,
+              	style: { backgroundColor: '#8ef1ae'}
               },{
               	Header: 'fat',
               	accessor: 'FAT',
               	width: 50,
-              	sortMethod: this.tableColumnSortOverride
+              	sortMethod: this.tableColumnSortOverride,
+              	style: { backgroundColor: '#ff8d8d'}
               },{
               	Header: 'hh',
               	accessor: 'CHOAVL',
               	width: 50,
-              	sortMethod: this.tableColumnSortOverride
+              	sortMethod: this.tableColumnSortOverride,
+              	style: { backgroundColor: '#a8a8ff'}
               },{
               	Header: 'kcal',
               	accessor: 'ENERC',
@@ -119,6 +132,7 @@ class Foodsearch extends Component {
               }]}
               getTdProps={ () => { return tablestyles.tabledata } }
               getTheadFilterProps={ () => { return tablestyles.filterrow } }
+              getPaginationProps={ () => { return tablestyles.pagination } }
               previousText={'Edellinen'}
         	  nextText={'Seuraava'}
         	  pageText={'Sivu'}
@@ -180,11 +194,11 @@ const mapStateToProps = state => {
     basedata: state.basedata, // for react-table
     results: applyFilters(state.basedata, state.filters, state.sortCode, state.searchKeyword),
     sortcode: state.sortCode,
-    openedFoodItem: state.openedFoodItem
+    loginModalOpen: state.loginModalOpen
   }
 }
 
 export default connect(
   mapStateToProps,
-  { addFilter, removeFilter, setSortcode, openFoodItem }
+  { addFilter, removeFilter, setSortcode }
 )(Foodsearch)
