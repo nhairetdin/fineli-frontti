@@ -2,8 +2,8 @@ import dataservice from '../srv/dataservice'
 
 const initialState = {
   priorities: {
-    'Hiilihydraattifraktiot': 4,
-    'Kivennäis- ja hivenaineet': 2,
+    'Hiilihydraattifraktiot': 2,
+    'Kivennäis- ja hivenaineet': 4,
     'Perusravintoaineet': 6,
     'Rasva': 3,
     'Typpiyhdisteet': 1,
@@ -15,11 +15,27 @@ const initialState = {
   componentsOriginalRows: [],
   activetab: 'search',
   basedata: [],
+  results: [],
   user: false,
   registerModalOpen: false,
   loginModalOpen: false,
   openedFoodItem: null,
-  searchKeyword: ''
+  searchKeyword: '',
+  foodItemHover: null
+}
+
+const applyFilters = (state, newState) => {
+  const filterKeys = Object.keys(newState.filters)
+  const filteredArray = state.basedata.filter(food => {
+    for (let i = 0; i < filterKeys.length; i++) {
+      if (food[filterKeys[i]] < newState.filters[filterKeys[i]]) {
+        return false
+      }
+    }
+    return true
+  })
+  return filteredArray
+    .sort((a, b) => parseFloat(b[newState.sortCode]) - parseFloat(a[newState.sortCode]))
 }
 
 const reducer = (state = initialState, action) => {
@@ -28,7 +44,8 @@ const reducer = (state = initialState, action) => {
   	  return {
   	    ...state, 
   	  	basedata: action.data,
-        components: action.components, 
+        components: action.components,
+        results: action.data,
   	  	componentsOriginalRows: action.componentsOriginalRows 
   	  }
   	case 'ADD_FILTER': {
@@ -36,11 +53,13 @@ const reducer = (state = initialState, action) => {
   	  const newState = { ...state }
   	  newState.filters = { ...state.filters, ...action.data }
       newState.sortCode = action.sortCode
+      newState.results = applyFilters(state, newState)
   	  return newState
   	}
   	case 'REMOVE_FILTER': {
 	    const newState = { ...state, filters: { ...state.filters } }
 	    delete newState.filters[action.data]
+      newState.results = applyFilters(state, newState)
 	    return newState
   	}
     case 'CHANGE_ACTIVE_TAB': {
@@ -66,13 +85,16 @@ const reducer = (state = initialState, action) => {
       return { ...state, loginModalOpen: !state.loginModalOpen }
     }
     case 'LOGIN_USER': {
-      return { ...state, user: action.data}
+      return { ...state, user: action.data }
     }
     case 'SET_OPENED_FOOD_ITEM': {
-      return { ...state, openedFoodItem: action.data}
+      return { ...state, openedFoodItem: action.data }
     }
     case 'SET_SEARCHKEYWORD': {
-      return { ...state, searchKeyword: action.data}
+      return { ...state, searchKeyword: action.data }
+    }
+    case 'SET_FOODITEM_HOVER': {
+      return { ...state, foodItemHover: { ...action.data } }
     }
   	default:
       return state
@@ -169,6 +191,13 @@ export const openFoodItem = (data) => {
 export const setSearchKeyword = (data) => {
   return {
     type: 'SET_SEARCHKEYWORD',
+    data: data
+  }
+}
+
+export const setFoodItemHover = (data) => {
+  return {
+    type: 'SET_FOODITEM_HOVER',
     data: data
   }
 }

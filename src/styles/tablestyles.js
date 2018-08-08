@@ -3,7 +3,17 @@ const tabledata = {
   	paddingTop: '2px',
   	paddingBottom: '2px',
   	fontSize: '0.85rem',
-  	lineHeight: '1.2rem'
+  	lineHeight: '1rem'
+  }
+}
+
+const filtertabledata = {
+  style: {
+    paddingTop: '2px',
+    paddingBottom: '2px',
+    fontSize: '0.85rem',
+    lineHeight: '1rem',
+    fontWeight: 'bold'
   }
 }
 
@@ -28,8 +38,18 @@ const headerrow = {
 }
 
 const list = { 
-  	fontSize: '0.85em',
-  	paddingLeft: '3rem'
+  fontSize: '0.85em',
+  paddingLeft: '3rem'
 }
 
-export default { tabledata, filterrow, list, pagination, headerrow }
+const cellinput = {
+  maxWidth: '50px',
+  border: '1px solid #cecece'
+}
+
+const filterlabel = {
+  // backgroundColor: 'lightgray',
+  // padding: '0px'
+}
+
+export default { tabledata, filtertabledata, filterrow, list, pagination, headerrow, cellinput, filterlabel }
