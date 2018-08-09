@@ -1,12 +1,9 @@
 import React from 'react'
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { setSearchKeyword } from '../rdc/reducer'
 
 class SearchOptions extends React.Component {
-  constructor(props) {
-    super(props)
-  }
 
   onChange = (event) => {
     this.props.setSearchKeyword(event.target.value)

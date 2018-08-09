@@ -12,7 +12,7 @@ class FilterTable extends Component {
   
   inputChangeListener = (source, event) => {
   	const code = source
-    const value = parseInt(event.target.value)
+    const value = parseInt(event.target.value, 10)
     if (!value) {
       this.props.removeFilter(code)
     } else {

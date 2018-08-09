@@ -1,29 +1,24 @@
 import React, { Component } from 'react'
-import { Grid, Table, Input, Button, Icon, Container, List } from 'semantic-ui-react'
+import { Grid, Container, List } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 
 import tablestyles from '../styles/tablestyles'
 import BarChart from './BarChart'
-import { setFoodItemHover } from '../rdc/reducer'
+import { setFoodItemHover, setFoodItemHoverNull } from '../rdc/reducer'
 
 class SearchResultsTable extends Component {
-  constructor(props) {
-  	super(props)
-  }
 
-  mouseover = (row) => {
-  	//console.log(row)
-  	this.props.setFoodItemHover(row)
-  }
+  mouseoverFoodnameColumn = (row) => this.props.setFoodItemHover(row)
+  mouseLeaveTable = (e) => this.props.setFoodItemHoverNull()
 
   firstColumn = {
   	Header: 'Elintarvike',
   	accessor: 'foodname',
   	id: 666,
   	Cell: row => (<div 
-  		onMouseOver={() => this.mouseover(row.original)}>
+  		onMouseOver={() => this.mouseoverFoodnameColumn(row.original)}>
   		{row.original.foodname}
   		</div>
   	)
@@ -38,6 +33,11 @@ class SearchResultsTable extends Component {
   render() {
   	return (
   	  <ReactTable
+  	    getTableProps={ () => {
+  	    	return {
+  	    		onMouseLeave: (e) => this.mouseLeaveTable(e)
+  	    	}
+  	    }}
 	      ref="reactTable"
 	      data={ this.props.basedata }
 	      columns={[this.firstColumn, {
@@ -45,19 +45,19 @@ class SearchResultsTable extends Component {
 	      	accessor: 'PROT',
 	      	width: 50,
 	      	sortMethod: this.tableColumnSortOverride,
-	      	style: { backgroundColor: '#8ef1ae'}
+	      	style: { backgroundColor: '#93FFBF'}
 	      },{
 	      	Header: 'fat',
 	      	accessor: 'FAT',
 	      	width: 50,
 	      	sortMethod: this.tableColumnSortOverride,
-	      	style: { backgroundColor: '#ff8d8d'}
+	      	style: { backgroundColor: '#FF9198'}
 	      },{
 	      	Header: 'hh',
 	      	accessor: 'CHOAVL',
 	      	width: 50,
 	      	sortMethod: this.tableColumnSortOverride,
-	      	style: { backgroundColor: '#a8a8ff'}
+	      	style: { backgroundColor: '#B4B6FF'}
 	      },{
 	      	Header: 'kcal',
 	      	accessor: 'ENERC',
@@ -107,5 +107,5 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(
-  mapStateToProps, { setFoodItemHover }, null, { withRef: true }
+  mapStateToProps, { setFoodItemHover, setFoodItemHoverNull }, null, { withRef: true }
 )(SearchResultsTable)
