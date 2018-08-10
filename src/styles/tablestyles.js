@@ -17,6 +17,13 @@ const filtertabledata = {
   }
 }
 
+const tableheader = {
+  style: { 
+    fontWeight: 'bold',
+    color: 'red' 
+  }
+}
+
 const filterrow = {
   style: {
   	visibility: 'hidden',

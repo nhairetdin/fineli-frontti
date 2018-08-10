@@ -39,13 +39,7 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    storecomponents: state.components
-  }
-}
-
 export default connect(
-  mapStateToProps,
+  null,
   { initBasedata, changeTab, login }
 )(App)

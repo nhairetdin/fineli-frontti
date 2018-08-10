@@ -26,7 +26,7 @@ class FilterTable extends Component {
   	    { this.props.storecomponents.map((group, index) => {
   	        return (
   	          <ReactTable
-  	            getTdProps={ () => { return tablestyles.filtertabledata } }
+                getTdProps={ () => { return tablestyles.filtertabledata } }
   	            minRows={1}
   	            defaultPageSize={group.data.length}
   	          	key={index}
@@ -35,7 +35,13 @@ class FilterTable extends Component {
   	            columns={[
   	              { 
   	              	Header: group.data[0].ylempiluokka,
-  	              	Cell: row => (<FilterLabel nimi={ row.original.nimi } foodid={ row.original.foodid } koodi={ row.original.koodi }/>)
+  	              	Cell: row => (
+                      <FilterLabel
+                        nimi={ row.original.nimi } 
+                        foodid={ row.original.foodid } 
+                        koodi={ row.original.koodi }
+                      />
+                    )
   	              },{ 
   	              	Header: 'Väh:',
   	              	Cell: row => (
