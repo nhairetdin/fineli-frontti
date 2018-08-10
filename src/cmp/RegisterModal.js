@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Icon, Modal, Input, Segment, Rail } from 'semantic-ui-react'
+import { Button, Icon, Modal, Input, Segment, Rail, Checkbox } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { toggleRegisterModal, registerUser, login } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
@@ -10,6 +10,7 @@ class RegisterModal extends Component {
   	this.state = {
   	  email: '',
   	  password: '',
+  	  radio: 'male',
   	  visible: false,
   	  errorMsg: ''
     }
@@ -20,6 +21,8 @@ class RegisterModal extends Component {
   	this.setState({ [event.target.name]: event.target.value })
   }
 
+  onRadioChange = (e, {value}) => this.setState({ radio: value })
+
   toggleErrorVisibility = (errorMsg) => {
   	this.setState({ visible: !this.state.visible, errorMsg: errorMsg}, 
   		() => { setTimeout(() => { this.setState({ visible: !this.state.visible, errorMsg: '' }) }, 3000) }
@@ -28,7 +31,7 @@ class RegisterModal extends Component {
 
   submit = async () => {
   	//this.props.registerUser({ email: this.state.email, password: this.state.password })
-  	const res = await dataservice.registerUser({ email: this.state.email, password: this.state.password })
+  	const res = await dataservice.registerUser({ email: this.state.email, password: this.state.password, gender: this.state.radio })
   	if (res.status === 200) {
   	  // success
   	  window.localStorage.setItem('user', JSON.stringify({ token: res.data.token, email: res.data.email}))
@@ -58,7 +61,21 @@ class RegisterModal extends Component {
 	        <input />
 	      </Input>
 	      <h3>Salasana: 6 - 60 merkkiä</h3>
-	      <Input fluid={true} placeholder='Salasana' type='password' size='large' name='password' onChange={ this.onChangeHandler } />
+	      <Input fluid={true} placeholder='Salasana' type='password' size='large' name='password' onChange={ this.onChangeHandler } />     
+	      <Checkbox
+	        radio 
+	        label='Mies' 
+	        value='male' 
+	        checked={ this.state.radio === 'male' } 
+	        onChange={ this.onRadioChange } 
+	      />
+	      <Checkbox 
+	        radio 
+	        label='Nainen' 
+	        value='female' 
+	        checked={ this.state.radio === 'female' } 
+	        onChange={ this.onRadioChange } 
+	      />
         </Modal.Content>
       	<Modal.Actions>
           <Button negative onClick={ this.props.toggleRegisterModal }>Sulje</Button>
