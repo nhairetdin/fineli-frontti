@@ -86,7 +86,7 @@ class SearchResultsTable extends Component {
 			  	  <Container fluid>
 			  	    <Grid.Row>
 			  	      <Grid.Column width={16}>
-		    	  	    <List style={ tablestyles.list } items={ this.props.componentsOriginalRows.map((component) => {
+		    	  	    <List style={ tablestyles.list } items={ this.props.componentsOriginalRows[0].map((component) => {
 		    	  	      return component.nimi + ": " + row.original[component.koodi] + " (" + row.original[component.koodi] + ")"
 		    	  	    }) }/>
 			  	      </Grid.Column>

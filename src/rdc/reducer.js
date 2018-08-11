@@ -21,7 +21,8 @@ const initialState = {
   loginModalOpen: false,
   openedFoodItem: null,
   searchKeyword: '',
-  foodItemHover: null
+  foodItemHover: null,
+  suggestedAmounts: {}
 }
 
 const applyFilters = (state, newState) => {
@@ -46,7 +47,8 @@ const reducer = (state = initialState, action) => {
   	  	basedata: action.data,
         components: action.components,
         results: action.data,
-  	  	componentsOriginalRows: action.componentsOriginalRows 
+  	  	componentsOriginalRows: action.componentsOriginalRows, // untransformed result from db
+        suggestedAmounts: action.suggestedAmounts[0]
   	  }
   	case 'ADD_FILTER': {
   	  //const filters = { ...state.filters, action.data }
@@ -121,7 +123,8 @@ export const initBasedata = () => {
       type: 'INIT_BASEDATA',
       data: basedata,
       components: components.classifiedRows,
-      componentsOriginalRows: components.originalRows
+      componentsOriginalRows: components.originalRows,
+      suggestedAmounts: components.originalRows[1]
     })
   }
 }
