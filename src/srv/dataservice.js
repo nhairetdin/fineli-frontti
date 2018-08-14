@@ -21,6 +21,7 @@ const registerUser = async (user) => {
   let data
   try {
     data = await axios.post(`${url}user`, user)
+    //token = `bearer ${data.data.token}`
   } catch (e) {
     console.log(e, e.response)
     data = e.response.data
@@ -32,10 +33,26 @@ const loginUser = async (user) => {
   let data
   try {
     data = await axios.post(`${url}user/session`, user)
+    console.log(data.data.token)
+    //token = `bearer ${data.data.token}`
   } catch (e) {
     data = e.response.data
   }
   return data
 }
 
-export default { getBasedata, getComponents, registerUser, loginUser }
+const loadUserdata = async (token) => {
+  token = 'bearer ' + token
+  const config = {
+    headers: { 'authorization': token }
+  }
+  let data
+  try {
+    data = await axios.post(`${url}user/profile`, null, config)
+  } catch (e) {
+    data = e.response.data
+  }
+  return data
+}
+
+export default { getBasedata, getComponents, registerUser, loginUser, loadUserdata }

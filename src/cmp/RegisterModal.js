@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Icon, Modal, Input, Segment, Rail, Checkbox } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { toggleRegisterModal, registerUser, login } from '../rdc/reducer'
+import { toggleRegisterModal, registerUser, login, setSuggestedAmounts } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
 
 class RegisterModal extends Component {
@@ -33,12 +33,17 @@ class RegisterModal extends Component {
   	//this.props.registerUser({ email: this.state.email, password: this.state.password })
   	const res = await dataservice.registerUser({ email: this.state.email, password: this.state.password, gender: this.state.radio })
   	if (res.status === 200) {
-  	  // success
-  	  window.localStorage.setItem('user', JSON.stringify({ token: res.data.token, email: res.data.email}))
-  	  this.props.login()
+      window.localStorage.setItem('user', JSON.stringify({ token: res.data.token, email: res.data.email}))
+      this.props.login()
+      try {
+        const user = JSON.parse(window.localStorage.getItem('user'))
+        const userdata = await dataservice.loadUserdata(user.token)
+        this.props.setSuggestedAmounts(userdata.data[0])
+      } catch (e) {
+        console.log("failed to load userdata", e)
+      }
   	  this.props.toggleRegisterModal()
   	} else {
-  	  // fail
   	  this.toggleErrorVisibility(res.error)
   	  console.log(res)
   	}
@@ -94,5 +99,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { toggleRegisterModal, registerUser, login }
+  { toggleRegisterModal, registerUser, login, setSuggestedAmounts }
 )(RegisterModal)

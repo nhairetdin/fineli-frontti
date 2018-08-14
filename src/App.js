@@ -3,16 +3,27 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 
-import { initBasedata, changeTab, login } from './rdc/reducer'
+import { initBasedata, changeTab, login, setSuggestedAmounts } from './rdc/reducer'
+import dataservice from './srv/dataservice'
 import Topmenu from './cmp/Topmenu'
 import Foodsearch from './cmp/Foodsearch'
 
 class App extends Component {
-  componentDidMount() {
+  componentDidMount = async () => {
     this.props.initBasedata()
     if(window.localStorage.getItem('user')) {
       // user is logged in
-      this.props.login()
+      try {
+        const user = JSON.parse(window.localStorage.getItem('user'))
+        console.log(user.token)
+        const userdata = await dataservice.loadUserdata(user.token)
+        this.props.setSuggestedAmounts(userdata.data[0])
+        this.props.login()
+        console.log(userdata.data[0])
+      } catch (e) {
+        console.log("failed to load userdata", e)
+      }
+      //this.props.login()
     }
   }
 
@@ -41,5 +52,5 @@ class App extends Component {
 
 export default connect(
   null,
-  { initBasedata, changeTab, login }
+  { initBasedata, changeTab, login, setSuggestedAmounts }
 )(App)

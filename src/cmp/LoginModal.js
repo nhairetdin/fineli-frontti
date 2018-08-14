@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Modal, Input, Segment, Rail } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { toggleLoginModal, login } from '../rdc/reducer'
+import { toggleLoginModal, login, setSuggestedAmounts } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
 
 class LoginModal extends Component {
@@ -30,10 +30,16 @@ class LoginModal extends Component {
   	//this.props.registerUser({ email: this.state.email, password: this.state.password })
   	const res = await dataservice.loginUser({ email: this.state.email, password: this.state.password })
   	if (res.status === 200) {
-  	  // success
-  	  //this.props.login({ token: res.data.token, email: res.data.email })
       window.localStorage.setItem('user', JSON.stringify({ token: res.data.token, email: res.data.email}))
       this.props.login()
+      try {
+        const user = JSON.parse(window.localStorage.getItem('user'))
+        const userdata = await dataservice.loadUserdata(user.token)
+        this.props.setSuggestedAmounts(userdata.data[0])
+        console.log(userdata.data[0])
+      } catch (e) {
+        console.log("failed to load userdata", e)
+      }
   	  this.props.toggleLoginModal()
   	} else {
   	  // fail
@@ -75,5 +81,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { toggleLoginModal, login }
+  { toggleLoginModal, login, setSuggestedAmounts }
 )(LoginModal)

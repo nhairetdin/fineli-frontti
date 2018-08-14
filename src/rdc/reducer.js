@@ -101,6 +101,9 @@ const reducer = (state = initialState, action) => {
     case 'SET_FOODITEM_HOVER_NULL': {
       return { ...state, foodItemHover: null }
     }
+    case 'SET_SUGGESTED_AMOUNTS': {
+      return { ...state, suggestedAmounts: action.data}
+    }
   	default:
       return state
   }
@@ -211,6 +214,13 @@ export const setFoodItemHover = (data) => {
 export const setFoodItemHoverNull = () => {
   return {
     type: 'SET_FOODITEM_HOVER_NULL'
+  }
+}
+
+export const setSuggestedAmounts = (data) => {
+  return {
+    type: 'SET_SUGGESTED_AMOUNTS',
+    data: data
   }
 }
 
