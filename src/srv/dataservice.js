@@ -17,6 +17,12 @@ const getComponents = async () => {
   return data.data
 }
 
+const getSpecdietRows = async () => {
+  const data = await axios.get(`${url}basedata/specdiet`)
+  console.log(data)
+  return data.data
+}
+
 const registerUser = async (user) => {
   let data
   try {
@@ -55,4 +61,11 @@ const loadUserdata = async (token) => {
   return data
 }
 
-export default { getBasedata, getComponents, registerUser, loginUser, loadUserdata }
+export default { 
+  getBasedata, 
+  getComponents, 
+  registerUser, 
+  loginUser, 
+  loadUserdata, 
+  getSpecdietRows 
+}

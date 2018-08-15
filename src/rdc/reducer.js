@@ -22,7 +22,10 @@ const initialState = {
   openedFoodItem: null,
   searchKeyword: '',
   foodItemHover: null,
-  suggestedAmounts: {}
+  suggestedAmounts: {},
+  specdietRows: [],
+  specdietOptions: [],
+  specdietOptionsCurrent: []
 }
 
 const applyFilters = (state, newState) => {
@@ -48,7 +51,9 @@ const reducer = (state = initialState, action) => {
         components: action.components,
         results: action.data,
   	  	componentsOriginalRows: action.componentsOriginalRows, // untransformed result from db
-        suggestedAmounts: action.suggestedAmounts[0]
+        suggestedAmounts: action.suggestedAmounts[0],
+        specdietRows: action.specdietRows,
+        specdietOptions: action.specdietOptions
   	  }
   	case 'ADD_FILTER': {
   	  //const filters = { ...state.filters, action.data }
@@ -104,6 +109,9 @@ const reducer = (state = initialState, action) => {
     case 'SET_SUGGESTED_AMOUNTS': {
       return { ...state, suggestedAmounts: action.data}
     }
+    case 'UPDATE_SPECDIET_CURRENT': {
+      return { ...state, specdietOptionsCurrent: action.data}
+    }
   	default:
       return state
   }
@@ -113,21 +121,31 @@ export const initBasedata = () => {
   return async (dispatch) => {
     let basedata = []
     let components = []
+    let specdietRows = []
     if (!window.localStorage.getItem('basedata')) {
       console.log("Loading data from the server.")
       window.localStorage.setItem('basedata', JSON.stringify(await dataservice.getBasedata('food')))
-      //window.localStorage.setItem('components', JSON.stringify(await dataservice.getBasedata('components')))
       window.localStorage.setItem('components', JSON.stringify(await dataservice.getComponents()))
     }
     basedata = JSON.parse(window.localStorage.getItem('basedata'))
     components = JSON.parse(window.localStorage.getItem('components'))
+    specdietRows = await dataservice.getSpecdietRows()
+    const specdietOptions = specdietRows[1].reduce((res, i) => {
+      if (res.length === 0) {
+        return [{ key: i.thscode, text: i.shortname, value: i.thscode }]
+      } else {
+        return res.concat({ key: i.thscode, text: i.shortname, value: i.thscode })
+      }
+    }, [])
 
     dispatch({
       type: 'INIT_BASEDATA',
       data: basedata,
       components: components.classifiedRows,
       componentsOriginalRows: components.originalRows,
-      suggestedAmounts: components.originalRows[1]
+      suggestedAmounts: components.originalRows[1],
+      specdietRows: specdietRows,
+      specdietOptions: specdietOptions
     })
   }
 }
@@ -220,6 +238,13 @@ export const setFoodItemHoverNull = () => {
 export const setSuggestedAmounts = (data) => {
   return {
     type: 'SET_SUGGESTED_AMOUNTS',
+    data: data
+  }
+}
+
+export const updateSpecdietCurrent = (data) => {
+  return {
+    type: 'UPDATE_SPECDIET_CURRENT',
     data: data
   }
 }

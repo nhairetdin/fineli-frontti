@@ -217,3 +217,7 @@ input[type="number"] {
 .ReactTable .rt-thead {
   background: -webkit-linear-gradient(left, #ffffff 1%, #f3f3f3 50%, #ffffff 100%) !important;
 }
+
+.ui.dropdown .menu {
+    max-height: 50rem !important;
+}
