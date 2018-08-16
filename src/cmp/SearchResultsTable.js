@@ -26,7 +26,7 @@ class SearchResultsTable extends Component {
 
   tableColumnSortOverride = (a, b) => parseFloat(b) - parseFloat(a)
 
-  searchphraseInputchange = (e) => { 
+  searchphraseInputchange = (e) => {
   	this.refs.reactTable.filterColumn(this.firstColumn, e.target.value) 
   }
 
