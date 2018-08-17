@@ -18,6 +18,7 @@ class FilterLabel extends Component {
   }
 
   render() {
+    //console.log(this.props.suggestions)
   	let percentage = 0
   	if (this.props.foodItemHover !== null) {
       //percentage = this.calculatePercentage(cmprecommendations.male[this.props.koodi], this.props.foodItemHover[this.props.koodi])

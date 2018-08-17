@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-//import { Table, Input } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
@@ -43,15 +43,16 @@ class FilterTable extends Component {
                       />
                     )
   	              },{ 
-  	              	Header: 'Väh:',
+  	              	Header: (<Icon disabled name="filter"/>),
   	              	Cell: row => (
   	              		<input 
   	              		  placeholder={ row.original.yksikko.toLowerCase() } 
   	              		  style={tablestyles.cellinput}
   	              		  onChange={(e) => this.inputChangeListener(row.original.koodi, e)}
+                        type="number"
   	              		/>
   	              	),
-  	              	width: 60
+  	              	width: 50
   	              }
   	            ]}
   	          />

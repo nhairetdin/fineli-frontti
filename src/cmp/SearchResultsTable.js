@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Container, List } from 'semantic-ui-react'
+import { Grid, Container, List, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
@@ -28,6 +28,13 @@ class SearchResultsTable extends Component {
 
   searchphraseInputchange = (e) => {
   	this.refs.reactTable.filterColumn(this.firstColumn, e.target.value) 
+  }
+
+  handleEnter = (row, e) => {
+  	//e.preventDefault()
+  	if (e.which === 13) {
+  		console.log(row)
+  	}
   }
 
   render() {
@@ -67,6 +74,14 @@ class SearchResultsTable extends Component {
 	      }, {
 	      	Header: 'Jakauma (prot, fat, hh)',
 	      	Cell: row => (<BarChart prot={ row.original.PROT } fat={ row.original.FAT } hh={ row.original.CHOAVL }/>)
+	      }, {
+	      	Header: (<Icon disabled name="add to cart"/>),
+	      	width: 50,
+	      	Cell: row => (<input 
+	      		placeholder="g" 
+	      		style={tablestyles.cellinput}
+	      		onKeyDown={ (e) => this.handleEnter(row.original, e) }
+	      		type="number"/>)
 	      }]}
 	      getTdProps={ () => { return tablestyles.tabledata } }
 	      getTheadFilterProps={ () => { return tablestyles.filterrow } }
@@ -74,7 +89,7 @@ class SearchResultsTable extends Component {
 	      previousText={'Edellinen'}
 			  nextText={'Seuraava'}
 			  pageText={'Sivu'}
-				rowsText={'riviä'}
+			  rowsText={'riviä'}
 			  ofText={'...'}
 			  pageSizeOptions={[20, 25, 30, 35, 40, 45, 50, 100, 200]}
 			  defaultPageSize={35}

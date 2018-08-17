@@ -37,8 +37,12 @@ class Foodsearch extends Component {
             <FilterTable />
           </Grid.Column>
 
-          <Grid.Column width={11} className={'rightColumn'}>
+          <Grid.Column width={6} className={'rightColumn'}>
             <SearchResultsTable ref="searchResultsTable"/>
+          </Grid.Column>
+
+          <Grid.Column width={5} className={'leftColumn'}>
+            <h1>Ateriat</h1>
           </Grid.Column>
         </Grid.Row>
       </Grid>
