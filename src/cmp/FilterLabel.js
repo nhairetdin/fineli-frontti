@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Popup } from 'semantic-ui-react'
+import suistyles from '../styles/suistyles'
 //import cmprecommendations from '../cmprecommendations'
 
 class FilterLabel extends Component {
@@ -25,7 +27,12 @@ class FilterLabel extends Component {
   	  percentage = this.calculatePercentage(this.props.suggestions[this.props.koodi.toLowerCase()], this.props.foodItemHover[this.props.koodi])
     }
   	return (
-  	  <div style={ percentage !== 0 ? this.style(percentage) : null }>{ this.props.nimi }</div>
+      <Popup
+        trigger={<div style={ percentage !== 0 ? this.style(percentage) : null }>{ this.props.nimi }</div>}
+        content={ this.props.nimi }
+        on='click'
+        hoverable={ true }
+      />
   	)
   }
 }

@@ -24,6 +24,12 @@ const tableheader = {
   }
 }
 
+const tableheaderInvisible = {
+  style: {
+    display: 'none'
+  }
+}
+
 const filterrow = {
   style: {
   	visibility: 'hidden',
@@ -61,4 +67,9 @@ const filterlabel = {
   // padding: '0px'
 }
 
-export default { tabledata, filtertabledata, filterrow, list, pagination, headerrow, cellinput, filterlabel }
+const mealTableSubRow = {
+  style: {
+    paddingLeft: '3rem'
+  }
+}
+export default { tabledata, filtertabledata, filterrow, list, pagination, headerrow, cellinput, filterlabel, tableheaderInvisible, mealTableSubRow }

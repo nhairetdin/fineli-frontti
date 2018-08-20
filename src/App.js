@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 
-import { initBasedata, changeTab, login, setSuggestedAmounts } from './rdc/reducer'
+import { initBasedata, changeTab, login, setSuggestedAmounts, setUserMeals } from './rdc/reducer'
 import dataservice from './srv/dataservice'
 import Topmenu from './cmp/Topmenu'
 import Foodsearch from './cmp/Foodsearch'
@@ -15,9 +15,10 @@ class App extends Component {
       // user is logged in
       try {
         const user = JSON.parse(window.localStorage.getItem('user'))
-        console.log(user.token)
+        //console.log(user.token)
         const userdata = await dataservice.loadUserdata(user.token)
         this.props.setSuggestedAmounts(userdata.data[0])
+        this.props.setUserMeals(userdata.data[1])
         this.props.login()
         console.log(userdata.data[0])
       } catch (e) {
@@ -52,5 +53,5 @@ class App extends Component {
 
 export default connect(
   null,
-  { initBasedata, changeTab, login, setSuggestedAmounts }
+  { initBasedata, changeTab, login, setSuggestedAmounts, setUserMeals }
 )(App)

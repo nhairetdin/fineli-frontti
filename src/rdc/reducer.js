@@ -19,7 +19,8 @@ const initialState = {
   suggestedAmounts: {},
   specdietRows: [],
   specdietOptions: [],
-  specdietOptionsCurrent: []
+  specdietOptionsCurrent: [],
+  meals: []
 }
 
 const applySpecdietFilters = (newState) => {
@@ -139,6 +140,9 @@ const reducer = (state = initialState, action) => {
       newState.basedataFilteredBySpecdiet = applySpecdietFilters(newState)
       newState.results = applyFilters(newState)
       return newState
+    }
+    case 'SET_USER_MEALS': {
+      return { ...state, meals: [...action.data]}
     }
   	default:
       return state
@@ -272,6 +276,13 @@ export const setSuggestedAmounts = (data) => {
 export const updateSpecdietCurrent = (data) => {
   return {
     type: 'UPDATE_SPECDIET_CURRENT',
+    data: data
+  }
+}
+
+export const setUserMeals = (data) => {
+  return {
+    type: 'SET_USER_MEALS',
     data: data
   }
 }

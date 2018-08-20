@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Icon, Modal, Input, Segment, Rail, Checkbox } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { toggleRegisterModal, registerUser, login, setSuggestedAmounts } from '../rdc/reducer'
+import { toggleRegisterModal, registerUser, login, setSuggestedAmounts, setUserMeals } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
 
 class RegisterModal extends Component {
@@ -39,6 +39,7 @@ class RegisterModal extends Component {
         const user = JSON.parse(window.localStorage.getItem('user'))
         const userdata = await dataservice.loadUserdata(user.token)
         this.props.setSuggestedAmounts(userdata.data[0])
+        this.props.setUserMeals(userdata.data[1])
       } catch (e) {
         console.log("failed to load userdata", e)
       }
@@ -99,5 +100,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { toggleRegisterModal, registerUser, login, setSuggestedAmounts }
+  { toggleRegisterModal, registerUser, login, setSuggestedAmounts, setUserMeals }
 )(RegisterModal)

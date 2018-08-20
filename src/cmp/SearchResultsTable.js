@@ -81,7 +81,8 @@ class SearchResultsTable extends Component {
 	      		placeholder="g" 
 	      		style={tablestyles.cellinput}
 	      		onKeyDown={ (e) => this.handleEnter(row.original, e) }
-	      		type="number"/>)
+	      		type="number"
+	      		disabled={ this.props.user ? false : true } />)
 	      }]}
 	      getTdProps={ () => { return tablestyles.tabledata } }
 	      getTheadFilterProps={ () => { return tablestyles.filterrow } }
@@ -117,7 +118,8 @@ const mapStateToProps = (state) => {
   return {
   	basedata: state.results,
     storecomponents: state.components,
-    componentsOriginalRows: state.componentsOriginalRows
+    componentsOriginalRows: state.componentsOriginalRows,
+    user: state.user
   }
 }
 

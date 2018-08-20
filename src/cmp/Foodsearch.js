@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Grid } from 'semantic-ui-react'
+import { connect } from 'react-redux'
 import SearchOptions from './SearchOptions'
 import SearchResultsTable from './SearchResultsTable'
 import FilterTable from './FilterTable'
+import MealTable from './MealTable'
 import 'react-table/react-table.css'
 
 class Foodsearch extends Component {
@@ -37,17 +39,27 @@ class Foodsearch extends Component {
             <FilterTable />
           </Grid.Column>
 
-          <Grid.Column width={6} className={'rightColumn'}>
+          <Grid.Column width={8} className={'middleColumn'}>
             <SearchResultsTable ref="searchResultsTable"/>
           </Grid.Column>
 
-          <Grid.Column width={5} className={'leftColumn'}>
-            <h1>Ateriat</h1>
-          </Grid.Column>
+          { this.props.user ?
+            (<Grid.Column width={3} className={'rightColumn'}>
+              <MealTable />
+            </Grid.Column>) : null
+          }
         </Grid.Row>
       </Grid>
     )
   }
 }
 
-export default Foodsearch
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(Foodsearch)

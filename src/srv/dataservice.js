@@ -23,6 +23,20 @@ const getSpecdietRows = async () => {
   return data.data
 }
 
+const getMealForUser = async (token) => {
+  let data
+  token = 'bearer ' + token
+  const config = {
+    headers: { 'authorization': token }
+  }
+  try {
+    data = await axios.get(`${url}meal`, config)
+  } catch (e) {
+    data = e.response.data
+  }
+  return data
+}
+
 const registerUser = async (user) => {
   let data
   try {
@@ -67,5 +81,6 @@ export default {
   registerUser, 
   loginUser, 
   loadUserdata, 
-  getSpecdietRows 
+  getSpecdietRows,
+  getMealForUser
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Modal, Input, Segment, Rail } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { toggleLoginModal, login, setSuggestedAmounts } from '../rdc/reducer'
+import { toggleLoginModal, login, setSuggestedAmounts, setUserMeals } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
 
 class LoginModal extends Component {
@@ -36,6 +36,7 @@ class LoginModal extends Component {
         const user = JSON.parse(window.localStorage.getItem('user'))
         const userdata = await dataservice.loadUserdata(user.token)
         this.props.setSuggestedAmounts(userdata.data[0])
+        this.props.setUserMeals(userdata.data[1])
         console.log(userdata.data[0])
       } catch (e) {
         console.log("failed to load userdata", e)
@@ -81,5 +82,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { toggleLoginModal, login, setSuggestedAmounts }
+  { toggleLoginModal, login, setSuggestedAmounts, setUserMeals }
 )(LoginModal)
