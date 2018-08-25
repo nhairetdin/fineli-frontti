@@ -1,5 +1,6 @@
 import dataservice from '../srv/dataservice'
-import deepcopy from 'deepcopy'
+//import deepcopy from 'deepcopy'
+import cloneDeep from '../clonedeep'
 
 const initialState = {
   filters: {},
@@ -117,7 +118,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, user: action.data}
     }
     case 'LOGOUT': {
-      const newState = { ...state, user: false }
+      const newState = { ...state, user: false, activeMeal: -1 }
       newState.activetab = action.data
       return newState
     }
@@ -152,7 +153,9 @@ const reducer = (state = initialState, action) => {
       return newState
     }
     case 'SET_USER_MEALS': {
-      return { ...state, meals: [...action.data]}
+      const meals = action.data.sort((a, b) => b.meal_id - a.meal_id)
+      const activeMeal = meals.length > 0 ? meals[0].meal_id : -1 // set active meal to be 'meal_id' of last element (newest meal) or initial (-1) if empty
+      return { ...state, meals: [...meals], activeMeal: activeMeal }
     }
     case 'SET_ACTIVE_MEAL': {
       //return {...state, activeMeal: {...action.data, foods: [...action.data.foods]}}
@@ -174,7 +177,7 @@ const reducer = (state = initialState, action) => {
           break
         }
       }
-      const newState = {...state, meals: deepcopy(state.meals)}
+      const newState = {...state, meals: cloneDeep(state.meals)}
       //newState.meals[index].foods = foods
       newState.meals[index] = {...newState.meals[index], foods: foods, notSaved: true}
       return newState
@@ -185,7 +188,7 @@ const reducer = (state = initialState, action) => {
       // return {...state, meals: [...newMeals]}
     }
     case 'ADD_NEW_MEAL': {
-      return {...state, meals: [...state.meals, {...state.initialMeal}]}
+      return {...state, meals: [{...state.initialMeal}, ...state.meals], activeMeal: -1}
     }
     case 'CHANGE_MEAL_NAME': {
       let index
@@ -205,10 +208,10 @@ const reducer = (state = initialState, action) => {
       return {...newState}
     }
     case 'ADD_NEW_SAVED_MEAL': {
-      const meals = deepcopy(state.meals).map(meal => {
+      const meals = cloneDeep(state.meals).map(meal => {
         return meal.meal_id === -1 ? action.data : meal
       })
-      return { ...state, meals: meals }
+      return { ...state, meals: meals, activeMeal: action.data.meal_id }
     }
     case 'SET_ERROR_MESSAGE': {
       return { ...state, errorMessage: action.data }
