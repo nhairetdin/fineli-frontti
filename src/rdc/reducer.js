@@ -1,4 +1,5 @@
 import dataservice from '../srv/dataservice'
+import deepcopy from 'deepcopy'
 
 const initialState = {
   filters: {},
@@ -20,7 +21,16 @@ const initialState = {
   specdietRows: [],
   specdietOptions: [],
   specdietOptionsCurrent: [],
-  meals: []
+  meals: [],
+  activeMeal: -1,
+  activeMealUpdated: {},
+  initialMeal: {
+    name: "Uusi ateria",
+    meal_id: -1,
+    foods: []
+  },
+  errorMessage: null
+  
 }
 
 const applySpecdietFilters = (newState) => {
@@ -143,6 +153,65 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_USER_MEALS': {
       return { ...state, meals: [...action.data]}
+    }
+    case 'SET_ACTIVE_MEAL': {
+      //return {...state, activeMeal: {...action.data, foods: [...action.data.foods]}}
+      return {...state, activeMeal: action.data}
+    }
+    case 'UPDATE_ACTIVE_MEAL_UPDATED': {
+      return {...state, activeMealUpdated: {...state.activeMealUpdated, [action.data.foodid]: action.data.amount}}
+    }
+    case 'RESET_ACTIVE_MEAL_UPDATED': {
+      return {...state, activeMealUpdated: {}}
+    }
+    case 'ADD_FOOD_FOR_MEAL': {
+      let foods
+      let index
+      for (let i = 0; i < state.meals.length; i++) {
+        if (state.meals[i].meal_id === state.activeMeal) {
+          foods = [...state.meals[i].foods, { ...action.data }]
+          index = i
+          break
+        }
+      }
+      const newState = {...state, meals: deepcopy(state.meals)}
+      //newState.meals[index].foods = foods
+      newState.meals[index] = {...newState.meals[index], foods: foods, notSaved: true}
+      return newState
+      // let newMeals = [...state.meals]
+      // newMeals[index].foods = [...foods]
+      // console.log("OLD MEALS:", state.meals)
+      // console.log("NEW MEALS", newMeals)
+      // return {...state, meals: [...newMeals]}
+    }
+    case 'ADD_NEW_MEAL': {
+      return {...state, meals: [...state.meals, {...state.initialMeal}]}
+    }
+    case 'CHANGE_MEAL_NAME': {
+      let index
+      let newState = { ...state, meals: [...state.meals] }
+      for (let i = 0; i < state.meals.length; i++) {
+        if (state.meals[i].meal_id === state.activeMeal) {
+          index = i
+          break
+        }
+      }
+      //console.log(action.data, index)
+      //newState.meals[index].name = action.data
+      newState.meals[index] = {...newState.meals[index], name: action.data, notSaved: true }
+
+      console.log("OLD NAME: ", state.meals[index].name)
+      console.log("NEW NAME: ", newState.meals[index].name)
+      return {...newState}
+    }
+    case 'ADD_NEW_SAVED_MEAL': {
+      const meals = deepcopy(state.meals).map(meal => {
+        return meal.meal_id === -1 ? action.data : meal
+      })
+      return { ...state, meals: meals }
+    }
+    case 'SET_ERROR_MESSAGE': {
+      return { ...state, errorMessage: action.data }
     }
   	default:
       return state
@@ -287,6 +356,47 @@ export const setUserMeals = (data) => {
   }
 }
 
+export const setActiveMeal = (data) => {
+  return {
+    type: 'SET_ACTIVE_MEAL',
+    data: data
+  }
+}
+
+export const setActiveMealUpdated = (data) => {
+  return {
+    type: 'UPDATE_ACTIVE_MEAL_UPDATED',
+    data: data
+  }
+}
+
+export const resetActiveMealUpdated = () => {
+  return {
+    type: 'RESET_ACTIVE_MEAL_UPDATED'
+  }
+}
+
+export const addFoodForMeal = (data) => {
+  console.log(data)
+  return {
+    type: 'ADD_FOOD_FOR_MEAL',
+    data: data
+  }
+}
+
+export const addNewMeal = () => {
+  return {
+    type: 'ADD_NEW_MEAL'
+  }
+}
+
+export const changeMealName = (data) => {
+  return {
+    type: 'CHANGE_MEAL_NAME',
+    data: data
+  }
+}
+
 export const registerUser = (data) => {
   // return async (dispatch) => {
   //   try {
@@ -300,6 +410,27 @@ export const registerUser = (data) => {
   //     //console.log(e)
   //   }
   // }
+}
+
+export const saveNewMeal = (meal, token) => {
+  return async (dispatch) => {
+    const response = await dataservice.saveNewMeal(meal, token)
+    if (response.msg) {
+      dispatch({
+        type: 'SET_ERROR_MESSAGE',
+        data: response
+      })
+    } else {
+      dispatch({
+        type: 'ADD_NEW_SAVED_MEAL',
+        data: response.data
+      })
+    }
+    // dispatch({
+    //   type: 'ADD_NEW_SAVED_MEAL',
+    //   data: meal
+    // })
+  }
 }
 
 export default reducer

@@ -72,4 +72,22 @@ const mealTableSubRow = {
     paddingLeft: '3rem'
   }
 }
-export default { tabledata, filtertabledata, filterrow, list, pagination, headerrow, cellinput, filterlabel, tableheaderInvisible, mealTableSubRow }
+
+const activeMeal = {
+  style: {
+    backgroundColor: 'red'
+  }
+}
+
+export default { 
+  tabledata, 
+  filtertabledata, 
+  filterrow, 
+  list, 
+  pagination, 
+  headerrow, 
+  cellinput, 
+  filterlabel, 
+  tableheaderInvisible, 
+  mealTableSubRow,
+  activeMeal }

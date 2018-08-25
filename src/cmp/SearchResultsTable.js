@@ -6,7 +6,7 @@ import 'react-table/react-table.css'
 
 import tablestyles from '../styles/tablestyles'
 import BarChart from './BarChart'
-import { setFoodItemHover, setFoodItemHoverNull } from '../rdc/reducer'
+import { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal } from '../rdc/reducer'
 
 class SearchResultsTable extends Component {
 
@@ -33,7 +33,11 @@ class SearchResultsTable extends Component {
   handleEnter = (row, e) => {
   	//e.preventDefault()
   	if (e.which === 13) {
-  		console.log(row)
+  		this.props.addFoodForMeal({
+  			foodid: row.foodid,
+  			foodname: row.foodname,
+  			amount: parseInt(e.target.value)
+  		})
   	}
   }
 
@@ -124,5 +128,5 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(
-  mapStateToProps, { setFoodItemHover, setFoodItemHoverNull }, null, { withRef: true }
+  mapStateToProps, { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal }, null, { withRef: true }
 )(SearchResultsTable)

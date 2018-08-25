@@ -75,6 +75,20 @@ const loadUserdata = async (token) => {
   return data
 }
 
+const saveNewMeal = async (meal, token) => {
+  let data
+  token = 'bearer ' + token
+  const config = {
+    headers: { 'authorization': token }
+  }
+  try {
+    data = await axios.post(`${url}meal`, meal, config)
+  } catch (e) {
+    data = e.response.data
+  }
+  return data
+}
+
 export default { 
   getBasedata, 
   getComponents, 
@@ -82,5 +96,6 @@ export default {
   loginUser, 
   loadUserdata, 
   getSpecdietRows,
-  getMealForUser
+  getMealForUser,
+  saveNewMeal
 }
