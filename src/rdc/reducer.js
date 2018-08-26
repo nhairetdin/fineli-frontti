@@ -208,13 +208,26 @@ const reducer = (state = initialState, action) => {
       return {...newState}
     }
     case 'ADD_NEW_SAVED_MEAL': {
-      const meals = cloneDeep(state.meals).map(meal => {
-        return meal.meal_id === -1 ? action.data : meal
+      let added = false
+      let meals = cloneDeep(state.meals).map(meal => {
+        if (meal.meal_id === -1) {
+          added = true
+          return action.data
+        } else {
+          return meal
+        }
+        //return meal.meal_id === -1 ? action.data : meal
       })
+      if (action.data.meal_id > 0 && !added) {
+        meals = [action.data].concat(meals)
+      }
       return { ...state, meals: meals, activeMeal: action.data.meal_id }
     }
     case 'SET_ERROR_MESSAGE': {
       return { ...state, errorMessage: action.data }
+    }
+    case 'REMOVE_MEAL': {
+      return {...state, meals: [...state.meals.filter(meal => meal.meal_id !== action.data)]}
     }
   	default:
       return state
@@ -433,6 +446,13 @@ export const saveNewMeal = (meal, token) => {
     //   type: 'ADD_NEW_SAVED_MEAL',
     //   data: meal
     // })
+  }
+}
+
+export const removeMeal = (meal_id) => {
+  return {
+    type: 'REMOVE_MEAL',
+    data: meal_id
   }
 }
 

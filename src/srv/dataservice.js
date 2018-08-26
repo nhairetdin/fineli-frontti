@@ -89,6 +89,20 @@ const saveNewMeal = async (meal, token) => {
   return data
 }
 
+const deleteMeal = async (meal_id, token) => {
+  let data
+  token = 'bearer ' + token
+  const config = {
+    headers: { 'authorization': token }
+  }
+  try {
+    data = await axios.delete(`${url}meal/${meal_id}`, config)
+  } catch (e) {
+    data = e.response.data
+  }
+  return data
+}
+
 export default { 
   getBasedata, 
   getComponents, 
@@ -97,5 +111,6 @@ export default {
   loadUserdata, 
   getSpecdietRows,
   getMealForUser,
-  saveNewMeal
+  saveNewMeal,
+  deleteMeal
 }

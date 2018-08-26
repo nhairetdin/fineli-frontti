@@ -2,7 +2,7 @@ const tabledata = {
   style: {
   	paddingTop: '2px',
   	paddingBottom: '2px',
-  	fontSize: '0.85rem',
+  	fontSize: '0.75rem',
   	lineHeight: '1rem'
   }
 }
@@ -11,7 +11,7 @@ const filtertabledata = {
   style: {
     paddingTop: '2px',
     paddingBottom: '2px',
-    fontSize: '0.85rem',
+    fontSize: '0.75rem',
     lineHeight: '1rem',
     fontWeight: 'bold'
   }

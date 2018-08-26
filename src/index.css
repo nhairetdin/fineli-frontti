@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  /*font-family: sans-serif;*/
   /*font-family: 'Source Code Pro', monospace;*/
   /*font-family: 'Ubuntu Mono', monospace;*/
   /*font-family: 'Overpass Mono', monospace;*/
@@ -9,6 +9,8 @@ body {
   /*font-family: 'Cutive Mono', monospace;*/
   /*font-family: 'Roboto Mono', monospace;*/
   /*font-family: 'Oxygen Mono', monospace;*/
+  font-family: 'IBM Plex Mono', monospace;
+  color: #3e3e3e;
 }
 
 .ui.basic.label {
@@ -79,7 +81,7 @@ body {
 }
 
 .ui.table {
-    font-size: 0.85em !important;
+    font-size: 0.75em !important;
 }
 
 .ui.table thead th {
@@ -227,6 +229,7 @@ input[type="number"] {
 
 .ReactTable .rt-thead {
   background: -webkit-linear-gradient(left, #ffffff 1%, #f3f3f3 50%, #ffffff 100%) !important;
+  font-size: 0.85rem !important;
 }
 
 .ui.dropdown .menu {

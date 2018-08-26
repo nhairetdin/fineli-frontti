@@ -28,7 +28,7 @@ class MealFoodTable extends Component {
 			       />
 			    </Form.Field>
 			  </Form>
-	  		<Table size='small' compact='very'>
+	  		<Table size='small' compact='very' striped>
 	  			<Table.Body>
 	  				{ this.props.foods.foods.map((food) => (
 	  					<Table.Row key={ food.foodid }>
