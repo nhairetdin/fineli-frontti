@@ -227,7 +227,11 @@ const reducer = (state = initialState, action) => {
       return { ...state, errorMessage: action.data }
     }
     case 'REMOVE_MEAL': {
-      return {...state, meals: [...state.meals.filter(meal => meal.meal_id !== action.data)]}
+      const meals = [...state.meals.filter(meal => meal.meal_id !== action.data)]
+      const highestMealId = meals.reduce((max, meal) => {
+        return max > meal.meal_id ? max : meal.meal_id
+      }, 0)
+      return {...state, meals: meals, activeMeal: highestMealId}
     }
   	default:
       return state
