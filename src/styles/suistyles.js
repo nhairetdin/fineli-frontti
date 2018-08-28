@@ -2,4 +2,8 @@ const popupstyle = {
   backgroundColor: '#FFFFFF70'
 }
 
-export default { popupstyle }
+const searchOptions = {
+  marginBottom: '0px'
+}
+
+export default { popupstyle, searchOptions }

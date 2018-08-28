@@ -3,6 +3,7 @@ import { Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { setSearchKeyword } from '../rdc/reducer'
 import SpecdietDropdown from './SpecdietDropdown'
+import suistyles from '../styles/suistyles'
 
 class SearchOptions extends React.Component {
 
@@ -14,7 +15,7 @@ class SearchOptions extends React.Component {
     console.log("SearchOptions render")
     return (
       <Form>
-        <Form.Group inline>
+        <Form.Group inline style={ suistyles.searchOptions }>
           <Form.Input placeholder='Hakusana' onChange={ this.props.listener } />
           <SpecdietDropdown />
         </Form.Group>

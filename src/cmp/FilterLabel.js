@@ -15,7 +15,7 @@ class FilterLabel extends Component {
 
   style = (percent) => {
   	return {
-  	  backgroundImage: `-webkit-linear-gradient(left, #efe3af ${percent}%, #ffffff ${percent}%)`
+  	  backgroundImage: `-webkit-linear-gradient(left, rgba(251, 189, 9, 0.4) ${percent}%, #ffffff ${percent}%)`
   	}
   }
 

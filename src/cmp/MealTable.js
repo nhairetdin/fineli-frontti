@@ -72,6 +72,7 @@ class MealTable extends Component {
         collapseOnDataChange={false}
         data={this.props.meals}
         showPagination={false}
+        className={'-highlight'}
         getTdProps={() => {
           return tablestyles.tabledata
         }}

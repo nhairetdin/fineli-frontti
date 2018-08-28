@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { changeTab, logout, toggleRegisterModal, toggleLoginModal } from '../rdc/reducer'
 import RegisterModal from './RegisterModal'
 import LoginModal from './LoginModal'
+import suistyles from '../styles/suistyles'
 
 class Topmenu extends Component {
   handleItemClick = activetab => {
@@ -23,7 +24,7 @@ class Topmenu extends Component {
     ]
 
     return (
-      <Menu stackable tabular mini="true">
+      <Menu stackable tabular mini="true" style={ suistyles.searchOptions }>
         <RegisterModal />
         <LoginModal />
         <Menu.Item

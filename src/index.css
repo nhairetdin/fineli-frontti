@@ -132,8 +132,11 @@ body {
   min-width:  20rem !important;
 }
 
-tr.resultRow:hover {
-  background-color: #f1f1f1 !important; 
+/*tr.resultRow:hover {
+  background-color: red !important; 
+}*/
+.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
+  background: rgba(251, 189, 9, 0.4) !important;
 }
 
 .ui.mini.input.rowInput>input {
