@@ -103,6 +103,16 @@ const deleteMeal = async (meal_id, token) => {
   return data
 }
 
+const updateMeal = async (meal, token) => {
+  token = 'bearer ' + token
+  const config = {
+    headers: { 'authorization': token }
+  }
+  const response = await axios.put(`${url}meal`, meal, config)
+  console.log(response)
+  return response
+}
+
 export default { 
   getBasedata, 
   getComponents, 
@@ -112,5 +122,6 @@ export default {
   getSpecdietRows,
   getMealForUser,
   saveNewMeal,
-  deleteMeal
+  deleteMeal,
+  updateMeal
 }

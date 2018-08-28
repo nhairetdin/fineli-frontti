@@ -13,7 +13,8 @@ import {
   resetActiveMealUpdated,
   addNewMeal,
   saveNewMeal,
-  removeMeal
+  removeMeal,
+  updateMeal
 } from '../rdc/reducer'
 
 class MealTable extends Component {
@@ -42,6 +43,8 @@ class MealTable extends Component {
     )
     if (meal.meal_id === -1) {
       this.props.saveNewMeal(meal, this.props.user.token)
+    } else {
+      this.props.updateMeal(meal, this.props.user.token)
     }
   }
 
@@ -229,6 +232,7 @@ export default connect(
     resetActiveMealUpdated,
     addNewMeal,
     saveNewMeal,
-    removeMeal
+    removeMeal,
+    updateMeal
   }
 )(MealTable)

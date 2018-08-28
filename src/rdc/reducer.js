@@ -233,6 +233,15 @@ const reducer = (state = initialState, action) => {
       }, 0)
       return {...state, meals: meals, activeMeal: highestMealId}
     }
+    case 'ADD_UPDATED_MEAL': {
+      return {
+        ...state, 
+        activeMeal: action.data.meal_id, 
+        meals: [...state.meals.map(meal => {
+          return meal.meal_id === action.data.meal_id ? {...action.data} : {...meal}
+        })]
+      }
+    }
   	default:
       return state
   }
@@ -457,6 +466,23 @@ export const removeMeal = (meal_id) => {
   return {
     type: 'REMOVE_MEAL',
     data: meal_id
+  }
+}
+
+export const updateMeal = (meal, token) => {
+  return async (dispatch) => {
+    const response = await dataservice.updateMeal(meal, token)
+    if (response.msg) {
+      dispatch({
+        type: 'SET_ERROR_MESSAGE',
+        data: response
+      })
+    } else {
+      dispatch({
+        type: 'ADD_UPDATED_MEAL',
+        data: response.data
+      })
+    }
   }
 }
 
