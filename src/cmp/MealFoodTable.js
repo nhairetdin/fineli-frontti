@@ -12,8 +12,8 @@ class MealFoodTable extends Component {
 		this.props.changeMealName(event.target.value)
 	}
 
-	handleDeletebutton = (foodid) => {
-		this.props.removeFoodFromMeal(foodid)
+	handleDeletebutton = (meal_id, foodid) => {
+		this.props.removeFoodFromMeal(meal_id, foodid)
 	}
 
   render() {
@@ -49,7 +49,7 @@ class MealFoodTable extends Component {
 		                size="small"
 		                color="red"
 		                style={{ maxHeight: '1rem', padding: '2px' }}
-		                onClick={() => this.handleDeletebutton(food.foodid)}
+		                onClick={() => this.handleDeletebutton(this.props.foods.meal_id, food.foodid)}
 		              >
 		                <Icon fitted size="small" name="trash alternate" />
 		              </Button>

@@ -37,9 +37,9 @@ class MealTable extends Component {
     })
   }
 
-  handleSavebutton = () => {
+  handleSavebutton = (meal_id) => {
     const meal = this.props.meals.find(
-      meal => meal.meal_id === this.props.activeMeal
+      meal => meal.meal_id === meal_id//this.props.activeMeal
     )
     if (meal.meal_id === -1) {
       this.props.saveNewMeal(meal, this.props.user.token)
@@ -173,7 +173,7 @@ class MealTable extends Component {
                   fluid
                   compact
                   size="mini"
-                  onClick={this.handleSavebutton}
+                  onClick={() => this.handleSavebutton(row.original.meal_id)}
                 >
                   Tallenna
                 </Button>

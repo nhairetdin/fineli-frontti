@@ -240,8 +240,17 @@ const reducer = (state = initialState, action) => {
     case 'REMOVE_FOOD_FROM_MEAL': {
       console.log(action.data)
       return {...state, meals: [...state.meals.map(meal => {
-        return {...meal, foods: [...meal.foods.filter(food => food.foodid !== action.data)], notSaved: true }
-      })]}
+        return {...meal, foods: [...meal.foods.filter(food => {
+          //food.foodid !== action.data.foodid && meal.meal_id !== action.data.meal_id)], notSaved: meal.meal_id === action.data.meal_id ? true : false }
+          if (meal.meal_id !== action.data.meal_id) {
+            return true
+          }
+          if (food.foodid !== action.data.foodid) {
+            return true
+          }
+          return false
+        })], notSaved: (meal.meal_id === action.data.meal_id || meal.notSaved === true) ? true : false
+      }})]}
     }
   	default:
       return state
@@ -487,10 +496,13 @@ export const updateMeal = (meal, token) => {
   }
 }
 
-export const removeFoodFromMeal = (foodid) => {
+export const removeFoodFromMeal = (meal_id, foodid) => {
   return {
     type: 'REMOVE_FOOD_FROM_MEAL',
-    data: foodid
+    data: {
+      meal_id: meal_id,
+      foodid: foodid
+    }
   }
 }
 
