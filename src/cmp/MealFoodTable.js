@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Table, Input, Form, Button } from 'semantic-ui-react'
-import { changeMealName } from '../rdc/reducer'
+import { Table, Input, Form, Button, Icon } from 'semantic-ui-react'
+import { changeMealName, removeFoodFromMeal } from '../rdc/reducer'
 
 class MealFoodTable extends Component {
 	constructor(props) {
@@ -10,6 +10,10 @@ class MealFoodTable extends Component {
 
 	handleNameChange = (event) => {
 		this.props.changeMealName(event.target.value)
+	}
+
+	handleDeletebutton = (foodid) => {
+		this.props.removeFoodFromMeal(foodid)
 	}
 
   render() {
@@ -38,6 +42,18 @@ class MealFoodTable extends Component {
 	  						<Table.Cell collapsing textAlign='right'>
 	  						  { food.amount + "g" }
 	  						</Table.Cell>
+	  						<Table.Cell collapsing textAlign='right'>
+	  						  <Button
+		                fluid
+		                compact
+		                size="small"
+		                color="red"
+		                style={{ maxHeight: '1rem', padding: '2px' }}
+		                onClick={() => this.handleDeletebutton(food.foodid)}
+		              >
+		                <Icon fitted size="small" name="trash alternate" />
+		              </Button>
+	  						</Table.Cell>
 	  					</Table.Row>)
 	  				)}
 	  			</Table.Body>
@@ -55,5 +71,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
 	mapStateToProps,
-	{ changeMealName }
+	{ changeMealName, removeFoodFromMeal }
 )(MealFoodTable)

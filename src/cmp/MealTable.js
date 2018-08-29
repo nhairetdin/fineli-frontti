@@ -73,14 +73,7 @@ class MealTable extends Component {
         data={this.props.meals}
         showPagination={false}
         className={'-highlight'}
-        getTdProps={() => {
-          return tablestyles.tabledata
-        }}
-        getTheadThProps={() => {
-          return {
-            style: { padding: '0px' }
-          }
-        }}
+        getTdProps={() => { return tablestyles.tabledata }}
         getTrProps={(state, rowInfo, column, instance) => {
           return {
             style: {
@@ -97,48 +90,26 @@ class MealTable extends Component {
             Header: props => 'Omat ateriat',
             accessor: 'name',
             Cell: row => (
-              <div
-                onClick={() =>
-                  this.handleRowClick(row.original, row.original.meal_id)
-                }
-              >
+              <div onClick={() => this.handleRowClick(row.original, row.original.meal_id)}>
                 {row.original.name}
               </div>
             ),
             getProps: (state, row) => {
-              return {
-                style: { fontWeight: 'bold' }
-              }
+              return { style: { fontWeight: 'bold' } }
             }
           },
           {
-            Header: props => (
-              <Button
-                positive
-                fluid
-                compact
-                size="mini"
-                onClick={() => this.props.addNewMeal()}
-              >
-                Uusi +
-              </Button>
-            ),
+            Header: props => 'pvm.',
             sortable: false,
             accessor: 'pvm',
             width: 80,
             Cell: row => (
-              <div
-                onClick={() =>
-                  this.handleRowClick(row.original, row.original.meal_id)
-                }
-              >
+              <div onClick={() => this.handleRowClick(row.original, row.original.meal_id)}>
                 {row.original.pvm}
               </div>
             ),
             getProps: (state, row) => {
-              return {
-                style: { fontWeight: 'bold' }
-              }
+              return { style: { fontWeight: 'bold' } }
             }
           },
           {
@@ -172,7 +143,7 @@ class MealTable extends Component {
                 style={{ maxHeight: '1rem', padding: '2px' }}
                 onClick={() => this.handleDeletebutton(row.original.meal_id)}
               >
-                <Icon fitted name="delete" />
+                <Icon fitted name="trash alternate" />
               </Button>
             ),
             sortable: false,

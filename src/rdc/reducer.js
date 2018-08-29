@@ -172,20 +172,15 @@ const reducer = (state = initialState, action) => {
       let index
       for (let i = 0; i < state.meals.length; i++) {
         if (state.meals[i].meal_id === state.activeMeal) {
-          foods = [...state.meals[i].foods, { ...action.data }]
+          //foods = [...state.meals[i].foods, { ...action.data }]
+          foods = [...state.meals[i].foods.filter(food => food.foodid !== action.data.foodid), {...action.data}]
           index = i
           break
         }
       }
       const newState = {...state, meals: cloneDeep(state.meals)}
-      //newState.meals[index].foods = foods
       newState.meals[index] = {...newState.meals[index], foods: foods, notSaved: true}
       return newState
-      // let newMeals = [...state.meals]
-      // newMeals[index].foods = [...foods]
-      // console.log("OLD MEALS:", state.meals)
-      // console.log("NEW MEALS", newMeals)
-      // return {...state, meals: [...newMeals]}
     }
     case 'ADD_NEW_MEAL': {
       return {...state, meals: [{...state.initialMeal}, ...state.meals], activeMeal: -1}
@@ -241,6 +236,12 @@ const reducer = (state = initialState, action) => {
           return meal.meal_id === action.data.meal_id ? {...action.data} : {...meal}
         })]
       }
+    }
+    case 'REMOVE_FOOD_FROM_MEAL': {
+      console.log(action.data)
+      return {...state, meals: [...state.meals.map(meal => {
+        return {...meal, foods: [...meal.foods.filter(food => food.foodid !== action.data)], notSaved: true }
+      })]}
     }
   	default:
       return state
@@ -483,6 +484,13 @@ export const updateMeal = (meal, token) => {
         data: response.data
       })
     }
+  }
+}
+
+export const removeFoodFromMeal = (foodid) => {
+  return {
+    type: 'REMOVE_FOOD_FROM_MEAL',
+    data: foodid
   }
 }
 
