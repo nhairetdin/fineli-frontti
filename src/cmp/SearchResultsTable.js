@@ -80,7 +80,7 @@ class SearchResultsTable extends Component {
 	      	Cell: row => (<BarChart prot={ row.original.PROT } fat={ row.original.FAT } hh={ row.original.CHOAVL }/>)
 	      }, {
 	      	Header: (<Icon disabled name="add to cart"/>),
-	      	width: 50,
+	      	width: 40,
 	      	Cell: row => (<input 
 	      		placeholder="g" 
 	      		style={tablestyles.cellinput}

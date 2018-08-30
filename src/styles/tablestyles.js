@@ -56,7 +56,7 @@ const list = {
 }
 
 const cellinput = {
-  maxWidth: '40px',
+  maxWidth: '30px',
   maxHeight: '1rem',
   lineHeight: '1',
   border: '1px solid #cecece'

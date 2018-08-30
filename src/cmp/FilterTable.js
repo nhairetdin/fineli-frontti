@@ -43,17 +43,17 @@ class FilterTable extends Component {
                       />
                     )
   	              },{ 
-  	              	Header: (<Icon disabled name="filter"/>),
-  	              	Cell: row => (
-  	              		<input 
-  	              		  placeholder={ row.original.yksikko.toLowerCase() } 
-  	              		  style={tablestyles.cellinput}
-  	              		  onChange={(e) => this.inputChangeListener(row.original.koodi, e)}
+                    Header: (<Icon disabled name="filter"/>),
+                    Cell: row => (
+                      <input 
+                        placeholder={ row.original.yksikko.toLowerCase() } 
+                        style={tablestyles.cellinput}
+                        onChange={(e) => this.inputChangeListener(row.original.koodi, e)}
                         type="number"
-  	              		/>
-  	              	),
-  	              	width: 50
-  	              }
+                      />
+                    ),
+                    width: 40
+                  }
   	            ]}
   	          />
   	        )

@@ -7,10 +7,10 @@ import suistyles from '../styles/suistyles'
 class FilterLabel extends Component {
 
   calculatePercentage = (recommendedvalue, componentvalue) => {
-  	if (recommendedvalue === null || componentvalue === null || componentvalue === 0) {
-  	  return 0
+  	if (recommendedvalue === null || componentvalue === null || componentvalue === 0 || recommendedvalue === 0) {
+  	  return null
   	}
-  	return Math.floor((100 / parseFloat(recommendedvalue)) * parseFloat(componentvalue))
+  	return Math.floor((100 / recommendedvalue) * componentvalue)
   }
 
   style = (percent) => {
@@ -20,15 +20,18 @@ class FilterLabel extends Component {
   }
 
   render() {
-    //console.log(this.props.suggestions)
-  	let percentage = 0
+    //console.log(this.props.foodItemHover)
+  	let percentage = null
   	if (this.props.foodItemHover !== null) {
       //percentage = this.calculatePercentage(cmprecommendations.male[this.props.koodi], this.props.foodItemHover[this.props.koodi])
-  	  percentage = this.calculatePercentage(this.props.suggestions[this.props.koodi.toLowerCase()], this.props.foodItemHover[this.props.koodi])
+      //console.log(this.props.suggestions[this.props.koodi.toLowerCase()])
+      let recommendedvalue = this.props.suggestions[this.props.koodi.toLowerCase()] !== null ? parseFloat(this.props.suggestions[this.props.koodi.toLowerCase()]) : 0
+      let componentvalue = this.props.foodItemHover[this.props.koodi] !== null ? parseFloat(this.props.foodItemHover[this.props.koodi]) : 0
+  	  percentage = this.calculatePercentage(recommendedvalue, componentvalue)
     }
   	return (
       <Popup
-        trigger={<div style={ percentage !== 0 ? this.style(percentage) : null }>{ this.props.nimi }</div>}
+        trigger={<div style={ percentage !== null ? this.style(percentage) : null }>{ this.props.nimi } { percentage === null ? '' : <span style={{color: 'red'}}>({percentage}%)</span>}</div>}
         content={ this.props.nimi }
         on='click'
         hoverable={ true }
