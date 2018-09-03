@@ -26,12 +26,20 @@ class FilterLabel extends Component {
       //percentage = this.calculatePercentage(cmprecommendations.male[this.props.koodi], this.props.foodItemHover[this.props.koodi])
       //console.log(this.props.suggestions[this.props.koodi.toLowerCase()])
       let recommendedvalue = this.props.suggestions[this.props.koodi.toLowerCase()] !== null ? parseFloat(this.props.suggestions[this.props.koodi.toLowerCase()]) : 0
-      let componentvalue = this.props.foodItemHover[this.props.koodi] !== null ? parseFloat(this.props.foodItemHover[this.props.koodi]) : 0
+      //let componentvalue = this.props.foodItemHover[this.props.koodi] !== null ? parseFloat(this.props.foodItemHover[this.props.koodi]) : 0
+      let componentvalue = this.props.foodItemHover.reduce((res, food) => {
+        let val = food[this.props.koodi] !== null ? parseFloat(food[this.props.koodi]) : 0
+        let amount = food.amount || 100 // if no amount given, use default (100g)
+        return res + (val * (amount / 100))
+      }, 0)
   	  percentage = this.calculatePercentage(recommendedvalue, componentvalue)
     }
   	return (
       <Popup
-        trigger={<div style={ percentage !== null ? this.style(percentage) : null }>{ this.props.nimi } { percentage === null ? '' : <span style={{color: 'red'}}>({percentage}%)</span>}</div>}
+        trigger={
+          <div style={ percentage !== null ? this.style(percentage) : null }>
+            { this.props.nimi } { percentage === null ? '' : <span style={{color: 'red'}}>({percentage}%)</span>}
+          </div>}
         content={ this.props.nimi }
         on='click'
         hoverable={ true }

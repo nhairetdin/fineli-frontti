@@ -39,15 +39,15 @@ class Topmenu extends Component {
         </Menu.Item>
         {this.props.user ? (
           <Menu.Item
-            name="ruokapaivakirja"
-            active={activeItem === 'ruokapaivakirja'}
+            name="kuvaaja"
+            active={activeItem === 'kuvaaja'}
             className={'topmenuitem clearTopBorder'}
           >
             <Link
-              to="/ruokapaivakirja"
-              onClick={() => this.handleItemClick('ruokapaivakirja')}
+              to="/kuvaaja"
+              onClick={() => this.handleItemClick('kuvaaja')}
             >
-              Ruokapaivakirja
+              Kuvaaja
             </Link>{' '}
             &nbsp;
           </Menu.Item>

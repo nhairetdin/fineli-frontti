@@ -18,7 +18,10 @@ class SearchResultsTable extends Component {
   	accessor: 'foodname',
   	id: 666,
   	Cell: row => (<div 
-  		onMouseOver={() => this.mouseoverFoodnameColumn(row.original)}>
+  		onMouseOver={() => {
+  			//console.log(row)
+  			return this.mouseoverFoodnameColumn(row.original)}
+  		}>
   		{row.original.foodname}
   		</div>
   	)
@@ -33,6 +36,7 @@ class SearchResultsTable extends Component {
   handleEnter = (row, e) => {
   	//e.preventDefault()
   	if (e.which === 13) {
+  		console.log(row)
   		this.props.addFoodForMeal({
   			foodid: row.foodid,
   			foodname: row.foodname,
@@ -54,25 +58,25 @@ class SearchResultsTable extends Component {
 	      columns={[this.firstColumn, {
 	      	Header: 'prot',
 	      	accessor: 'PROT',
-	      	width: 50,
+	      	width: 40,
 	      	sortMethod: this.tableColumnSortOverride,
 	      	style: { backgroundColor: '#93FFBF'}
 	      },{
 	      	Header: 'fat',
 	      	accessor: 'FAT',
-	      	width: 50,
+	      	width: 40,
 	      	sortMethod: this.tableColumnSortOverride,
 	      	style: { backgroundColor: '#FF9198'}
 	      },{
 	      	Header: 'hh',
 	      	accessor: 'CHOAVL',
-	      	width: 50,
+	      	width: 40,
 	      	sortMethod: this.tableColumnSortOverride,
 	      	style: { backgroundColor: '#B4B6FF'}
 	      },{
 	      	Header: 'kcal',
 	      	accessor: 'ENERC',
-	      	width: 50,
+	      	width: 40,
 	      	sortMethod: this.tableColumnSortOverride,
 	      	Cell: row => (<div>{ Math.round(0.2388 * parseFloat(row.value)) }</div>)
 	      }, {

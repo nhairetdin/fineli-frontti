@@ -14,7 +14,8 @@ import {
   addNewMeal,
   saveNewMeal,
   removeMeal,
-  updateMeal
+  updateMeal,
+  setFoodItemHoverFromMeal
 } from '../rdc/reducer'
 
 class MealTable extends Component {
@@ -27,6 +28,10 @@ class MealTable extends Component {
     //console.log(data)
     this.props.resetActiveMealUpdated()
     this.props.setActiveMeal(id)
+  }
+
+  handleMouseOver = (foods) => {
+    this.props.setFoodItemHoverFromMeal(foods)
   }
 
   handleInputChange = (e, foodid) => {
@@ -90,7 +95,10 @@ class MealTable extends Component {
             Header: props => 'Omat ateriat',
             accessor: 'name',
             Cell: row => (
-              <div onClick={() => this.handleRowClick(row.original, row.original.meal_id)}>
+              <div 
+                onClick={() => this.handleRowClick(row.original, row.original.meal_id)}
+                onMouseOver={() => this.handleMouseOver(row.original.foods)}
+              >
                 {row.original.name}
               </div>
             ),
@@ -104,7 +112,9 @@ class MealTable extends Component {
             accessor: 'pvm',
             width: 80,
             Cell: row => (
-              <div onClick={() => this.handleRowClick(row.original, row.original.meal_id)}>
+              <div 
+                onClick={() => this.handleRowClick(row.original, row.original.meal_id)}
+              >
                 {row.original.pvm}
               </div>
             ),
@@ -205,6 +215,7 @@ export default connect(
     addNewMeal,
     saveNewMeal,
     removeMeal,
-    updateMeal
+    updateMeal,
+    setFoodItemHoverFromMeal
   }
 )(MealTable)

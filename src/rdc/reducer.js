@@ -138,7 +138,17 @@ const reducer = (state = initialState, action) => {
       return { ...state, searchKeyword: action.data }
     }
     case 'SET_FOODITEM_HOVER': {
-      return { ...state, foodItemHover: { ...action.data } }
+      return { ...state, foodItemHover: [{ ...action.data }] }
+    }
+    case 'SET_FOODITEM_HOVER_FROM_MEAL': {
+      const hoverFoods = action.data.map((food) => {
+        for (let i = 0; i < state.basedata.length; i++) {
+          if (state.basedata[i].foodid === food.foodid) {
+            return {...state.basedata[i], amount: food.amount}
+          }
+        }
+      })
+      return { ...state, foodItemHover: [...hoverFoods] }
     }
     case 'SET_FOODITEM_HOVER_NULL': {
       return { ...state, foodItemHover: null }
@@ -365,6 +375,13 @@ export const setFoodItemHover = (data) => {
   return {
     type: 'SET_FOODITEM_HOVER',
     data: data
+  }
+}
+
+export const setFoodItemHoverFromMeal = (foodidArray) => {
+  return {
+    type: 'SET_FOODITEM_HOVER_FROM_MEAL',
+    data: foodidArray
   }
 }
 

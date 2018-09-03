@@ -7,6 +7,7 @@ import { initBasedata, changeTab, login, setSuggestedAmounts, setUserMeals } fro
 import dataservice from './srv/dataservice'
 import Topmenu from './cmp/Topmenu'
 import Foodsearch from './cmp/Foodsearch'
+import Statistics from './cmp/Statistics'
 
 class App extends Component {
   componentDidMount = async () => {
@@ -42,8 +43,8 @@ class App extends Component {
           <Route exact path="/" render={() => <Foodsearch />} />
 
           <Route
-            path="/ruokapaivakirja"
-            render={() => <h1>Ruokapaivakirja</h1>}
+            path="/kuvaaja"
+            render={() => <Statistics />}
           />
         </Container>
       </Router>
