@@ -37,8 +37,9 @@ class Topmenu extends Component {
           </Link>{' '}
           &nbsp;
         </Menu.Item>
-        {this.props.user ? (
+        {this.props.user ? [(
           <Menu.Item
+            key="kuvaaja"
             name="kuvaaja"
             active={activeItem === 'kuvaaja'}
             className={'topmenuitem clearTopBorder'}
@@ -50,8 +51,23 @@ class Topmenu extends Component {
               Kuvaaja
             </Link>{' '}
             &nbsp;
+          </Menu.Item>),
+
+          (<Menu.Item
+            key="asetukset"
+            name="asetukset"
+            active={activeItem === 'asetukset'}
+            className={'topmenuitem clearTopBorder'}
+          >
+            <Link
+              to="/asetukset"
+              onClick={() => this.handleItemClick('asetukset')}
+            >
+              Asetukset
+            </Link>{' '}
+            &nbsp;
           </Menu.Item>
-        ) : null}
+        )] : null}
 
         {!this.props.user ? (
           <Menu.Item position="right" className="loginDropdown clearTopBorder">

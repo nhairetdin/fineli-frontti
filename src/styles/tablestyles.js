@@ -79,6 +79,22 @@ const activeMeal = {
   }
 }
 
+const inputRecommendationSet = {
+  backgroundColor: '#93FFBF',
+  maxWidth: '30px',
+  maxHeight: '1rem',
+  lineHeight: '1',
+  border: '1px solid #cecece'
+}
+
+const inputRecommendationNotSet = {
+  backgroundColor: '#FF9198',
+  maxWidth: '30px',
+  maxHeight: '1rem',
+  lineHeight: '1',
+  border: '1px solid #cecece'
+}
+
 export default { 
   tabledata, 
   filtertabledata, 
@@ -90,4 +106,6 @@ export default {
   filterlabel, 
   tableheaderInvisible, 
   mealTableSubRow,
-  activeMeal }
+  activeMeal,
+  inputRecommendationSet,
+  inputRecommendationNotSet }

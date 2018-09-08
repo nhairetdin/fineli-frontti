@@ -8,6 +8,7 @@ import dataservice from './srv/dataservice'
 import Topmenu from './cmp/Topmenu'
 import Foodsearch from './cmp/Foodsearch'
 import Statistics from './cmp/Statistics'
+import Settings from './cmp/Settings'
 
 class App extends Component {
   componentDidMount = async () => {
@@ -45,6 +46,11 @@ class App extends Component {
           <Route
             path="/kuvaaja"
             render={() => <Statistics />}
+          />
+
+          <Route
+            path="/asetukset"
+            render={() => <Settings />}
           />
         </Container>
       </Router>

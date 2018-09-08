@@ -107,9 +107,7 @@ const reducer = (state = initialState, action) => {
 	    return newState
   	}
     case 'CHANGE_ACTIVE_TAB': {
-      const newState = { ...state }
-      newState.activetab = action.data
-      return newState
+      return { ...state, activetab: action.data }
     }
     case 'SET_SORTCODE': {
       return { ...state, sortCode: action.data }

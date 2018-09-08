@@ -113,6 +113,15 @@ const updateMeal = async (meal, token) => {
   return response
 }
 
+const setRecommendedValuesForUser = async (token, data) => {
+  token = 'bearer ' + token
+  const config = {
+    headers: { 'authorization': token }
+  }
+  const response = await axios.post(`${url}user/settings`, data, config)
+  return response.data
+}
+
 export default { 
   getBasedata, 
   getComponents, 
@@ -123,5 +132,6 @@ export default {
   getMealForUser,
   saveNewMeal,
   deleteMeal,
-  updateMeal
+  updateMeal,
+  setRecommendedValuesForUser
 }
