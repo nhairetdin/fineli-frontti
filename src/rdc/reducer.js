@@ -19,6 +19,7 @@ const initialState = {
   searchKeyword: '',
   foodItemHover: null,
   suggestedAmounts: {},
+  diagramComponents: {},
   specdietRows: [],
   specdietOptions: [],
   specdietOptionsCurrent: [],
@@ -153,6 +154,9 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_SUGGESTED_AMOUNTS': {
       return { ...state, suggestedAmounts: action.data}
+    }
+    case 'SET_DIAGRAM_COMPONENTS': {
+      return { ...state, diagramComponents: { ...state.diagramComponents, [action.data]: state.diagramComponents[action.data] === true ? false : true } }
     }
     case 'UPDATE_SPECDIET_CURRENT': {
       let newState = { ...state, specdietOptionsCurrent: action.data }
@@ -392,6 +396,13 @@ export const setFoodItemHoverNull = () => {
 export const setSuggestedAmounts = (data) => {
   return {
     type: 'SET_SUGGESTED_AMOUNTS',
+    data: data
+  }
+}
+
+export const setDiagramComponents = (data) => {
+  return {
+    type: 'SET_DIAGRAM_COMPONENTS',
     data: data
   }
 }
