@@ -4,27 +4,24 @@ import { connect } from 'react-redux'
 import { updateSpecdietCurrent } from '../rdc/reducer'
 
 class SpecdietDropdown extends Component {
-
-  handleAddition = (e, { value }) => {
-
-  }
+  handleAddition = (e, { value }) => {}
 
   handleChange = (e, { value }) => {
     this.props.updateSpecdietCurrent(value)
   }
 
   render() {
-    console.log("current values at render: ", this.props.specdietOptionsCurrent)
+    console.log('current values at render: ', this.props.specdietOptionsCurrent)
     return (
       <Dropdown
-        options={ this.props.specdietoptions }
-        placeholder='Erityisruokavalio'
+        options={this.props.specdietoptions}
+        placeholder="Erityisruokavalio"
         search
         selection
         fluid
         multiple
         allowAdditions
-        value={ this.props.specdietOptionsCurrent }
+        value={this.props.specdietOptionsCurrent}
         onAddItem={this.handleAddition}
         onChange={this.handleChange}
       />
@@ -32,7 +29,7 @@ class SpecdietDropdown extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     specdietoptions: state.specdietOptions,
     specdietOptionsCurrent: state.specdietOptionsCurrent

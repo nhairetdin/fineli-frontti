@@ -20,38 +20,37 @@ class Foodsearch extends Component {
   }
 
   tableColumnSortOverride = (a, b) => parseFloat(b) - parseFloat(a)
-  
-  searchphraseInputchange = (e) => {
-  	this.refs.searchResultsTable.getWrappedInstance().searchphraseInputchange(e)
+
+  searchphraseInputchange = e => {
+    this.refs.searchResultsTable.getWrappedInstance().searchphraseInputchange(e)
   }
 
   render() {
-  	console.log("foodsearch")
+    console.log('foodsearch')
     return (
       <Grid celled="internally">
         <Grid.Row>
           <Grid.Column width={16}>
-            <SearchOptions listener={ this.searchphraseInputchange }/>
+            <SearchOptions listener={this.searchphraseInputchange} />
           </Grid.Column>
         </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column width={5} className={'leftColumn'}>
-          </Grid.Column>
-          <Grid.Column width={8} className={'middleColumn'}>
-          </Grid.Column>
-          { this.props.user ?
-            (<Grid.Column width={3} className={'rightColumn'}>
+          <Grid.Column width={5} className={'leftColumn'} />
+          <Grid.Column width={8} className={'middleColumn'} />
+          {this.props.user ? (
+            <Grid.Column width={3} className={'rightColumn'}>
               <Button
-                onClick={ this.props.addNewMeal } 
-                size="mini" 
-                fluid 
+                onClick={this.props.addNewMeal}
+                size="mini"
+                fluid
                 compact
                 positive
-                >Uusi ateria +
+              >
+                Uusi ateria +
               </Button>
-            </Grid.Column>) : null
-          }
+            </Grid.Column>
+          ) : null}
         </Grid.Row>
 
         <Grid.Row>
@@ -59,13 +58,13 @@ class Foodsearch extends Component {
             <FilterTable />
           </Grid.Column>
           <Grid.Column width={8} className={'middleColumn'}>
-            <SearchResultsTable ref="searchResultsTable"/>
+            <SearchResultsTable ref="searchResultsTable" />
           </Grid.Column>
-          { this.props.user ?
-            (<Grid.Column width={3} className={'rightColumn'}>
+          {this.props.user ? (
+            <Grid.Column width={3} className={'rightColumn'}>
               <MealTable />
-            </Grid.Column>) : null
-          }
+            </Grid.Column>
+          ) : null}
         </Grid.Row>
       </Grid>
     )

@@ -23,11 +23,11 @@ const BarChart = ({ prot, fat, hh }) => {
   }
 
   return (
-  	<div style={ {width: '100%'} }>
-  	  <div style={ protStyle }></div>
-  	  <div style={ fatStyle }></div>
-  	  <div style={ hhStyle }></div>
-  	</div>
+    <div style={{ width: '100%' }}>
+      <div style={protStyle} />
+      <div style={fatStyle} />
+      <div style={hhStyle} />
+    </div>
   )
 }
 

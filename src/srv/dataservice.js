@@ -1,14 +1,18 @@
 import axios from 'axios'
 
-const url = 'http://localhost:3002/'
+const url = 'http://fineli.dy.fi:3002/'
+const cfg = token => {
+  return {
+    headers: { authorization: `bearer ${token}` }
+  }
+}
 
-const getBasedata = async (endpoint) => {
-  //console.log("fetching..")
+const getBasedata = async endpoint => {
   const data = await axios.get(`${url}basedata/${endpoint}`)
-  //console.log("done..", data.data)
-  const copy = [...data.data].sort((a, b) => parseFloat(b.ENERC) - parseFloat(a.ENERC))
-  //console.log(copy)
-  return copy//.data.sort((a, b) => parseFloat(a['ENERC']) > parseFloat(b['ENERC']))
+  const copy = [...data.data].sort(
+    (a, b) => parseFloat(b.ENERC) - parseFloat(a.ENERC)
+  )
+  return copy //.data.sort((a, b) => parseFloat(a['ENERC']) > parseFloat(b['ENERC']))
 }
 
 const getComponents = async () => {
@@ -23,111 +27,82 @@ const getSpecdietRows = async () => {
   return data.data
 }
 
-const getMealForUser = async (token) => {
-  let data
-  token = 'bearer ' + token
-  const config = {
-    headers: { 'authorization': token }
-  }
+const registerUser = async user => {
   try {
-    data = await axios.get(`${url}meal`, config)
-  } catch (e) {
-    data = e.response.data
-  }
-  return data
-}
-
-const registerUser = async (user) => {
-  let data
-  try {
-    data = await axios.post(`${url}user`, user)
-    //token = `bearer ${data.data.token}`
+    const data = await axios.post(`${url}user`, user)
+    return data
   } catch (e) {
     console.log(e, e.response)
-    data = e.response.data
+    return e.response.data
   }
-  return data
 }
 
-const loginUser = async (user) => {
-  let data
+const loginUser = async user => {
   try {
-    data = await axios.post(`${url}user/session`, user)
-    console.log(data.data.token)
-    //token = `bearer ${data.data.token}`
+    const data = await axios.post(`${url}user/session`, user)
+    return data
   } catch (e) {
-    data = e.response.data
+    return e.response.data
   }
-  return data
 }
 
-const loadUserdata = async (token) => {
-  token = 'bearer ' + token
-  const config = {
-    headers: { 'authorization': token }
-  }
-  let data
+const loadUserdata = async token => {
   try {
-    data = await axios.post(`${url}user/profile`, null, config)
+    const data = await axios.post(`${url}user/profile`, null, cfg(token))
+    return data
   } catch (e) {
-    data = e.response.data
+    return e.response.data
   }
-  return data
 }
 
 const saveNewMeal = async (meal, token) => {
-  let data
-  token = 'bearer ' + token
-  const config = {
-    headers: { 'authorization': token }
-  }
   try {
-    data = await axios.post(`${url}meal`, meal, config)
+    const data = await axios.post(`${url}meal`, meal, cfg(token))
+    return data
   } catch (e) {
-    data = e.response.data
+    return e.response.data
   }
-  return data
 }
 
 const deleteMeal = async (meal_id, token) => {
-  let data
-  token = 'bearer ' + token
-  const config = {
-    headers: { 'authorization': token }
-  }
   try {
-    data = await axios.delete(`${url}meal/${meal_id}`, config)
+    const data = await axios.delete(`${url}meal/${meal_id}`, cfg(token))
+    return data
   } catch (e) {
-    data = e.response.data
+    return e.response.data
   }
-  return data
 }
 
 const updateMeal = async (meal, token) => {
-  token = 'bearer ' + token
-  const config = {
-    headers: { 'authorization': token }
-  }
-  const response = await axios.put(`${url}meal`, meal, config)
-  console.log(response)
+  const response = await axios.put(`${url}meal`, meal, cfg(token))
   return response
 }
 
 const setRecommendedValuesForUser = async (token, data) => {
-  token = 'bearer ' + token
-  const config = {
-    headers: { 'authorization': token }
-  }
-  const response = await axios.post(`${url}user/settings`, data, config)
+  const response = await axios.post(`${url}user/settings`, data, cfg(token))
   return response.data
 }
 
-export default { 
-  getBasedata, 
-  getComponents, 
-  registerUser, 
-  loginUser, 
-  loadUserdata, 
+const getMealForUser = async token => {
+  // let data
+  // token = 'bearer ' + token
+  // const config = {
+  //   headers: { 'authorization': token }
+  // }
+  // try {
+  //   data = await axios.get(`${url}meal`, cfg(token))
+  // } catch (e) {
+  //   data = e.response.data
+  // }
+  //return await axios.get(`${url}meal`, cfg(token))
+}
+
+export default {
+  getBasedata,
+  getComponents,
+  registerUser,
+  loginUser,
+  loadUserdata,
   getSpecdietRows,
   getMealForUser,
   saveNewMeal,

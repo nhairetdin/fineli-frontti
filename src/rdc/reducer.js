@@ -1,5 +1,4 @@
 import dataservice from '../srv/dataservice'
-//import deepcopy from 'deepcopy'
 import cloneDeep from '../clonedeep'
 
 const initialState = {
@@ -27,15 +26,14 @@ const initialState = {
   activeMeal: -1,
   activeMealUpdated: {},
   initialMeal: {
-    name: "Uusi ateria",
+    name: 'Uusi ateria',
     meal_id: -1,
     foods: []
   },
   errorMessage: null
-  
 }
 
-const applySpecdietFilters = (newState) => {
+const applySpecdietFilters = newState => {
   if (newState.specdietOptionsCurrent.length === 0) {
     return newState.basedata
   }
@@ -45,24 +43,27 @@ const applySpecdietFilters = (newState) => {
   newState.basedata.forEach(row => {
     let count = 0
     for (let i = 0; i < newState.specdietOptionsCurrent.length; i++) {
-      if (!row.specdiet || !row.specdiet.includes(newState.specdietOptionsCurrent[i])) {
+      if (
+        !row.specdiet ||
+        !row.specdiet.includes(newState.specdietOptionsCurrent[i])
+      ) {
         count = 0
         continue
       }
       count++
       if (count === newState.specdietOptionsCurrent.length) {
-        filtered = [...filtered, {...row}]
+        filtered = [...filtered, { ...row }]
       }
     }
   })
 
   let end = window.performance.now()
   let time = end - start
-  console.log("Specdiet-filter time: " + time, filtered)
+  console.log('Specdiet-filter time: ' + time, filtered)
   return [...filtered]
 }
 
-const applyFilters = (newState) => {
+const applyFilters = newState => {
   let start = window.performance.now()
   const filterKeys = Object.keys(newState.filters)
   const data = newState.basedataFilteredBySpecdiet
@@ -76,37 +77,39 @@ const applyFilters = (newState) => {
   })
   let end = window.performance.now()
   console.log(end - start)
-  return filteredArray
-    .sort((a, b) => parseFloat(b[newState.sortCode]) - parseFloat(a[newState.sortCode]))
+  return filteredArray.sort(
+    (a, b) =>
+      parseFloat(b[newState.sortCode]) - parseFloat(a[newState.sortCode])
+  )
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-  	case 'INIT_BASEDATA':
-  	  return {
-  	    ...state, 
-  	  	basedata: action.data,
+    case 'INIT_BASEDATA':
+      return {
+        ...state,
+        basedata: action.data,
         components: action.components,
         results: action.data,
         basedataFilteredBySpecdiet: action.data,
         basedataFilteredByComponents: action.data,
-  	  	componentsOriginalRows: action.componentsOriginalRows, // untransformed result from db
+        componentsOriginalRows: action.componentsOriginalRows, // untransformed result from db
         suggestedAmounts: action.suggestedAmounts[0],
         specdietOptions: action.specdietOptions
-  	  }
-  	case 'ADD_FILTER': {
-  	  const newState = { ...state }
-  	  newState.filters = { ...state.filters, ...action.data }
+      }
+    case 'ADD_FILTER': {
+      const newState = { ...state }
+      newState.filters = { ...state.filters, ...action.data }
       newState.sortCode = action.sortCode
       newState.results = applyFilters(newState)
-  	  return newState
-  	}
-  	case 'REMOVE_FILTER': {
-	    const newState = { ...state, filters: { ...state.filters } }
-	    delete newState.filters[action.data]
+      return newState
+    }
+    case 'REMOVE_FILTER': {
+      const newState = { ...state, filters: { ...state.filters } }
+      delete newState.filters[action.data]
       newState.results = applyFilters(newState)
-	    return newState
-  	}
+      return newState
+    }
     case 'CHANGE_ACTIVE_TAB': {
       return { ...state, activetab: action.data }
     }
@@ -114,7 +117,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, sortCode: action.data }
     }
     case 'SET_USER': {
-      return { ...state, user: action.data}
+      return { ...state, user: action.data }
     }
     case 'LOGOUT': {
       const newState = { ...state, user: false, activeMeal: -1 }
@@ -140,10 +143,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, foodItemHover: [{ ...action.data }] }
     }
     case 'SET_FOODITEM_HOVER_FROM_MEAL': {
-      const hoverFoods = action.data.map((food) => {
+      const hoverFoods = action.data.map(food => {
         for (let i = 0; i < state.basedata.length; i++) {
           if (state.basedata[i].foodid === food.foodid) {
-            return {...state.basedata[i], amount: food.amount}
+            return { ...state.basedata[i], amount: food.amount }
           }
         }
       })
@@ -153,10 +156,17 @@ const reducer = (state = initialState, action) => {
       return { ...state, foodItemHover: null }
     }
     case 'SET_SUGGESTED_AMOUNTS': {
-      return { ...state, suggestedAmounts: action.data}
+      return { ...state, suggestedAmounts: action.data }
     }
     case 'SET_DIAGRAM_COMPONENTS': {
-      return { ...state, diagramComponents: { ...state.diagramComponents, [action.data]: state.diagramComponents[action.data] === true ? false : true } }
+      return {
+        ...state,
+        diagramComponents: {
+          ...state.diagramComponents,
+          [action.data]:
+            state.diagramComponents[action.data] === true ? false : true
+        }
+      }
     }
     case 'UPDATE_SPECDIET_CURRENT': {
       let newState = { ...state, specdietOptionsCurrent: action.data }
@@ -171,13 +181,19 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_ACTIVE_MEAL': {
       //return {...state, activeMeal: {...action.data, foods: [...action.data.foods]}}
-      return {...state, activeMeal: action.data}
+      return { ...state, activeMeal: action.data }
     }
     case 'UPDATE_ACTIVE_MEAL_UPDATED': {
-      return {...state, activeMealUpdated: {...state.activeMealUpdated, [action.data.foodid]: action.data.amount}}
+      return {
+        ...state,
+        activeMealUpdated: {
+          ...state.activeMealUpdated,
+          [action.data.foodid]: action.data.amount
+        }
+      }
     }
     case 'RESET_ACTIVE_MEAL_UPDATED': {
-      return {...state, activeMealUpdated: {}}
+      return { ...state, activeMealUpdated: {} }
     }
     case 'ADD_FOOD_FOR_MEAL': {
       let foods
@@ -185,17 +201,30 @@ const reducer = (state = initialState, action) => {
       for (let i = 0; i < state.meals.length; i++) {
         if (state.meals[i].meal_id === state.activeMeal) {
           //foods = [...state.meals[i].foods, { ...action.data }]
-          foods = [...state.meals[i].foods.filter(food => food.foodid !== action.data.foodid), {...action.data}]
+          foods = [
+            ...state.meals[i].foods.filter(
+              food => food.foodid !== action.data.foodid
+            ),
+            { ...action.data }
+          ]
           index = i
           break
         }
       }
-      const newState = {...state, meals: cloneDeep(state.meals)}
-      newState.meals[index] = {...newState.meals[index], foods: foods, notSaved: true}
+      const newState = { ...state, meals: cloneDeep(state.meals) }
+      newState.meals[index] = {
+        ...newState.meals[index],
+        foods: foods,
+        notSaved: true
+      }
       return newState
     }
     case 'ADD_NEW_MEAL': {
-      return {...state, meals: [{...state.initialMeal}, ...state.meals], activeMeal: -1}
+      return {
+        ...state,
+        meals: [{ ...state.initialMeal }, ...state.meals],
+        activeMeal: -1
+      }
     }
     case 'CHANGE_MEAL_NAME': {
       let index
@@ -208,11 +237,15 @@ const reducer = (state = initialState, action) => {
       }
       //console.log(action.data, index)
       //newState.meals[index].name = action.data
-      newState.meals[index] = {...newState.meals[index], name: action.data, notSaved: true }
+      newState.meals[index] = {
+        ...newState.meals[index],
+        name: action.data,
+        notSaved: true
+      }
 
-      console.log("OLD NAME: ", state.meals[index].name)
-      console.log("NEW NAME: ", newState.meals[index].name)
-      return {...newState}
+      console.log('OLD NAME: ', state.meals[index].name)
+      console.log('NEW NAME: ', newState.meals[index].name)
+      return { ...newState }
     }
     case 'ADD_NEW_SAVED_MEAL': {
       let added = false
@@ -234,50 +267,76 @@ const reducer = (state = initialState, action) => {
       return { ...state, errorMessage: action.data }
     }
     case 'REMOVE_MEAL': {
-      const meals = [...state.meals.filter(meal => meal.meal_id !== action.data)]
+      const meals = [
+        ...state.meals.filter(meal => meal.meal_id !== action.data)
+      ]
       const highestMealId = meals.reduce((max, meal) => {
         return max > meal.meal_id ? max : meal.meal_id
       }, 0)
-      return {...state, meals: meals, activeMeal: highestMealId}
+      return { ...state, meals: meals, activeMeal: highestMealId }
     }
     case 'ADD_UPDATED_MEAL': {
       return {
-        ...state, 
-        activeMeal: action.data.meal_id, 
-        meals: [...state.meals.map(meal => {
-          return meal.meal_id === action.data.meal_id ? {...action.data} : {...meal}
-        })]
+        ...state,
+        activeMeal: action.data.meal_id,
+        meals: [
+          ...state.meals.map(meal => {
+            return meal.meal_id === action.data.meal_id
+              ? { ...action.data }
+              : { ...meal }
+          })
+        ]
       }
     }
     case 'REMOVE_FOOD_FROM_MEAL': {
       console.log(action.data)
-      return {...state, meals: [...state.meals.map(meal => {
-        return {...meal, foods: [...meal.foods.filter(food => {
-          //food.foodid !== action.data.foodid && meal.meal_id !== action.data.meal_id)], notSaved: meal.meal_id === action.data.meal_id ? true : false }
-          if (meal.meal_id !== action.data.meal_id) {
-            return true
-          }
-          if (food.foodid !== action.data.foodid) {
-            return true
-          }
-          return false
-        })], notSaved: (meal.meal_id === action.data.meal_id || meal.notSaved === true) ? true : false
-      }})]}
+      return {
+        ...state,
+        meals: [
+          ...state.meals.map(meal => {
+            return {
+              ...meal,
+              foods: [
+                ...meal.foods.filter(food => {
+                  //food.foodid !== action.data.foodid && meal.meal_id !== action.data.meal_id)], notSaved: meal.meal_id === action.data.meal_id ? true : false }
+                  if (meal.meal_id !== action.data.meal_id) {
+                    return true
+                  }
+                  if (food.foodid !== action.data.foodid) {
+                    return true
+                  }
+                  return false
+                })
+              ],
+              notSaved:
+                meal.meal_id === action.data.meal_id || meal.notSaved === true
+                  ? true
+                  : false
+            }
+          })
+        ]
+      }
     }
-  	default:
+    default:
       return state
   }
 }
 
 export const initBasedata = () => {
-  return async (dispatch) => {
+  return async dispatch => {
     let basedata = []
     let components = []
     let specdietRows = []
     if (!window.localStorage.getItem('basedata')) {
-      console.log("Loading data from the server.")
-      window.localStorage.setItem('basedata', JSON.stringify(await dataservice.getBasedata('food')))
-      window.localStorage.setItem('components', JSON.stringify(await dataservice.getComponents()))
+      console.log('Loading data from the server.')
+      window.localStorage.setItem(
+        'basedata',
+        JSON.stringify(await dataservice.getBasedata('food'))
+      )
+      window.localStorage.setItem(
+        'components',
+        JSON.stringify(await dataservice.getComponents())
+      )
     }
     basedata = JSON.parse(window.localStorage.getItem('basedata'))
     components = JSON.parse(window.localStorage.getItem('components'))
@@ -286,7 +345,11 @@ export const initBasedata = () => {
       if (res.length === 0) {
         return [{ key: i.thscode, text: i.shortname, value: i.thscode }]
       } else {
-        return res.concat({ key: i.thscode, text: i.shortname, value: i.thscode })
+        return res.concat({
+          key: i.thscode,
+          text: i.shortname,
+          value: i.thscode
+        })
       }
     }, [])
     console.log(specdietRows)
@@ -303,35 +366,35 @@ export const initBasedata = () => {
 
 export const addFilter = (data, code) => {
   return {
-  	type: 'ADD_FILTER',
-  	data: data,
+    type: 'ADD_FILTER',
+    data: data,
     sortCode: code
   }
 }
 
-export const removeFilter = (data) => {
+export const removeFilter = data => {
   //console.log(data)
   return {
-  	type: 'REMOVE_FILTER',
-  	data: data
+    type: 'REMOVE_FILTER',
+    data: data
   }
 }
 
-export const changeTab = (data) => {
+export const changeTab = data => {
   return {
     type: 'CHANGE_ACTIVE_TAB',
     data: data
   }
 }
 
-export const setSortcode = (data) => {
+export const setSortcode = data => {
   return {
     type: 'SET_SORTCODE',
     data: data
   }
 }
 
-export const logout = (data) => {
+export const logout = data => {
   window.localStorage.removeItem('user')
   return {
     type: 'LOGOUT',
@@ -359,28 +422,28 @@ export const toggleLoginModal = () => {
   }
 }
 
-export const openFoodItem = (data) => {
+export const openFoodItem = data => {
   return {
     type: 'SET_OPENED_FOOD_ITEM',
     data: data
   }
 }
 
-export const setSearchKeyword = (data) => {
+export const setSearchKeyword = data => {
   return {
     type: 'SET_SEARCHKEYWORD',
     data: data
   }
 }
 
-export const setFoodItemHover = (data) => {
+export const setFoodItemHover = data => {
   return {
     type: 'SET_FOODITEM_HOVER',
     data: data
   }
 }
 
-export const setFoodItemHoverFromMeal = (foodidArray) => {
+export const setFoodItemHoverFromMeal = foodidArray => {
   return {
     type: 'SET_FOODITEM_HOVER_FROM_MEAL',
     data: foodidArray
@@ -393,42 +456,42 @@ export const setFoodItemHoverNull = () => {
   }
 }
 
-export const setSuggestedAmounts = (data) => {
+export const setSuggestedAmounts = data => {
   return {
     type: 'SET_SUGGESTED_AMOUNTS',
     data: data
   }
 }
 
-export const setDiagramComponents = (data) => {
+export const setDiagramComponents = data => {
   return {
     type: 'SET_DIAGRAM_COMPONENTS',
     data: data
   }
 }
 
-export const updateSpecdietCurrent = (data) => {
+export const updateSpecdietCurrent = data => {
   return {
     type: 'UPDATE_SPECDIET_CURRENT',
     data: data
   }
 }
 
-export const setUserMeals = (data) => {
+export const setUserMeals = data => {
   return {
     type: 'SET_USER_MEALS',
     data: data
   }
 }
 
-export const setActiveMeal = (data) => {
+export const setActiveMeal = data => {
   return {
     type: 'SET_ACTIVE_MEAL',
     data: data
   }
 }
 
-export const setActiveMealUpdated = (data) => {
+export const setActiveMealUpdated = data => {
   return {
     type: 'UPDATE_ACTIVE_MEAL_UPDATED',
     data: data
@@ -441,7 +504,7 @@ export const resetActiveMealUpdated = () => {
   }
 }
 
-export const addFoodForMeal = (data) => {
+export const addFoodForMeal = data => {
   console.log(data)
   return {
     type: 'ADD_FOOD_FOR_MEAL',
@@ -455,14 +518,14 @@ export const addNewMeal = () => {
   }
 }
 
-export const changeMealName = (data) => {
+export const changeMealName = data => {
   return {
     type: 'CHANGE_MEAL_NAME',
     data: data
   }
 }
 
-export const registerUser = (data) => {
+export const registerUser = data => {
   // return async (dispatch) => {
   //   try {
   //     const user = await dataservice.registerUser(data)
@@ -478,7 +541,7 @@ export const registerUser = (data) => {
 }
 
 export const saveNewMeal = (meal, token) => {
-  return async (dispatch) => {
+  return async dispatch => {
     const response = await dataservice.saveNewMeal(meal, token)
     if (response.msg) {
       dispatch({
@@ -498,7 +561,7 @@ export const saveNewMeal = (meal, token) => {
   }
 }
 
-export const removeMeal = (meal_id) => {
+export const removeMeal = meal_id => {
   return {
     type: 'REMOVE_MEAL',
     data: meal_id
@@ -506,7 +569,7 @@ export const removeMeal = (meal_id) => {
 }
 
 export const updateMeal = (meal, token) => {
-  return async (dispatch) => {
+  return async dispatch => {
     const response = await dataservice.updateMeal(meal, token)
     if (response.msg) {
       dispatch({

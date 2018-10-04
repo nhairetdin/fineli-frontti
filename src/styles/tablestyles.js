@@ -17,12 +17,12 @@ const filtertabledata = {
   }
 }
 
-const tableheader = {
-  style: { 
-    fontWeight: 'bold',
-    color: 'red' 
-  }
-}
+// const tableheader = {
+//   style: { 
+//     fontWeight: 'bold',
+//     color: 'red' 
+//   }
+// }
 
 const tableheaderInvisible = {
   style: {

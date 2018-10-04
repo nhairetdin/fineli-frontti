@@ -48,7 +48,7 @@ class Topmenu extends Component {
               to="/kuvaaja"
               onClick={() => this.handleItemClick('kuvaaja')}
             >
-              Kuvaaja
+              Seuranta
             </Link>{' '}
             &nbsp;
           </Menu.Item>),

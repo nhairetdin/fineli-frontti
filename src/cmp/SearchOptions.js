@@ -6,17 +6,16 @@ import SpecdietDropdown from './SpecdietDropdown'
 import suistyles from '../styles/suistyles'
 
 class SearchOptions extends React.Component {
-
-  onChange = (event) => {
+  onChange = event => {
     this.props.setSearchKeyword(event.target.value)
   }
 
   render() {
-    console.log("SearchOptions render")
+    console.log('SearchOptions render')
     return (
       <Form>
-        <Form.Group inline style={ suistyles.searchOptions }>
-          <Form.Input placeholder='Hakusana' onChange={ this.props.listener } />
+        <Form.Group inline style={suistyles.searchOptions}>
+          <Form.Input placeholder="Hakusana" onChange={this.props.listener} />
           <SpecdietDropdown />
         </Form.Group>
       </Form>
