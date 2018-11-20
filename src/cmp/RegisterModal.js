@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Icon, Modal, Input, Segment, Rail, Checkbox } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { toggleRegisterModal, registerUser, login, setSuggestedAmounts, setUserMeals } from '../rdc/reducer'
+import { toggleRegisterModal, login, setSuggestedAmounts, setUserMeals } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
 
 // Modal screen for register
@@ -126,7 +126,6 @@ export default connect(
   mapStateToProps,
   {
     toggleRegisterModal,
-    registerUser,
     login,
     setSuggestedAmounts,
     setUserMeals

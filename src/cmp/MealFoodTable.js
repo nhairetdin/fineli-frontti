@@ -6,10 +6,6 @@ import { changeMealName, removeFoodFromMeal } from '../rdc/reducer'
 // This components creates the inner table for user's personal foods, 
 // showing all foods inside each meal
 class MealFoodTable extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   // Changes the meal name, does not save anything, only redux store changes
   handleNameChange = event => {
     this.props.changeMealName(event.target.value)

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
-import { Icon, Button, Table } from 'semantic-ui-react'
+import { Icon, Button } from 'semantic-ui-react'
 
 import MealFoodTable from './MealFoodTable'
 import dataservice from '../srv/dataservice'
@@ -41,7 +41,7 @@ class MealTable extends Component {
     //console.log(foodid, parseInt(e.target.value))
     this.props.setActiveMealUpdated({
       foodid: foodid,
-      amount: parseInt(e.target.value)
+      amount: parseInt(e.target.value, 10)
     })
   }
 

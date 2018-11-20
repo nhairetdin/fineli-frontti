@@ -51,7 +51,7 @@ class SearchResultsTable extends Component {
       this.props.addFoodForMeal({
         foodid: row.foodid,
         foodname: row.foodname,
-        amount: parseInt(e.target.value)
+        amount: parseInt(e.target.value, 10)
       })
     }
   }

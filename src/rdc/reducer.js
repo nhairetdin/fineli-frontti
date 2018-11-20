@@ -43,7 +43,7 @@ const applySpecdietFilters = newState => {
     return newState.basedata
   }
 
-  let start = window.performance.now()
+  //let start = window.performance.now()
   let filtered = []
   newState.basedata.forEach(row => {
     let count = 0
@@ -62,14 +62,14 @@ const applySpecdietFilters = newState => {
     }
   })
 
-  let end = window.performance.now()
-  let time = end - start
-  console.log('Specdiet-filter time: ' + time, filtered)
+  //let end = window.performance.now()
+  //let time = end - start
+  //console.log('Specdiet-filter time: ' + time, filtered)
   return [...filtered]
 }
 
 const applyFilters = newState => {
-  let start = window.performance.now()
+  //let start = window.performance.now()
   const filterKeys = Object.keys(newState.filters)
   const data = newState.basedataFilteredBySpecdiet
   const filteredArray = data.filter(food => {
@@ -80,8 +80,8 @@ const applyFilters = newState => {
     }
     return true
   })
-  let end = window.performance.now()
-  console.log(end - start)
+  //let end = window.performance.now()
+  //console.log(end - start)
   return filteredArray.sort(
     (a, b) =>
       parseFloat(b[newState.sortCode]) - parseFloat(a[newState.sortCode])
@@ -248,8 +248,8 @@ const reducer = (state = initialState, action) => {
         notSaved: true
       }
 
-      console.log('OLD NAME: ', state.meals[index].name)
-      console.log('NEW NAME: ', newState.meals[index].name)
+      //console.log('OLD NAME: ', state.meals[index].name)
+      //console.log('NEW NAME: ', newState.meals[index].name)
       return { ...newState }
     }
     case 'ADD_NEW_SAVED_MEAL': {
@@ -294,7 +294,7 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'REMOVE_FOOD_FROM_MEAL': {
-      console.log(action.data)
+      //console.log(action.data)
       return {
         ...state,
         meals: [
@@ -335,7 +335,7 @@ export const initBasedata = () => {
     let components = []
     let specdietRows = []
     if (!window.localStorage.getItem('basedata')) {
-      console.log('Loading data from the server.')
+      //console.log('Loading data from the server.')
       window.localStorage.setItem(
         'basedata',
         JSON.stringify(await dataservice.getBasedata('food'))
@@ -359,7 +359,7 @@ export const initBasedata = () => {
         })
       }
     }, [])
-    console.log(specdietRows)
+    //console.log(specdietRows)
     dispatch({
       type: 'INIT_BASEDATA',
       data: basedata,
@@ -512,7 +512,7 @@ export const resetActiveMealUpdated = () => {
 }
 
 export const addFoodForMeal = data => {
-  console.log(data)
+  //console.log(data)
   return {
     type: 'ADD_FOOD_FOR_MEAL',
     data: data
@@ -532,20 +532,7 @@ export const changeMealName = data => {
   }
 }
 
-export const registerUser = data => {
-  // return async (dispatch) => {
-  //   try {
-  //     const user = await dataservice.registerUser(data)
-  //     console.log(user)
-  //     dispatch({
-  //       type: 'LOGIN_USER',
-  //       data: { email: user.data.email, token: user.data.token }
-  //     })
-  //   } catch (e) {
-  //     //console.log(e)
-  //   }
-  // }
-}
+// export const registerUser = data => {}
 
 export const saveNewMeal = (meal, token) => {
   return async dispatch => {
@@ -603,54 +590,3 @@ export const removeFoodFromMeal = (meal_id, foodid) => {
 }
 
 export default reducer
-
-// const applySpecdietFilters = (newState) => {
-//   // let filtered = [...state.basedata]
-//   // state.specdietOptionsCurrent.forEach((specdiet) => {
-
-//   // })
-//   if (newState.specdietOptionsCurrent.length === 0) {
-//     return { ...newState, basedataFilteredBySpecdiet: [...newState.basedata], results: [...newState.basedataFilteredByComponents] }
-//   }
-
-//   let start = window.performance.now()
-//   let filtered = []
-//   const data = newState.basedataFilteredByComponents.length < newState.basedata.length ? [...newState.basedataFilteredByComponents] : [...newState.basedata]
-//   data.forEach(row => {
-//     let count = 0
-//     for (let i = 0; i < newState.specdietOptionsCurrent.length; i++) {
-//       if (!row.specdiet || !row.specdiet.includes(newState.specdietOptionsCurrent[i])) {
-//         count = 0
-//         continue
-//       }
-//       count++
-//       if (count === newState.specdietOptionsCurrent.length) {
-//         //console.log("adding")
-//         filtered = [...filtered, {...row}]
-//       }
-//     }
-//   })
-
-//   let end = window.performance.now()
-//   let time = end - start
-//   console.log("Specdiet-filter time: " + time, filtered)
-//   return { ...newState, basedataFilteredBySpecdiet: [...filtered], results: [...filtered] }
-// }
-
-// const applyFilters = (state, newState) => {
-//   let start = window.performance.now()
-//   const filterKeys = Object.keys(newState.filters)
-//   const data = newState.basedataFilteredBySpecdiet.length < newState.basedata.length ? [...newState.basedataFilteredBySpecdiet] : [...newState.basedata]
-//   const filteredArray = data.filter(food => {
-//     for (let i = 0; i < filterKeys.length; i++) {
-//       if (food[filterKeys[i]] < newState.filters[filterKeys[i]]) {
-//         return false
-//       }
-//     }
-//     return true
-//   })
-//   let end = window.performance.now()
-//   console.log(end - start)
-//   return filteredArray
-//     .sort((a, b) => parseFloat(b[newState.sortCode]) - parseFloat(a[newState.sortCode]))
-// }
