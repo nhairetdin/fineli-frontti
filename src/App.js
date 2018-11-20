@@ -10,7 +10,16 @@ import Foodsearch from './cmp/Foodsearch'
 import Statistics from './cmp/Statistics'
 import Settings from './cmp/Settings'
 
+// This is the root component of everything,
+// it basically just defines the structure
+// inside Container. In the return-function
+// everything is wrapped in <Router />, it allows
+// us to read and write the browsers address bar
+// and make desicions based on that.
 class App extends Component {
+  // when the app mounts, we check if localStorage has key user, and
+  // if it does, it means that user is logged in. Since user is logged in,
+  // we may load user's personal data from the database and set it into redux store.
   componentDidMount = async () => {
     this.props.initBasedata()
     if(window.localStorage.getItem('user')) {
@@ -58,6 +67,7 @@ class App extends Component {
   }
 }
 
+// Export this class, is wrapped in connect-function, see better explanation at Settings.js
 export default connect(
   null,
   { initBasedata, changeTab, login, setSuggestedAmounts, setUserMeals }

@@ -18,33 +18,36 @@ import {
   setFoodItemHoverFromMeal
 } from '../rdc/reducer'
 
+// This component creates the table (react-table) on the right side of the page,
+// displaying users meals. Notable thing is the SubComponent which contains
+// another react-table for displaying all the foods inside each meal
 class MealTable extends Component {
   state = {
     activeMealId: -1,
     expanded: {}
   }
 
+  // Functions for click events
   handleRowClick = (row, id) => {
-    //console.log(data)
     this.props.resetActiveMealUpdated()
     this.props.setActiveMeal(id)
   }
 
-  handleMouseOver = (foods) => {
+  handleMouseOver = foods => {
     this.props.setFoodItemHoverFromMeal(foods)
   }
 
   handleInputChange = (e, foodid) => {
-    console.log(foodid, parseInt(e.target.value))
+    //console.log(foodid, parseInt(e.target.value))
     this.props.setActiveMealUpdated({
       foodid: foodid,
       amount: parseInt(e.target.value)
     })
   }
 
-  handleSavebutton = (meal_id) => {
+  handleSavebutton = meal_id => {
     const meal = this.props.meals.find(
-      meal => meal.meal_id === meal_id//this.props.activeMeal
+      meal => meal.meal_id === meal_id //this.props.activeMeal
     )
     if (meal.meal_id === -1) {
       this.props.saveNewMeal(meal, this.props.user.token)
@@ -59,34 +62,29 @@ class MealTable extends Component {
     }
   }
 
-  handleDeletebutton = async (id) => {
+  handleDeletebutton = async id => {
     const result = await dataservice.deleteMeal(id, this.props.user.token)
     if (result.status === 204) {
-      console.log("removing..")
+      //console.log('removing..')
       this.props.removeMeal(id)
     }
   }
 
   render() {
-    //console.log(this.props.activeMealUpdated)
-    //console.log(this.props.activeMeal)
-    //console.log(this.props.meals)
-    console.log('EXPANDED: ', this.state.expanded)
+    //console.log('EXPANDED: ', this.state.expanded)
     return (
       <ReactTable
         collapseOnDataChange={false}
         data={this.props.meals}
         showPagination={false}
         className={'-highlight'}
-        getTdProps={() => { return tablestyles.tabledata }}
+        getTdProps={() => {
+          return tablestyles.tabledata
+        }}
         getTrProps={(state, rowInfo, column, instance) => {
           return {
             style: {
-              backgroundColor: rowInfo
-                ? rowInfo.original.meal_id === this.props.activeMeal
-                  ? '#fbbd08'
-                  : null
-                : null
+              backgroundColor: rowInfo ? (rowInfo.original.meal_id === this.props.activeMeal ? '#fbbd08' : null) : null
             }
           }
         }}
@@ -95,10 +93,9 @@ class MealTable extends Component {
             Header: props => 'Omat ateriat',
             accessor: 'name',
             Cell: row => (
-              <div 
+              <div
                 onClick={() => this.handleRowClick(row.original, row.original.meal_id)}
-                onMouseOver={() => this.handleMouseOver(row.original.foods)}
-              >
+                onMouseOver={() => this.handleMouseOver(row.original.foods)}>
                 {row.original.name}
               </div>
             ),
@@ -112,11 +109,7 @@ class MealTable extends Component {
             accessor: 'pvm',
             width: 80,
             Cell: row => (
-              <div 
-                onClick={() => this.handleRowClick(row.original, row.original.meal_id)}
-              >
-                {row.original.pvm}
-              </div>
+              <div onClick={() => this.handleRowClick(row.original, row.original.meal_id)}>{row.original.pvm}</div>
             ),
             getProps: (state, row) => {
               return { style: { fontWeight: 'bold' } }
@@ -130,8 +123,7 @@ class MealTable extends Component {
                 size="mini"
                 color="blue"
                 style={{ maxHeight: '1rem', padding: '2px' }}
-                onClick={() => this.handleCopybutton(row.original)}
-              >
+                onClick={() => this.handleCopybutton(row.original)}>
                 <Icon fitted name="copy outline" />
               </Button>
             ),
@@ -151,8 +143,7 @@ class MealTable extends Component {
                 size="small"
                 color="red"
                 style={{ maxHeight: '1rem', padding: '2px' }}
-                onClick={() => this.handleDeletebutton(row.original.meal_id)}
-              >
+                onClick={() => this.handleDeletebutton(row.original.meal_id)}>
                 <Icon fitted name="trash alternate" />
               </Button>
             ),
@@ -173,18 +164,12 @@ class MealTable extends Component {
           this.setState({ expanded: { ...newExpanded } })
         }}
         SubComponent={row => {
-          console.log('SUBTABLE: ', row)
+          //console.log('SUBTABLE: ', row)
           return (
             <div>
               <MealFoodTable foods={row.original} />
               {row.original.notSaved ? (
-                <Button
-                  positive
-                  fluid
-                  compact
-                  size="mini"
-                  onClick={() => this.handleSavebutton(row.original.meal_id)}
-                >
+                <Button positive fluid compact size="mini" onClick={() => this.handleSavebutton(row.original.meal_id)}>
                   Tallenna
                 </Button>
               ) : null}

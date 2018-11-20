@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import { Button, Modal, Input, Segment, Rail } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {
-  toggleLoginModal,
-  login,
-  setSuggestedAmounts,
-  setUserMeals
-} from '../rdc/reducer'
+import { toggleLoginModal, login, setSuggestedAmounts, setUserMeals } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
 
+// Login popup
 class LoginModal extends Component {
   constructor(props) {
     super(props)
@@ -24,6 +20,7 @@ class LoginModal extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  // Display error text if login fails
   toggleErrorVisibility = errorMsg => {
     this.setState({ visible: !this.state.visible, errorMsg: errorMsg }, () => {
       setTimeout(() => {
@@ -32,16 +29,14 @@ class LoginModal extends Component {
     })
   }
 
+  // Called when login button is clicked
   submit = async () => {
     const user = await dataservice.loginUser({
       email: this.state.email,
       password: this.state.password
     })
     if (!user.error) {
-      window.localStorage.setItem(
-        'user',
-        JSON.stringify({ token: user.data.token, email: user.data.email })
-      )
+      window.localStorage.setItem('user', JSON.stringify({ token: user.data.token, email: user.data.email }))
       this.props.login()
       const userdata = await dataservice.loadUserdata(user.data.token)
       if (!userdata.error) {
@@ -59,12 +54,7 @@ class LoginModal extends Component {
   render() {
     const hideWhenVisible = { display: this.state.visible ? '' : 'none' }
     return (
-      <Modal
-        size={'small'}
-        open={this.props.open}
-        onClose={this.props.toggleLoginModal}
-        dimmer={'blurring'}
-      >
+      <Modal size={'small'} open={this.props.open} onClose={this.props.toggleLoginModal} dimmer={'blurring'}>
         <Rail internal attached position="right" size="massive">
           <Segment inverted color="red" tertiary style={hideWhenVisible}>
             <h4>{this.state.errorMsg}</h4>
@@ -73,13 +63,7 @@ class LoginModal extends Component {
         <Modal.Header>Kirjaudu sisään</Modal.Header>
         <Modal.Content>
           <h3>Sähköposti:</h3>
-          <Input
-            fluid={true}
-            placeholder="Sähköposti"
-            size="large"
-            name="email"
-            onChange={this.onChangeHandler}
-          />
+          <Input fluid={true} placeholder="Sähköposti" size="large" name="email" onChange={this.onChangeHandler} />
           <h3>Salasana</h3>
           <Input
             fluid={true}
@@ -94,13 +78,7 @@ class LoginModal extends Component {
           <Button negative onClick={this.props.toggleLoginModal}>
             Sulje
           </Button>
-          <Button
-            positive
-            onClick={this.submit}
-            icon="checkmark"
-            labelPosition="right"
-            content="Kirjaudu"
-          />
+          <Button positive onClick={this.submit} icon="checkmark" labelPosition="right" content="Kirjaudu" />
         </Modal.Actions>
       </Modal>
     )

@@ -6,7 +6,11 @@ import 'react-table/react-table.css'
 import tablestyles from '../styles/tablestyles'
 import { setDiagramComponents } from '../rdc/reducer'
 
+// This component displays a list (react-table) of all the
+// foodcomponents and provides a checkbox to determine if
+// it should be displayed in the Diagram or not.
 class SelectDiagramComponentsTable extends Component {
+  // If foodcomponent is selected, inform store
   handleCheckboxChange = e => {
     this.props.setDiagramComponents(e.target.name.toLowerCase())
   }
@@ -37,13 +41,7 @@ class SelectDiagramComponentsTable extends Component {
                       onChange={e => this.handleCheckboxChange(e)}
                       type="checkbox"
                       name={row.original.koodi}
-                      checked={
-                        this.props.diagramComponents[
-                          row.original.koodi.toLowerCase()
-                        ]
-                          ? true
-                          : false
-                      }
+                      checked={this.props.diagramComponents[row.original.koodi.toLowerCase()] ? true : false}
                     />
                   ),
                   width: 25

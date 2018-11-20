@@ -1,41 +1,30 @@
 import React, { Component } from 'react'
-import {
-  Button,
-  Icon,
-  Modal,
-  Input,
-  Segment,
-  Rail,
-  Checkbox
-} from 'semantic-ui-react'
+import { Button, Icon, Modal, Input, Segment, Rail, Checkbox } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {
-  toggleRegisterModal,
-  registerUser,
-  login,
-  setSuggestedAmounts,
-  setUserMeals
-} from '../rdc/reducer'
+import { toggleRegisterModal, registerUser, login, setSuggestedAmounts, setUserMeals } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
 
+// Modal screen for register
 class RegisterModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
       email: '',
       password: '',
-      radio: 'male',
+      radio: 'male', // Male set as default
       visible: false,
       errorMsg: ''
     }
   }
 
+  // Update state when input field contents change
   onChangeHandler = event => {
     this.setState({ [event.target.name]: event.target.value })
   }
-
+  // Is user Male/Female, store selection in state
   onRadioChange = (e, { value }) => this.setState({ radio: value })
 
+  // Error will be displayed if server returns error (bad email / pass or backend fail)
   toggleErrorVisibility = errorMsg => {
     this.setState({ visible: !this.state.visible, errorMsg: errorMsg }, () => {
       setTimeout(() => {
@@ -44,6 +33,10 @@ class RegisterModal extends Component {
     })
   }
 
+  // On submit, if no error is returned, set user token and email in localStorage,
+  // then make another request for downloading users personal data and pass token in.
+  // If userdata is successfully received, set it in application state (redux store in this case).
+  // Also display appropriate error messages if needed
   submit = async () => {
     const user = await dataservice.registerUser({
       email: this.state.email,
@@ -51,10 +44,7 @@ class RegisterModal extends Component {
       gender: this.state.radio
     })
     if (!user.error) {
-      window.localStorage.setItem(
-        'user',
-        JSON.stringify({ token: user.data.token, email: user.data.email })
-      )
+      window.localStorage.setItem('user', JSON.stringify({ token: user.data.token, email: user.data.email }))
       this.props.login()
       const userdata = await dataservice.loadUserdata(user.data.token)
       if (!userdata.error) {
@@ -72,12 +62,7 @@ class RegisterModal extends Component {
   render() {
     const hideWhenVisible = { display: this.state.visible ? '' : 'none' }
     return (
-      <Modal
-        size={'small'}
-        open={this.props.open}
-        onClose={this.props.toggleRegisterModal}
-        dimmer={'blurring'}
-      >
+      <Modal size={'small'} open={this.props.open} onClose={this.props.toggleRegisterModal} dimmer={'blurring'}>
         <Rail internal attached position="right" size="massive">
           <Segment inverted color="red" tertiary style={hideWhenVisible}>
             <h4>{this.state.errorMsg}</h4>
@@ -92,8 +77,7 @@ class RegisterModal extends Component {
             placeholder="Sähköposti"
             size="large"
             name="email"
-            onChange={this.onChangeHandler}
-          >
+            onChange={this.onChangeHandler}>
             <Icon name="at" />
             <input />
           </Input>
@@ -125,13 +109,7 @@ class RegisterModal extends Component {
           <Button negative onClick={this.props.toggleRegisterModal}>
             Sulje
           </Button>
-          <Button
-            positive
-            onClick={this.submit}
-            icon="checkmark"
-            labelPosition="right"
-            content="Lähetä"
-          />
+          <Button positive onClick={this.submit} icon="checkmark" labelPosition="right" content="Lähetä" />
         </Modal.Actions>
       </Modal>
     )

@@ -8,7 +8,12 @@ import FilterLabel from './FilterLabel'
 import { addFilter, removeFilter, setSortcode } from '../rdc/reducer'
 import tablestyles from '../styles/tablestyles'
 
+// This class creates the left column content displaying
+// foodcomponents and input fields for each for filtering
 class FilterTable extends Component {
+  // Input listener for each input, when value changes, foodcomponents
+  // code and input value is stored in redux store through action creator
+  // addFilter() and removeFilter if empty
   inputChangeListener = (source, event) => {
     const code = source
     const value = parseInt(event.target.value, 10)
@@ -20,6 +25,7 @@ class FilterTable extends Component {
   }
 
   render() {
+    // Construct the table in map() function and feed data
     return (
       <div>
         {this.props.storecomponents.map((group, index) => {
@@ -37,11 +43,7 @@ class FilterTable extends Component {
                 {
                   Header: group.data[0].ylempiluokka,
                   Cell: row => (
-                    <FilterLabel
-                      nimi={row.original.nimi}
-                      foodid={row.original.foodid}
-                      koodi={row.original.koodi}
-                    />
+                    <FilterLabel nimi={row.original.nimi} foodid={row.original.foodid} koodi={row.original.koodi} />
                   )
                 },
                 {
@@ -50,9 +52,7 @@ class FilterTable extends Component {
                     <input
                       placeholder={row.original.yksikko.toLowerCase()}
                       style={tablestyles.cellinput}
-                      onChange={e =>
-                        this.inputChangeListener(row.original.koodi, e)
-                      }
+                      onChange={e => this.inputChangeListener(row.original.koodi, e)}
                       type="number"
                     />
                   ),

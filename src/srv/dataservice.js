@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+// This file is pretty much self explanatory, it just
+// provides access to the backend (database) through http
+// requests. Axios handles the requests so that we don't
+// need to manually invoke XMLHttpRequests and it's callbacks.
+// Axios supports promises so we may also use async/await syntax
+// together with try/catch.
+
 const url = 'http://fineli.dy.fi:3002/'
 const cfg = token => {
   return {

@@ -1,5 +1,8 @@
 import React from 'react'
 
+// A simple colored bar chart made with basic html/css.
+// Used to display the relative shares between prot/fat/hh
+// in the table. Width is simply defined as a css rule.
 const BarChart = ({ prot, fat, hh }) => {
   const protStyle = {
     width: `${prot}%`,

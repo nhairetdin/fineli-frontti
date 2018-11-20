@@ -1,6 +1,11 @@
 import dataservice from '../srv/dataservice'
 import cloneDeep from '../clonedeep'
 
+// Reducer and action creators for redux store, it is used to interact
+// with the store. Each and every operation in the application's
+// state is defined in this file as it's own action and corresponding
+// handler in the reducer (switch-case structure).
+
 const initialState = {
   filters: {},
   sortCode: 'ENERC',
@@ -321,6 +326,8 @@ const reducer = (state = initialState, action) => {
       return state
   }
 }
+
+// Action creators:
 
 export const initBasedata = () => {
   return async dispatch => {

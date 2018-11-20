@@ -8,6 +8,7 @@ import MealTable from './MealTable'
 import { addNewMeal } from '../rdc/reducer'
 import 'react-table/react-table.css'
 
+// This class represents the entire search "page"
 class Foodsearch extends Component {
   onChangeListener = event => {
     const code = event.target.name
@@ -26,7 +27,7 @@ class Foodsearch extends Component {
   }
 
   render() {
-    console.log('foodsearch')
+    //console.log('foodsearch')
     return (
       <Grid celled="internally">
         <Grid.Row>
@@ -40,13 +41,7 @@ class Foodsearch extends Component {
           <Grid.Column width={8} className={'middleColumn'} />
           {this.props.user ? (
             <Grid.Column width={3} className={'rightColumn'}>
-              <Button
-                onClick={this.props.addNewMeal}
-                size="mini"
-                fluid
-                compact
-                positive
-              >
+              <Button onClick={this.props.addNewMeal} size="mini" fluid compact positive>
                 Uusi ateria +
               </Button>
             </Grid.Column>

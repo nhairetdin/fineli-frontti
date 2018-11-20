@@ -6,16 +6,17 @@ import 'react-table/react-table.css'
 
 import tablestyles from '../styles/tablestyles'
 import BarChart from './BarChart'
-import {
-  setFoodItemHover,
-  setFoodItemHoverNull,
-  addFoodForMeal
-} from '../rdc/reducer'
+import { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal } from '../rdc/reducer'
 
+// This component creates the react-table for displaying the search results, foods
 class SearchResultsTable extends Component {
+  // When foodname is mouse hovered, set it's data in state so that it
+  // can be accessed by other components and set null when leave
   mouseoverFoodnameColumn = row => this.props.setFoodItemHover(row)
   mouseLeaveTable = e => this.props.setFoodItemHoverNull()
 
+  // First column needs a little special treatment, other columns are defined
+  // in <ReactTable columns={}... in return()
   firstColumn = {
     Header: 'Elintarvike',
     accessor: 'foodname',
@@ -24,8 +25,7 @@ class SearchResultsTable extends Component {
       <div
         onMouseOver={() => {
           return this.mouseoverFoodnameColumn(row.original)
-        }}
-      >
+        }}>
         {row.original.foodname}
       </div>
     )
@@ -33,13 +33,21 @@ class SearchResultsTable extends Component {
 
   tableColumnSortOverride = (a, b) => parseFloat(b) - parseFloat(a)
 
+  // react-table has built in functionality for text search including an input field,
+  // but I'm using custom input field for search, so I need a reference to the
+  // react-table's built-in searchfield, and since the search is based on foodname (elintarvike)
+  // I need to pass in a ref of that, which is the firstColumn.
   searchphraseInputchange = e => {
     this.refs.reactTable.filterColumn(this.firstColumn, e.target.value)
   }
 
+  // Called from inputfield's onKeyDown listener, if
+  // enter is hit, add this food and amount for users
+  // selected meal. The selected meal is figured out in
+  // the action handler
   handleEnter = (row, e) => {
     if (e.which === 13) {
-      console.log(row)
+      //console.log(row)
       this.props.addFoodForMeal({
         foodid: row.foodid,
         foodname: row.foodname,
@@ -90,13 +98,7 @@ class SearchResultsTable extends Component {
           },
           {
             Header: 'Jakauma (prot, fat, hh)',
-            Cell: row => (
-              <BarChart
-                prot={row.original.PROT}
-                fat={row.original.FAT}
-                hh={row.original.CHOAVL}
-              />
-            )
+            Cell: row => <BarChart prot={row.original.PROT} fat={row.original.FAT} hh={row.original.CHOAVL} />
           },
           {
             Header: <Icon disabled name="add to cart" />,
@@ -130,28 +132,24 @@ class SearchResultsTable extends Component {
         defaultPageSize={35}
         className={'-highlight'}
         filterable
-        defaultFilterMethod={(filter, row) =>
-          String(row[filter.id]).includes(filter.value.toUpperCase())
-        }
-        SubComponent={row => {
+        defaultFilterMethod={(filter, row) => String(row[filter.id]).includes(filter.value.toUpperCase())}
+        SubComponent={row => { // Simply print out the food data when food row is expanded
           return (
             <Container fluid>
               <Grid.Row>
                 <Grid.Column width={16}>
                   <List
                     style={tablestyles.list}
-                    items={this.props.componentsOriginalRows[0].map(
-                      component => {
-                        return (
-                          component.nimi +
-                          ': ' +
-                          row.original[component.koodi] +
-                          ' (' +
-                          row.original[component.koodi] +
-                          ')'
-                        )
-                      }
-                    )}
+                    items={this.props.componentsOriginalRows[0].map(component => {
+                      return (
+                        component.nimi +
+                        ': ' +
+                        row.original[component.koodi] +
+                        ' (' +
+                        row.original[component.koodi] +
+                        ')'
+                      )
+                    })}
                   />
                 </Grid.Column>
               </Grid.Row>

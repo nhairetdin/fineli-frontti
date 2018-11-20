@@ -4,6 +4,7 @@ import { Grid } from 'semantic-ui-react'
 import Diagram from './Diagram'
 import SelectDiagramComponentsTable from './SelectDiagramComponentsTable'
 
+// Only a container for <SelectDiagramComponentsTable /> and <Diagram /> components
 class Statistics extends Component {
   render() {
     return (
