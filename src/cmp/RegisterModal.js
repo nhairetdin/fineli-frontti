@@ -81,7 +81,7 @@ class RegisterModal extends Component {
             <Icon name="at" />
             <input />
           </Input>
-          <h3>Salasana: 6 - 60 merkkiä</h3>
+          <h3>Salasana: 6 - 64 merkkiä</h3>
           <Input
             fluid={true}
             placeholder="Salasana"
