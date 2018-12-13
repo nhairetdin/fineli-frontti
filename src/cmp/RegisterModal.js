@@ -81,7 +81,7 @@ class RegisterModal extends Component {
             <Icon name="at" />
             <input />
           </Input>
-          <h3>Salasana: 6 - 64 merkkiä</h3>
+          <h3>Salasana:</h3>
           <Input
             fluid={true}
             placeholder="Salasana"
@@ -106,9 +106,7 @@ class RegisterModal extends Component {
           />
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={this.props.toggleRegisterModal}>
-            Sulje
-          </Button>
+          <Button negative onClick={this.props.toggleRegisterModal} icon="close" labelPosition="right" content="Sulje" />
           <Button positive onClick={this.submit} icon="checkmark" labelPosition="right" content="Lähetä" />
         </Modal.Actions>
       </Modal>

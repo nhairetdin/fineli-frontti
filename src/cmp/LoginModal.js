@@ -75,9 +75,7 @@ class LoginModal extends Component {
           />
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={this.props.toggleLoginModal}>
-            Sulje
-          </Button>
+          <Button negative onClick={this.props.toggleLoginModal} icon="close" labelPosition="right" content="Sulje" />
           <Button positive onClick={this.submit} icon="checkmark" labelPosition="right" content="Kirjaudu" />
         </Modal.Actions>
       </Modal>
