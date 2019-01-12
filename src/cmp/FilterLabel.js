@@ -36,24 +36,17 @@ class FilterLabel extends Component {
       percentage = this.calculatePercentage(recommendedvalue, componentvalue)
     }
     return (
-      <Popup
-        trigger={
-          <div style={percentage !== null ? this.style(percentage) : null}>
-            {this.props.nimi}{' '}
-            {percentage === null ? (
-              ''
-            ) : (
-              <span style={{ color: 'red' }}>
-                ({percentage}
-                %)
-              </span>
-            )}
-          </div>
-        }
-        content={this.props.nimi}
-        on="click"
-        hoverable={true}
-      />
+      <div style={percentage !== null ? this.style(percentage) : null} onClick={() => console.log(this.props.koodi)}>
+        {this.props.nimi}{' '}
+        {percentage === null ? (
+          ''
+        ) : (
+          <span style={{ color: 'red' }}>
+            ({percentage}
+            %)
+          </span>
+        )}
+      </div>
     )
   }
 }

@@ -101,7 +101,7 @@ class SearchResultsTable extends Component {
             Cell: row => <BarChart prot={row.original.PROT} fat={row.original.FAT} hh={row.original.CHOAVL} />
           },
           {
-            Header: <Icon disabled name="add to cart" />,
+            Header: <Icon disabled name="add circle" />,
             width: 40,
             Cell: row => (
               <input
@@ -132,6 +132,7 @@ class SearchResultsTable extends Component {
         defaultPageSize={35}
         className={'-highlight'}
         filterable
+        sortable={ false }
         defaultFilterMethod={(filter, row) => String(row[filter.id]).includes(filter.value.toUpperCase())}
         SubComponent={row => { // Simply print out the food data when food row is expanded
           return (
