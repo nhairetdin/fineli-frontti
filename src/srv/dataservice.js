@@ -7,7 +7,7 @@ import axios from 'axios'
 // Axios supports promises so we may also use async/await syntax
 // together with try/catch.
 
-const url = 'www.fineli.xyz/'
+const url = 'https://www.fineli.xyz/'
 const cfg = token => {
   return {
     headers: { authorization: `bearer ${token}` }
