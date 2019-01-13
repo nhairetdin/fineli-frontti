@@ -9,6 +9,7 @@ import cloneDeep from '../clonedeep'
 const initialState = {
   filters: {},
   sortCode: 'ENERC',
+  sortOrderDecreasing: true,
   components: [],
   componentsOriginalRows: [],
   activetab: 'search',
@@ -78,14 +79,18 @@ const applyFilters = newState => {
   return filteredArray
 }
 
-const sortResult = (data, sortCode) => {
+const sortResult = (data, sortCode, sortOrderDecreasing) => {
   return data.sort((a, b) => {
     a = a[sortCode]
     b = b[sortCode]
     a = (a === null || a === undefined) ? 0 : a
     b = (b === null || b === undefined) ? 0 : b
 
-    return parseFloat(b) < parseFloat(a) ? -1 : 1
+    if (!sortOrderDecreasing) {
+      return parseFloat(b) < parseFloat(a) ? 1 : -1
+    } else {
+      return parseFloat(b) < parseFloat(a) ? -1 : 1
+    }
   })
 }
 
@@ -120,8 +125,18 @@ const reducer = (state = initialState, action) => {
       return { ...state, activetab: action.data }
     }
     case 'SET_SORTCODE': {
-      console.log(action.data)
-      return { ...state, sortCode: action.data, results: [...sortResult(state.results, action.data)] }
+      let sortOrderDecreasing
+      if (action.data === state.sortCode) { // if user clicked same component, reverse sort ordering
+        sortOrderDecreasing = !state.sortOrderDecreasing
+        console.log(sortOrderDecreasing)
+      } else { // else decreasing
+        sortOrderDecreasing = true
+      }
+      return { 
+        ...state, 
+        sortCode: action.data, // action.data is the new sortcode
+        sortOrderDecreasing: sortOrderDecreasing,
+        results: [...sortResult(state.results, action.data, sortOrderDecreasing)] } // also give the sort order
     }
     case 'SET_USER': {
       return { ...state, user: action.data }
