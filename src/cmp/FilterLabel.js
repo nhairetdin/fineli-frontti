@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Popup } from 'semantic-ui-react'
+import { setSortcode } from '../rdc/reducer'
 
 // This is the component that displays a yellow bar and %-value of a
 // selected items relative share for each foodcomponent (enerc, prot, fat and so on)
@@ -36,7 +36,7 @@ class FilterLabel extends Component {
       percentage = this.calculatePercentage(recommendedvalue, componentvalue)
     }
     return (
-      <div style={percentage !== null ? this.style(percentage) : null} onClick={() => console.log(this.props.koodi)}>
+      <div style={percentage !== null ? this.style(percentage) : null} onClick={() => this.props.setSortcode(this.props.koodi)}>
         {this.props.nimi}{' '}
         {percentage === null ? (
           ''
@@ -58,4 +58,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(FilterLabel)
+export default connect(
+  mapStateToProps,
+  { setSortcode }
+)(FilterLabel)

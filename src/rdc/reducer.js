@@ -43,7 +43,6 @@ const applySpecdietFilters = newState => {
     return newState.basedata
   }
 
-  //let start = window.performance.now()
   let filtered = []
   newState.basedata.forEach(row => {
     let count = 0
@@ -61,10 +60,6 @@ const applySpecdietFilters = newState => {
       }
     }
   })
-
-  //let end = window.performance.now()
-  //let time = end - start
-  //console.log('Specdiet-filter time: ' + time, filtered)
   return [...filtered]
 }
 
@@ -80,12 +75,18 @@ const applyFilters = newState => {
     }
     return true
   })
-  //let end = window.performance.now()
-  //console.log(end - start)
-  return filteredArray.sort(
-    (a, b) =>
-      parseFloat(b[newState.sortCode]) - parseFloat(a[newState.sortCode])
-  )
+  return filteredArray
+}
+
+const sortResult = (data, sortCode) => {
+  return data.sort((a, b) => {
+    a = a[sortCode]
+    b = b[sortCode]
+    a = (a === null || a === undefined) ? 0 : a
+    b = (b === null || b === undefined) ? 0 : b
+
+    return parseFloat(b) < parseFloat(a) ? -1 : 1
+  })
 }
 
 const reducer = (state = initialState, action) => {
@@ -106,20 +107,21 @@ const reducer = (state = initialState, action) => {
       const newState = { ...state }
       newState.filters = { ...state.filters, ...action.data }
       newState.sortCode = action.sortCode
-      newState.results = applyFilters(newState)
+      newState.results = sortResult(applyFilters(newState), state.sortCode)
       return newState
     }
     case 'REMOVE_FILTER': {
       const newState = { ...state, filters: { ...state.filters } }
       delete newState.filters[action.data]
-      newState.results = applyFilters(newState)
+      newState.results = sortResult(applyFilters(newState), state.sortCode)
       return newState
     }
     case 'CHANGE_ACTIVE_TAB': {
       return { ...state, activetab: action.data }
     }
     case 'SET_SORTCODE': {
-      return { ...state, sortCode: action.data }
+      console.log(action.data)
+      return { ...state, sortCode: action.data, results: [...sortResult(state.results, action.data)] }
     }
     case 'SET_USER': {
       return { ...state, user: action.data }
@@ -176,7 +178,7 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_SPECDIET_CURRENT': {
       let newState = { ...state, specdietOptionsCurrent: action.data }
       newState.basedataFilteredBySpecdiet = applySpecdietFilters(newState)
-      newState.results = applyFilters(newState)
+      newState.results = sortResult(applyFilters(newState), state.sortCode)
       return newState
     }
     case 'SET_USER_MEALS': {
@@ -185,7 +187,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, meals: [...meals], activeMeal: activeMeal }
     }
     case 'SET_ACTIVE_MEAL': {
-      //return {...state, activeMeal: {...action.data, foods: [...action.data.foods]}}
       return { ...state, activeMeal: action.data }
     }
     case 'UPDATE_ACTIVE_MEAL_UPDATED': {
@@ -205,7 +206,6 @@ const reducer = (state = initialState, action) => {
       let index
       for (let i = 0; i < state.meals.length; i++) {
         if (state.meals[i].meal_id === state.activeMeal) {
-          //foods = [...state.meals[i].foods, { ...action.data }]
           foods = [
             ...state.meals[i].foods.filter(
               food => food.foodid !== action.data.foodid
@@ -240,16 +240,12 @@ const reducer = (state = initialState, action) => {
           break
         }
       }
-      //console.log(action.data, index)
-      //newState.meals[index].name = action.data
+
       newState.meals[index] = {
         ...newState.meals[index],
         name: action.data,
         notSaved: true
       }
-
-      //console.log('OLD NAME: ', state.meals[index].name)
-      //console.log('NEW NAME: ', newState.meals[index].name)
       return { ...newState }
     }
     case 'ADD_NEW_SAVED_MEAL': {
@@ -261,7 +257,6 @@ const reducer = (state = initialState, action) => {
         } else {
           return meal
         }
-        //return meal.meal_id === -1 ? action.data : meal
       })
       if (action.data.meal_id > 0 && !added) {
         meals = [action.data].concat(meals)
