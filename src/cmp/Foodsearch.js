@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Grid, Button } from 'semantic-ui-react'
+import { Grid, Button, Container } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import SearchOptions from './SearchOptions'
 import SearchResultsTable from './SearchResultsTable'
 import FilterTable from './FilterTable'
 import MealTable from './MealTable'
+import Infoscreen from './Infoscreen'
 import { addNewMeal } from '../rdc/reducer'
 import 'react-table/react-table.css'
 
@@ -37,8 +38,14 @@ class Foodsearch extends Component {
         </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column width={5} className={'leftColumn'} />
-          <Grid.Column width={8} className={'middleColumn'} />
+          <Grid.Column width={5} className={'leftColumn'} verticalAlign='middle'>
+            <Container>
+              Rajaa hakua, <b>100g</b> sisältää vähintään:
+            </Container>
+          </Grid.Column>
+          <Grid.Column width={8} className={'middleColumn'} verticalAlign='middle'>
+            <Infoscreen />
+          </Grid.Column>
           {this.props.user ? (
             <Grid.Column width={3} className={'rightColumn'}>
               <Button onClick={this.props.addNewMeal} size="mini" fluid compact positive>
