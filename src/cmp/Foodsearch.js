@@ -40,7 +40,7 @@ class Foodsearch extends Component {
         <Grid.Row>
           <Grid.Column width={5} className={'leftColumn'} verticalAlign='middle'>
             <Container>
-              Rajaa hakua, <b>100g</b> sisältää vähintään:
+              Prosenttia saantisuosituksesta (<b>100g</b>):
             </Container>
           </Grid.Column>
           <Grid.Column width={8} className={'middleColumn'} verticalAlign='middle'>
