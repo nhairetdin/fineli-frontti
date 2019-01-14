@@ -76,6 +76,7 @@ class MealTable extends Component {
       <ReactTable
         collapseOnDataChange={false}
         data={this.props.meals}
+        defaultPageSize={35}
         showPagination={false}
         className={'-highlight'}
         getTdProps={() => {
@@ -92,6 +93,7 @@ class MealTable extends Component {
           {
             Header: props => 'Omat ateriat',
             accessor: 'name',
+            sortable: false,
             Cell: row => (
               <div
                 onClick={() => this.handleRowClick(row.original, row.original.meal_id)}
@@ -105,8 +107,8 @@ class MealTable extends Component {
           },
           {
             Header: props => 'pvm.',
-            sortable: false,
             accessor: 'pvm',
+            sortable: false,
             width: 80,
             Cell: row => (
               <div onClick={() => this.handleRowClick(row.original, row.original.meal_id)}>{row.original.pvm}</div>
