@@ -6,6 +6,10 @@ import { setSortcode } from '../rdc/reducer'
 // selected items relative share for each foodcomponent (enerc, prot, fat and so on)
 // on the left, the filters area
 class FilterLabel extends Component {
+  state = {
+    hovered: false
+  }
+
   calculatePercentage = (recommendedvalue, componentvalue) => {
     if (recommendedvalue === null || componentvalue === null || componentvalue === 0 || recommendedvalue === 0) {
       return null
@@ -36,7 +40,11 @@ class FilterLabel extends Component {
       percentage = this.calculatePercentage(recommendedvalue, componentvalue)
     }
     return (
-      <div style={percentage !== null ? this.style(percentage) : null} onClick={() => this.props.setSortcode(this.props.koodi)}>
+      <div
+        style={percentage !== null ? this.style(percentage) : null}
+        onClick={() => this.props.setSortcode(this.props.koodi)}
+        onMouseEnter={() => this.setState({ hovered: true })}
+        onMouseLeave={() => this.setState({ hovered: false })}>
         {this.props.nimi}{' '}
         {percentage === null ? (
           ''
@@ -46,6 +54,7 @@ class FilterLabel extends Component {
             %)
           </span>
         )}
+        {this.state.hovered ? <span style={{ color: 'red' }}>{String.fromCharCode(8661)}</span> : null}
       </div>
     )
   }
