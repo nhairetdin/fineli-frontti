@@ -111,14 +111,14 @@ const reducer = (state = initialState, action) => {
     case 'ADD_FILTER': {
       const newState = { ...state }
       newState.filters = { ...state.filters, ...action.data }
-      newState.sortCode = action.sortCode
-      newState.results = sortResult(applyFilters(newState), state.sortCode)
+      //newState.sortCode = action.sortCode
+      newState.results = applyFilters(newState)
       return newState
     }
     case 'REMOVE_FILTER': {
       const newState = { ...state, filters: { ...state.filters } }
       delete newState.filters[action.data]
-      newState.results = sortResult(applyFilters(newState), state.sortCode)
+      newState.results = applyFilters(newState)
       return newState
     }
     case 'CHANGE_ACTIVE_TAB': {
