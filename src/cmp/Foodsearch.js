@@ -8,6 +8,7 @@ import MealTable from './MealTable'
 import Infoscreen from './Infoscreen'
 import { addNewMeal } from '../rdc/reducer'
 import 'react-table/react-table.css'
+import suistyles from '../styles/suistyles'
 
 // This class represents the entire search "page"
 class Foodsearch extends Component {
@@ -38,12 +39,14 @@ class Foodsearch extends Component {
         </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column width={5} className={'leftColumn'} verticalAlign='middle'>
+          <Grid.Column width={5} className={'leftColumn'} verticalAlign='middle' style={ suistyles.compactContainer }>
             <Container>
-              Prosenttia saantisuosituksesta (<b>100g</b>):
+              <b>Prosenttia saantisuosituksesta (annos <span style={{ color: 'red' }}>100g</span>)</b>
+              <br/>
+              Rajaa hakua ravintotekijöiden määrän perusteella:
             </Container>
           </Grid.Column>
-          <Grid.Column width={8} className={'middleColumn'} verticalAlign='middle'>
+          <Grid.Column width={8} className={'middleColumn'} verticalAlign='middle' style={ suistyles.compactContainer }>
             <Infoscreen />
           </Grid.Column>
           {this.props.user ? (

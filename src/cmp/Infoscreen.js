@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
 import { connect } from 'react-redux'
+import suistyles from '../styles/suistyles'
 
 class Infoscreen extends Component {
   render() {
     return (
       <Container fluid>
-        <b>Järjestys: </b>
-        {this.props.components[this.props.sortCode]}, ({this.props.ordering})
+        <b>
+          Järjestys: 
+          <span style={{ color: 'red' }}> {this.props.components[this.props.sortCode]}</span>
+        </b>, ({this.props.ordering})
+        <br/>
+        Muuta järjestystä klikkaamalla ravintotekijöitä vasemmalla, toinen klikkaus kääntää järjestyksen
       </Container>
     )
   }

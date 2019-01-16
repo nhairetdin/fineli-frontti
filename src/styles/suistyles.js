@@ -6,4 +6,13 @@ const searchOptions = {
   marginBottom: '0px'
 }
 
-export default { popupstyle, searchOptions }
+const compactContainer = {
+  fontSize: '0.85rem',
+  padding: '0.5rem'
+}
+
+export default { 
+  popupstyle, 
+  searchOptions,
+  compactContainer 
+}
