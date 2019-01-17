@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { changeTab, logout, toggleRegisterModal, toggleLoginModal } from '../rdc/reducer'
 import RegisterModal from './RegisterModal'
 import LoginModal from './LoginModal'
+import SiteInfoPopup from './SiteInfoPopup'
 import suistyles from '../styles/suistyles'
 
 // This component creates the top navbar, containing 3 links and login/logout
@@ -23,7 +24,7 @@ class Topmenu extends Component {
   }
 
   render() {
-    const activeItem = this.props.activetab // String ("search", "kuvaaja" or "asetukset") Tells which one is currently active tab 
+    const activeItem = this.props.activetab // String ("search", "kuvaaja" or "asetukset") Tells which one is currently active tab
     const options = [
       { key: 1, text: 'Kirjaudu', value: 1, onClick: this.props.toggleLoginModal },
       { key: 2, text: 'Uusi tunnus', value: 2, onClick: this.props.toggleRegisterModal }
@@ -63,6 +64,10 @@ class Topmenu extends Component {
               </Menu.Item>
             ]
           : null}
+
+        <Menu.Item>
+          <SiteInfoPopup />
+        </Menu.Item>
 
         {!this.props.user ? (
           <Menu.Item position="right" className="loginDropdown clearTopBorder">
