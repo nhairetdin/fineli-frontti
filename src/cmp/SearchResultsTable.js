@@ -6,7 +6,8 @@ import 'react-table/react-table.css'
 
 import tablestyles from '../styles/tablestyles'
 import BarChart from './BarChart'
-import { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal } from '../rdc/reducer'
+import TextHighlighter from './TextHighlighter'
+import { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword } from '../rdc/reducer'
 
 // This component creates the react-table for displaying the search results, foods
 class SearchResultsTable extends Component {
@@ -26,7 +27,7 @@ class SearchResultsTable extends Component {
         onMouseOver={() => {
           return this.mouseoverFoodnameColumn(row.original)
         }}>
-        {row.original.foodname}
+        <TextHighlighter textToHighlight={ row.original.foodname }/>
       </div>
     )
   }
@@ -38,6 +39,7 @@ class SearchResultsTable extends Component {
   // react-table's built-in searchfield, and since the search is based on foodname (elintarvike)
   // I need to pass in a ref of that, which is the firstColumn.
   searchphraseInputchange = e => {
+    e.target.value !== undefined ? this.props.setSearchKeyword(e.target.value) : null
     this.refs.reactTable.filterColumn(this.firstColumn, e.target.value)
   }
 
@@ -57,6 +59,7 @@ class SearchResultsTable extends Component {
   }
 
   render() {
+    console.log("RENDER resultstable")
     return (
       <ReactTable
         getTableProps={() => {
@@ -173,7 +176,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal },
+  { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword },
   null,
   { withRef: true }
 )(SearchResultsTable)
