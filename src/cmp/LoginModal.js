@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal, Input, Segment, Rail } from 'semantic-ui-react'
+import { Button, Modal, Segment, Rail, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { toggleLoginModal, login, setSuggestedAmounts, setUserMeals } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
@@ -62,17 +62,16 @@ class LoginModal extends Component {
         </Rail>
         <Modal.Header>Kirjaudu sisään</Modal.Header>
         <Modal.Content>
-          <h3>Sähköposti:</h3>
-          <Input fluid={true} placeholder="Sähköposti" size="large" name="email" onChange={this.onChangeHandler} />
-          <h3>Salasana</h3>
-          <Input
-            fluid={true}
-            placeholder="Salasana"
-            type="password"
-            size="large"
-            name="password"
-            onChange={this.onChangeHandler}
-          />
+          <Form size='large'>
+            <Form.Field>
+              <label>Sähköposti</label>
+              <input name="email" onChange={this.onChangeHandler} placeholder="Sähköposti..." />
+            </Form.Field>
+            <Form.Field>
+              <label>Salasana</label>
+              <input name="password" onChange={this.onChangeHandler} type="password" placeholder="Salasana..." />
+            </Form.Field>
+          </Form>
         </Modal.Content>
         <Modal.Actions>
           <Button negative onClick={this.props.toggleLoginModal} icon="close" labelPosition="right" content="Sulje" />

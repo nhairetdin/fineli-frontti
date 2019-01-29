@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Icon, Modal, Input, Segment, Rail, Checkbox } from 'semantic-ui-react'
+import { Button, Icon, Modal, Input, Segment, Rail, Checkbox, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { toggleRegisterModal, login, setSuggestedAmounts, setUserMeals } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'
@@ -11,9 +11,13 @@ class RegisterModal extends Component {
     this.state = {
       email: '',
       password: '',
-      radio: 'male', // Male set as default
+      gender: 'male', // Male set as default
       visible: false,
-      errorMsg: ''
+      errorMsg: '',
+      options: [
+        { key: 'm', text: 'Mies', value: 'male' },
+        { key: 'f', text: 'Nainen', value: 'female' }
+      ]
     }
   }
 
@@ -22,7 +26,7 @@ class RegisterModal extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
   // Is user Male/Female, store selection in state
-  onRadioChange = (e, { value }) => this.setState({ radio: value })
+  onSelectChange = (e, { value }) => this.setState({ gender: value })
 
   // Error will be displayed if server returns error (bad email / pass or backend fail)
   toggleErrorVisibility = errorMsg => {
@@ -41,7 +45,7 @@ class RegisterModal extends Component {
     const user = await dataservice.registerUser({
       email: this.state.email,
       password: this.state.password,
-      gender: this.state.radio
+      gender: this.state.gender
     })
     if (!user.error) {
       window.localStorage.setItem('user', JSON.stringify({ token: user.data.token, email: user.data.email }))
@@ -73,40 +77,22 @@ class RegisterModal extends Component {
           <h4>Kehitysvaiheessa, tietokanta nollataan ennen lopullista versiota.</h4>
         </Segment>
         <Modal.Content>
-          <h3>Sähköposti:</h3>
-          <Input
-            fluid={true}
-            iconPosition="left"
-            placeholder="Sähköposti"
-            size="large"
-            name="email"
-            onChange={this.onChangeHandler}>
-            <Icon name="at" />
-            <input />
-          </Input>
-          <h3>Salasana:</h3>
-          <Input
-            fluid={true}
-            placeholder="Salasana"
-            type="password"
-            size="large"
-            name="password"
-            onChange={this.onChangeHandler}
-          />
-          <Checkbox
-            radio
-            label="Mies"
-            value="male"
-            checked={this.state.radio === 'male'}
-            onChange={this.onRadioChange}
-          />
-          <Checkbox
-            radio
-            label="Nainen"
-            value="female"
-            checked={this.state.radio === 'female'}
-            onChange={this.onRadioChange}
-          />
+          <Form size='large'>
+            <Form.Field>
+              <label>Sähköposti</label>
+              <input name="email" onChange={ this.onChangeHandler } placeholder='Sähköposti...' />
+            </Form.Field>
+            <Form.Field>
+              <label>Salasana</label>
+              <input name="password" onChange={ this.onChangeHandler } type="password" placeholder='Salasana...' />
+            </Form.Field>
+            <Form.Select 
+              fluid label='Sukupuoli' 
+              options={this.state.options} 
+              placeholder='Mies' 
+              onChange={ this.onSelectChange } 
+            />
+          </Form>
         </Modal.Content>
         <Modal.Actions>
           <Button negative onClick={this.props.toggleRegisterModal} icon="close" labelPosition="right" content="Sulje" />
