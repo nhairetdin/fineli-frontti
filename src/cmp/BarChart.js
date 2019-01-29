@@ -3,7 +3,23 @@ import React from 'react'
 // A simple colored bar chart made with basic html/css.
 // Used to display the relative shares between prot/fat/hh
 // in the table. Width is simply defined as a css rule.
-const BarChart = ({ prot, fat, hh }) => {
+const BarChart = (props) => {
+  let { prot, fat, hh } = Object.keys(props).reduce((res, item) => {
+    res[item] = parseFloat(props[item])
+    return res
+  }, {})
+  
+  const diff = (prot+fat+hh) - 100
+  if (diff > 0) {
+    if (prot > 50) {
+      prot = prot - diff
+    } else if (fat > 50) {
+      fat = fat - diff
+    } else {
+      hh = hh - diff
+    }
+  }
+
   const protStyle = {
     width: `${prot}%`,
     height: '10px',
