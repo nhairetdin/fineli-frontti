@@ -244,3 +244,7 @@ input[type="number"] {
 .ui.fluid.dropdown {
   max-height: 38px !important;
 }
+
+.ReactTable .-pagination input, .ReactTable .-pagination select {
+  padding: 0 !important;
+}

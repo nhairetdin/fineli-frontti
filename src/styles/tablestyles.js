@@ -39,7 +39,6 @@ const filterrow = {
 
 const pagination = {
   style: {
-    maxHeight: '2.3rem',
     fontSize: '0.9rem'
   }
 }
