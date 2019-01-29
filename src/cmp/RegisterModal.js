@@ -69,6 +69,9 @@ class RegisterModal extends Component {
           </Segment>
         </Rail>
         <Modal.Header>Uusi käyttäjätunnus</Modal.Header>
+        <Segment inverted color="red" secondary>
+          <h4>Kehitysvaiheessa, tietokanta nollataan ennen lopullista versiota.</h4>
+        </Segment>
         <Modal.Content>
           <h3>Sähköposti:</h3>
           <Input

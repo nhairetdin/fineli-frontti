@@ -19,14 +19,6 @@ const SiteInfoPopup = () => (
         Alkuperäislähde: Terveyden ja hyvinvoinnin laitos, Ravitsemusyksikkö. Fineli. Elintarvikkeiden
         koostumustietokanta. Versio 19. Helsinki 2018.
       </p>
-      <p>
-        <b>Kehitys</b>
-        <br />
-        Nico Hairetdin 2019
-        <br />
-        sukunimi.etunimi@gmail.com
-        <br />
-      </p>
     </Popup.Content>
   </Popup>
 )
