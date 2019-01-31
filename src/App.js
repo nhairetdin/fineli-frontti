@@ -28,6 +28,7 @@ class App extends Component {
         const user = JSON.parse(window.localStorage.getItem('user'))
         //console.log(user.token)
         const userdata = await dataservice.loadUserdata(user.token)
+        console.log('App.js:31 - RECOMMENDATIONS:', userdata.data[0])
         this.props.setSuggestedAmounts(userdata.data[0])
         this.props.setUserMeals(userdata.data[1])
         this.props.login()

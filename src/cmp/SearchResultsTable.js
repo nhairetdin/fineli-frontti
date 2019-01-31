@@ -7,7 +7,7 @@ import 'react-table/react-table.css'
 import tablestyles from '../styles/tablestyles'
 import BarChart from './BarChart'
 import TextHighlighter from './TextHighlighter'
-import { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword } from '../rdc/reducer'
+import { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword, pinFood, unpinFood } from '../rdc/reducer'
 
 // This component creates the react-table for displaying the search results, foods
 class SearchResultsTable extends Component {
@@ -24,9 +24,17 @@ class SearchResultsTable extends Component {
     id: 666,
     Cell: row => (
       <div
-        onMouseOver={() => {
+        onMouseOver={ () => {
           return this.mouseoverFoodnameColumn(row.original)
-        }}>
+        }}
+        onClick={ () => {
+          if (row.original.pinned) {
+            this.props.unpinFood(row.original.foodid)
+          } else {
+            this.props.pinFood(row.original.foodid)
+          }
+        }}
+      >
         <TextHighlighter textToHighlight={ row.original.foodname }/>
       </div>
     )
@@ -68,7 +76,7 @@ class SearchResultsTable extends Component {
           }
         }}
         ref="reactTable"
-        data={this.props.basedata}
+        data={ [...this.props.basedataPinned, ...this.props.basedata] }
         columns={[
           this.firstColumn,
           {
@@ -117,6 +125,18 @@ class SearchResultsTable extends Component {
             )
           }
         ]}
+        getTrProps={(state, row, column) => {
+          if (row === undefined) {
+            return {}
+          }
+          if (row.original.pinned) {
+            return {
+              style: { background: 'lightcyan', fontWeight: 'bold' }
+            }
+          } else {
+            return {}
+          }
+        }}
         getTdProps={() => {
           return tablestyles.tabledata
         }}
@@ -136,7 +156,9 @@ class SearchResultsTable extends Component {
         className={'-highlight'}
         filterable
         sortable={ false }
-        defaultFilterMethod={(filter, row) => String(row[filter.id]).includes(filter.value.toUpperCase())}
+        defaultFilterMethod={(filter, row) => {
+          return String(row[filter.id]).includes(filter.value.toUpperCase()) || row._original.pinned === true
+        }}
         SubComponent={row => { // Simply print out the food data when food row is expanded
           return (
             <Container fluid>
@@ -170,13 +192,14 @@ const mapStateToProps = state => {
     basedata: state.results,
     storecomponents: state.components,
     componentsOriginalRows: state.componentsOriginalRows,
-    user: state.user
+    user: state.user,
+    basedataPinned: state.basedataPinned
   }
 }
 
 export default connect(
   mapStateToProps,
-  { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword },
+  { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword, pinFood, unpinFood },
   null,
   { withRef: true }
 )(SearchResultsTable)

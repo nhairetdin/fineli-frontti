@@ -16,6 +16,7 @@ const initialState = {
   basedata: [],
   basedataFilteredBySpecdiet: [],
   basedataFilteredByComponents: [],
+  basedataPinned: [],
   results: [],
   user: false,
   registerModalOpen: false,
@@ -332,6 +333,21 @@ const reducer = (state = initialState, action) => {
         ]
       }
     }
+    case 'PIN_FOOD': {
+      let pinnedFood
+      for (let i = 0; i < state.basedata.length; i++) {
+        if (state.basedata[i].foodid === action.data) {
+          pinnedFood = { ...state.basedata[i], pinned: true }
+          break
+        }
+      }
+      return { ...state, basedataPinned: [...state.basedataPinned, { ...pinnedFood }]}
+    }
+    case 'UNPIN_FOOD': {
+      return { ...state, basedataPinned: [ ...state.basedataPinned.filter((item) => {
+        return item.foodid !== action.data
+      })]}
+    }
     default:
       return state
   }
@@ -596,6 +612,20 @@ export const removeFoodFromMeal = (meal_id, foodid) => {
       meal_id: meal_id,
       foodid: foodid
     }
+  }
+}
+
+export const pinFood = (foodid) => {
+  return {
+    type: 'PIN_FOOD',
+    data: foodid
+  }
+}
+
+export const unpinFood = (foodid) => {
+  return {
+    type: 'UNPIN_FOOD',
+    data: foodid
   }
 }
 
