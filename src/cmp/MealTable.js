@@ -79,6 +79,9 @@ class MealTable extends Component {
         defaultPageSize={35}
         showPagination={false}
         className={'-highlight'}
+        getProps={ () => { 
+          return { style: tablestyles.stickyTable } 
+        }}
         getTdProps={() => {
           return tablestyles.tabledata
         }}

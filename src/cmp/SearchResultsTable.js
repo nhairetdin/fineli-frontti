@@ -70,10 +70,11 @@ class SearchResultsTable extends Component {
     console.log("RENDER resultstable")
     return (
       <ReactTable
+        getProps={ () => { 
+          return { style: tablestyles.stickyTable } 
+        }}
         getTableProps={() => {
-          return {
-            onMouseLeave: e => this.mouseLeaveTable(e)
-          }
+          return { onMouseLeave: e => this.mouseLeaveTable(e) }
         }}
         ref="reactTable"
         data={ [...this.props.basedataPinned, ...this.props.basedata] }

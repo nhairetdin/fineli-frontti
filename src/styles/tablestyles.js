@@ -94,6 +94,11 @@ const inputRecommendationNotSet = {
   border: '1px solid #cecece'
 }
 
+const stickyTable = {
+  position: 'sticky',
+  top: '0'
+}
+
 export default { 
   tabledata, 
   filtertabledata, 
@@ -107,4 +112,5 @@ export default {
   mealTableSubRow,
   activeMeal,
   inputRecommendationSet,
-  inputRecommendationNotSet }
+  inputRecommendationNotSet,
+  stickyTable }
