@@ -179,7 +179,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, foodItemHover: null }
     }
     case 'SET_SUGGESTED_AMOUNTS': {
-      return { ...state, suggestedAmounts: action.data }
+      return { ...state, suggestedAmounts: { ...action.data } }
     }
     case 'SET_DIAGRAM_COMPONENTS': {
       return {
@@ -355,45 +355,9 @@ const reducer = (state = initialState, action) => {
 
 // Action creators:
 
-export const initBasedata = () => {
-  return async dispatch => {
-    let basedata = []
-    let components = []
-    let specdietRows = []
-    if (!window.localStorage.getItem('basedata')) {
-      //console.log('Loading data from the server.')
-      window.localStorage.setItem(
-        'basedata',
-        JSON.stringify(await dataservice.getBasedata('food'))
-      )
-      window.localStorage.setItem(
-        'components',
-        JSON.stringify(await dataservice.getComponents())
-      )
-    }
-    basedata = JSON.parse(window.localStorage.getItem('basedata'))
-    components = JSON.parse(window.localStorage.getItem('components'))
-    specdietRows = await dataservice.getSpecdietRows()
-    const specdietOptions = specdietRows.reduce((res, i) => {
-      if (res.length === 0) {
-        return [{ key: i.thscode, text: i.shortname, value: i.thscode }]
-      } else {
-        return res.concat({
-          key: i.thscode,
-          text: i.shortname,
-          value: i.thscode
-        })
-      }
-    }, [])
-    //console.log(specdietRows)
-    dispatch({
-      type: 'INIT_BASEDATA',
-      data: basedata,
-      components: components.classifiedRows,
-      componentsOriginalRows: components.originalRows,
-      suggestedAmounts: components.originalRows[1],
-      specdietOptions: specdietOptions
-    })
+export const initBasedata = (data) => {
+  return {
+    type: 'INIT_BASEDATA', ...data 
   }
 }
 
@@ -436,7 +400,6 @@ export const logout = data => {
 }
 
 export const login = () => {
-  //window.localStorage.setItem('user', JSON.stringify(data))
   return {
     type: 'SET_USER',
     data: JSON.parse(window.localStorage.getItem('user'))

@@ -46,7 +46,7 @@ class Settings extends Component {
 
   render() {
     //console.log(this.props.components)
-    //console.log(this.props.recommendations)
+    console.log(this.props.recommendations)
     //console.log(this.state)
     return (
       <Grid celled="internally">

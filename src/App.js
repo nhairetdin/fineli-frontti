@@ -21,22 +21,52 @@ class App extends Component {
   // if it does, it means that user is logged in. Since user is logged in,
   // we may load user's personal data from the database and set it into redux store.
   componentDidMount = async () => {
-    this.props.initBasedata()
+    this.props.initBasedata(await this.initialize())
+
     if(window.localStorage.getItem('user')) {
       // user is logged in
       try {
         const user = JSON.parse(window.localStorage.getItem('user'))
-        //console.log(user.token)
         const userdata = await dataservice.loadUserdata(user.token)
-        console.log('App.js:31 - RECOMMENDATIONS:', userdata.data[0])
         this.props.setSuggestedAmounts(userdata.data[0])
         this.props.setUserMeals(userdata.data[1])
         this.props.login()
-        console.log(userdata.data[0])
       } catch (e) {
         console.log("failed to load userdata", e)
       }
-      //this.props.login()
+    }
+  }
+
+  initialize = async () => {
+    let basedata = JSON.parse(window.localStorage.getItem('basedata'))
+    let components = JSON.parse(window.localStorage.getItem('components'))
+    let specdietRows = await dataservice.getSpecdietRows()
+
+    if (basedata === null || components === null) {
+      basedata = await dataservice.getBasedata('food')
+      components = await dataservice.getComponents()
+      window.localStorage.setItem('basedata', JSON.stringify(basedata))
+      window.localStorage.setItem('components', JSON.stringify(components))
+    }
+
+    const specdietOptions = specdietRows.reduce((res, i) => {
+      if (res.length === 0) {
+        return [{ key: i.thscode, text: i.shortname, value: i.thscode }]
+      } else {
+        return res.concat({
+          key: i.thscode,
+          text: i.shortname,
+          value: i.thscode
+        })
+      }
+    }, [])
+
+    return {
+      data: basedata,
+      components: components.classifiedRows,
+      componentsOriginalRows: components.originalRows,
+      suggestedAmounts: components.originalRows[1],
+      specdietOptions: specdietOptions
     }
   }
 
