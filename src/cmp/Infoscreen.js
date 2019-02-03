@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import suistyles from '../styles/suistyles'
 
 class Infoscreen extends Component {
   render() {

@@ -7,6 +7,7 @@ import 'react-table/react-table.css'
 import tablestyles from '../styles/tablestyles'
 import BarChart from './BarChart'
 import TextHighlighter from './TextHighlighter'
+import Pin from './Pin'
 import { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword, pinFood, unpinFood } from '../rdc/reducer'
 
 // This component creates the react-table for displaying the search results, foods
@@ -15,6 +16,13 @@ class SearchResultsTable extends Component {
   // can be accessed by other components and set null when leave
   mouseoverFoodnameColumn = row => this.props.setFoodItemHover(row)
   mouseLeaveTable = e => this.props.setFoodItemHoverNull()
+  togglePin = row => {
+    if (row.original.pinned) {
+      this.props.unpinFood(row.original.foodid)
+    } else {
+      this.props.pinFood(row.original.foodid)
+    }
+  }
 
   // First column needs a little special treatment, other columns are defined
   // in <ReactTable columns={}... in return()
@@ -23,18 +31,7 @@ class SearchResultsTable extends Component {
     accessor: 'foodname',
     id: 666,
     Cell: row => (
-      <div
-        onMouseOver={ () => {
-          return this.mouseoverFoodnameColumn(row.original)
-        }}
-        onClick={ () => {
-          if (row.original.pinned) {
-            this.props.unpinFood(row.original.foodid)
-          } else {
-            this.props.pinFood(row.original.foodid)
-          }
-        }}
-      >
+      <div onClick={ () => { this.togglePin(row) } }>
         <TextHighlighter textToHighlight={ row.original.foodname }/>
       </div>
     )
@@ -80,6 +77,11 @@ class SearchResultsTable extends Component {
         data={ [...this.props.basedataPinned, ...this.props.basedata] }
         columns={[
           this.firstColumn,
+          {
+            width: 30,
+            Cell: row => <Pin row={ row } onClick={ this.togglePin } />,
+            style: tablestyles.cellCenterContent
+          },
           {
             Header: 'prot',
             accessor: 'PROT',
@@ -127,15 +129,22 @@ class SearchResultsTable extends Component {
           }
         ]}
         getTrProps={(state, row, column) => {
+          let trProps = { 
+            onMouseEnter: () => this.props.setFoodItemHover(row.original)
+          }
+
           if (row === undefined) {
-            return {}
+            return trProps
           }
           if (row.original.pinned) {
             return {
-              style: { background: 'lightcyan', fontWeight: 'bold' }
+              style: { background: 'lightcyan', fontWeight: 'bold' },
+              ...trProps
             }
           } else {
-            return {}
+            return {
+              ...trProps
+            }
           }
         }}
         getTdProps={() => {

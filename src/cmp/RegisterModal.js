@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Icon, Modal, Input, Segment, Rail, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Modal, Segment, Rail, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { toggleRegisterModal, login, setSuggestedAmounts, setUserMeals } from '../rdc/reducer'
 import dataservice from '../srv/dataservice'

@@ -61,6 +61,10 @@ const cellinput = {
   border: '1px solid #cecece'
 }
 
+const cellCenterContent = {
+  textAlign: 'center'
+}
+
 const filterlabel = {
   // backgroundColor: 'lightgray',
   // padding: '0px'
@@ -106,7 +110,8 @@ export default {
   list, 
   pagination, 
   headerrow, 
-  cellinput, 
+  cellinput,
+  cellCenterContent, 
   filterlabel, 
   tableheaderInvisible, 
   mealTableSubRow,
