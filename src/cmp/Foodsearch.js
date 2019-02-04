@@ -39,7 +39,7 @@ class Foodsearch extends Component {
         </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column width={5} className={'leftColumn'} verticalAlign='middle' style={ suistyles.compactContainer }>
+          <Grid.Column width={3} className={'leftColumn'} verticalAlign='middle' style={ suistyles.compactContainer }>
             <Container>
               <b>Prosenttia saantisuosituksesta (annos <span style={{ color: 'red' }}>100g</span>)</b>
               <br/>
@@ -50,7 +50,7 @@ class Foodsearch extends Component {
             <Infoscreen />
           </Grid.Column>
           {this.props.user ? (
-            <Grid.Column width={3} className={'rightColumn'}>
+            <Grid.Column width={4} className={'rightColumn'}>
               <Button onClick={this.props.addNewMeal} size="mini" fluid compact positive>
                 Uusi ateria +
               </Button>
@@ -59,14 +59,14 @@ class Foodsearch extends Component {
         </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column width={5} className={'leftColumn'}>
+          <Grid.Column width={3} className={'leftColumn'}>
             <FilterTable />
           </Grid.Column>
           <Grid.Column width={8} className={'middleColumn'}>
             <SearchResultsTable ref="searchResultsTable" />
           </Grid.Column>
           {this.props.user ? (
-            <Grid.Column width={3} className={'rightColumn'}>
+            <Grid.Column width={4} className={'rightColumn'}>
               <MealTable />
             </Grid.Column>
           ) : null}

@@ -122,6 +122,7 @@ body {
 
 .leftColumn {
   max-width:  20rem !important;
+  min-width:  20rem !important;
 }
 
 .middleColumn {
@@ -130,6 +131,7 @@ body {
 
 .rightColumn {
   min-width:  20rem !important;
+  max-width:  30rem !important;
 }
 
 /*tr.resultRow:hover {
