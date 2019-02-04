@@ -24,6 +24,10 @@ class FilterTable extends Component {
     }
   }
 
+  getPlaceholder = row => {
+    return row.original.yksikko.toLowerCase()
+  }
+
   render() {
     // Construct the table in map() function and feed data
     return (
@@ -50,7 +54,7 @@ class FilterTable extends Component {
                   Header: <Icon disabled name="filter" />,
                   Cell: row => (
                     <input
-                      placeholder={row.original.yksikko.toLowerCase()}
+                      placeholder={this.getPlaceholder(row)}
                       style={tablestyles.cellinput}
                       onChange={e => this.inputChangeListener(row.original.koodi, e)}
                       type="number"

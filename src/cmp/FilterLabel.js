@@ -25,14 +25,20 @@ class FilterLabel extends Component {
     }
   }
 
+  formatName = (name, len) => {
+    const formattedName = name.slice(0,len)
+    return name.length > len ? formattedName + ".." : formattedName
+  }
+
   render() {
     let percentage = null
+    let componentvalue = 0
     if (this.props.foodItemHover !== null) {
       let recommendedvalue =
         this.props.suggestions[this.props.koodi.toLowerCase()] !== null
           ? parseFloat(this.props.suggestions[this.props.koodi.toLowerCase()])
           : 0
-      let componentvalue = this.props.foodItemHover.reduce((res, food) => {
+      componentvalue = this.props.foodItemHover.reduce((res, food) => {
         let val = food[this.props.koodi] !== null ? parseFloat(food[this.props.koodi]) : 0
         let amount = food.amount || 100 // if no amount given, use default (100g)
         return res + val * (amount / 100)
@@ -45,13 +51,13 @@ class FilterLabel extends Component {
         onClick={() => this.props.setSortcode(this.props.koodi)}
         onMouseEnter={() => this.setState({ hovered: true })}
         onMouseLeave={() => this.setState({ hovered: false })}>
-        {this.props.nimi}{' '}
+        {this.formatName(this.props.nimi, 22)}{' '}
         {percentage === null ? (
-          ''
+          <span style={{float: 'right'}}>{componentvalue.toFixed(1)}</span>
         ) : (
-          <span style={{ color: 'red' }}>
-            ({percentage}
-            %)
+          <span>
+            <span style={{ color: 'red' }}>({percentage}%)</span>
+            <span style={{float: 'right'}}>{componentvalue.toFixed(1)}</span>
           </span>
         )}
         {this.state.hovered ? <span style={{ color: 'red' }}>{String.fromCharCode(8661)}</span> : null}
