@@ -76,9 +76,13 @@ class MealTable extends Component {
       <ReactTable
         collapseOnDataChange={false}
         data={this.props.meals}
-        defaultPageSize={35}
+        defaultPageSize={33}
+        filterable
         showPageSizeOptions={false}
         className={'-highlight'}
+        defaultFilterMethod={(filter, row) => {
+          return String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
+        }}
         getProps={ () => { 
           return { style: tablestyles.stickyTable } 
         }}
@@ -135,6 +139,7 @@ class MealTable extends Component {
                 <Icon fitted name="copy outline" />
               </Button>
             ),
+            filterable: false,
             sortable: false,
             width: 25,
             getProps: (state, row) => {
@@ -155,6 +160,7 @@ class MealTable extends Component {
                 <Icon fitted name="trash alternate" />
               </Button>
             ),
+            filterable: false,
             sortable: false,
             width: 25,
             getProps: (state, row) => {
