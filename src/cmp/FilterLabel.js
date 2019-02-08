@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setSortcode } from '../rdc/reducer'
+import { setSortcode, setComponentItemHover } from '../rdc/reducer'
 
 // This is the component that displays a yellow bar and %-value of a
 // selected items relative share for each foodcomponent (enerc, prot, fat and so on)
@@ -49,8 +49,17 @@ class FilterLabel extends Component {
       <div
         style={percentage !== null ? this.style(percentage) : null}
         onClick={() => this.props.setSortcode(this.props.koodi)}
-        onMouseEnter={() => this.setState({ hovered: true })}
-        onMouseLeave={() => this.setState({ hovered: false })}>
+        onMouseEnter={ () => {
+          this.props.setComponentItemHover({
+            code: this.props.koodi,
+            unit: this.props.yksikko
+          })
+          this.setState({ hovered: true })
+        }}
+        onMouseLeave={() => {
+          //this.props.setComponentItemHover(null)
+          this.setState({ hovered: false })
+        }}>
         {this.formatName(this.props.nimi, 22)}{' '}
         {percentage === null ? (
           <span style={{float: 'right'}}>{componentvalue.toFixed(1)}</span>
@@ -75,5 +84,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { setSortcode }
+  { setSortcode, setComponentItemHover }
 )(FilterLabel)

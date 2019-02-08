@@ -11,6 +11,7 @@ const initialState = {
   sortCode: 'ENERC',
   sortOrderDecreasing: true,
   components: [],
+  componentItemHover: null,
   componentsOriginalRows: [],
   activetab: 'search',
   basedata: [],
@@ -348,6 +349,9 @@ const reducer = (state = initialState, action) => {
         return item.foodid !== action.data
       })]}
     }
+    case 'SET_COMPONENT_ITEM_HOVER': {
+      return { ...state, componentItemHover: action.data }
+    }
     default:
       return state
   }
@@ -589,6 +593,13 @@ export const unpinFood = (foodid) => {
   return {
     type: 'UNPIN_FOOD',
     data: foodid
+  }
+}
+
+export const setComponentItemHover = (code) => {
+  return {
+    type: 'SET_COMPONENT_ITEM_HOVER',
+    data: code
   }
 }
 

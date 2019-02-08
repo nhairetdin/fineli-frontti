@@ -8,6 +8,7 @@ import tablestyles from '../styles/tablestyles'
 import BarChart from './BarChart'
 import TextHighlighter from './TextHighlighter'
 import Pin from './Pin'
+import Sum from './Sum'
 import { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword, pinFood, unpinFood } from '../rdc/reducer'
 
 // This component creates the react-table for displaying the search results, foods
@@ -109,6 +110,11 @@ class SearchResultsTable extends Component {
             width: 40,
             sortMethod: this.tableColumnSortOverride,
             Cell: row => <div>{Math.round(0.2388 * parseFloat(row.value))}</div>
+          },
+          {
+            Header: row => <Sum row={row.original} header={ true } />,
+            width: 60,
+            Cell: row => <Sum row={row.original} />
           },
           {
             Header: 'Jakauma (prot, fat, hh)',

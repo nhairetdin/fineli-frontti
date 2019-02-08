@@ -47,7 +47,12 @@ class FilterTable extends Component {
                 {
                   Header: group.data[0].ylempiluokka,
                   Cell: row => (
-                    <FilterLabel nimi={row.original.nimi} foodid={row.original.foodid} koodi={row.original.koodi} />
+                    <FilterLabel 
+                      nimi={row.original.nimi} 
+                      foodid={row.original.foodid} 
+                      koodi={row.original.koodi}
+                      yksikko={row.original.yksikko}
+                    />
                   )
                 },
                 {
