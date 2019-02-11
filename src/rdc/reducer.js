@@ -257,6 +257,10 @@ const reducer = (state = initialState, action) => {
           break
         }
       }
+      //console.log("newState.meals[index].name", newState.meals[index].name)
+      if (newState.meals[index].name === action.data) {
+        return state // don't change unless the name is actually different, fix this later
+      }
 
       newState.meals[index] = {
         ...newState.meals[index],

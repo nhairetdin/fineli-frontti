@@ -15,7 +15,8 @@ import {
   saveNewMeal,
   removeMeal,
   updateMeal,
-  setFoodItemHoverFromMeal
+  setFoodItemHoverFromMeal,
+  changeMealName
 } from '../rdc/reducer'
 
 // This component creates the table (react-table) on the right side of the page,
@@ -70,6 +71,38 @@ class MealTable extends Component {
     }
   }
 
+  renderEditable = (cellInfo) => {
+    return (
+      <div
+        onKeyPress={e => {
+          if (e.which === 13) {
+            e.preventDefault()
+          }
+        }}
+        onPaste={e => {
+          e.preventDefault()
+        }}
+        spellCheck={false}
+        onClick={() => this.handleRowClick(cellInfo.original, cellInfo.original.meal_id)}
+        onMouseOver={() => this.handleMouseOver(cellInfo.original.foods)}
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          //const regexp = new RegExp(String.fromCharCode(160), "g")
+          let value = e.target.innerHTML
+          value = value.replace(/\&nbsp;|;/g, "")
+          const data = [...this.props.meals]
+          //data[cellInfo.index][cellInfo.column.id] = value
+          console.log(value)
+          this.props.changeMealName(value)
+        }}
+        dangerouslySetInnerHTML={{
+          __html: this.props.meals[cellInfo.index][cellInfo.column.id]
+        }}
+      />
+    )
+  }
+
   render() {
     //console.log('EXPANDED: ', this.state.expanded)
     return (
@@ -81,10 +114,12 @@ class MealTable extends Component {
         showPageSizeOptions={false}
         className={'-highlight'}
         defaultFilterMethod={(filter, row) => {
-          return String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
+          return String(row[filter.id])
+            .toLowerCase()
+            .includes(filter.value.toLowerCase())
         }}
-        getProps={ () => { 
-          return { style: tablestyles.stickyTable } 
+        getProps={() => {
+          return { style: tablestyles.stickyTable }
         }}
         getPaginationProps={() => {
           return tablestyles.pagination
@@ -104,13 +139,14 @@ class MealTable extends Component {
             Header: props => 'Omat ateriat',
             accessor: 'name',
             sortable: false,
-            Cell: row => (
-              <div
-                onClick={() => this.handleRowClick(row.original, row.original.meal_id)}
-                onMouseOver={() => this.handleMouseOver(row.original.foods)}>
-                {row.original.name}
-              </div>
-            ),
+            Cell: this.renderEditable,
+            // Cell: row => (
+            //   <div
+            //     onClick={() => this.handleRowClick(row.original, row.original.meal_id)}
+            //     onMouseOver={() => this.handleMouseOver(row.original.foods)}>
+            //     {row.original.name}
+            //   </div>
+            // ),
             getProps: (state, row) => {
               return { style: { fontWeight: 'bold' } }
             }
@@ -215,6 +251,7 @@ export default connect(
     saveNewMeal,
     removeMeal,
     updateMeal,
-    setFoodItemHoverFromMeal
+    setFoodItemHoverFromMeal,
+    changeMealName
   }
 )(MealTable)

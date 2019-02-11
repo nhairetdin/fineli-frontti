@@ -3,7 +3,7 @@ const tabledata = {
   	paddingTop: '2px',
   	paddingBottom: '2px',
   	fontSize: '0.85rem',
-  	lineHeight: '1rem'
+  	lineHeight: '1.1rem'
   }
 }
 

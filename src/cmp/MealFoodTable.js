@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Table, Input, Form, Button, Icon } from 'semantic-ui-react'
-import { changeMealName, removeFoodFromMeal } from '../rdc/reducer'
+import { removeFoodFromMeal } from '../rdc/reducer'
 
 // This components creates the inner table for user's personal foods, 
 // showing all foods inside each meal
@@ -19,12 +19,6 @@ class MealFoodTable extends Component {
   render() {
     return (
       <div>
-        <Form>
-          <Form.Field inline>
-            <label>Nimi:</label>
-            <Input fluid placeholder={this.props.foods.name} size="mini" onChange={e => this.handleNameChange(e)} />
-          </Form.Field>
-        </Form>
         <Table size="small" compact="very" striped>
           <Table.Body>
             {this.props.foods.foods.map(food => (
@@ -61,5 +55,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { changeMealName, removeFoodFromMeal }
+  { removeFoodFromMeal }
 )(MealFoodTable)
