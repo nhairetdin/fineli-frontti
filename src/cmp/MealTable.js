@@ -29,9 +29,9 @@ class MealTable extends Component {
   }
 
   // Functions for click events
-  handleRowClick = (row, id) => {
+  handleRowClick = (meal) => {
     this.props.resetActiveMealUpdated()
-    this.props.setActiveMeal(id)
+    this.props.setActiveMeal(meal)
   }
 
   handleMouseOver = foods => {
@@ -130,7 +130,7 @@ class MealTable extends Component {
         getTrProps={(state, rowInfo, column, instance) => {
           return {
             style: {
-              backgroundColor: rowInfo ? (rowInfo.original.meal_id === this.props.activeMeal ? '#fbbd08' : null) : null
+              backgroundColor: rowInfo ? (rowInfo.original.meal_id === this.props.activeMeal.meal_id ? '#fbbd08' : null) : null
             }
           }
         }}
@@ -157,7 +157,7 @@ class MealTable extends Component {
             sortable: false,
             width: 80,
             Cell: row => (
-              <div onClick={() => this.handleRowClick(row.original, row.original.meal_id)}>{row.original.pvm}</div>
+              <div onClick={() => this.handleRowClick(row.original)}>{row.original.pvm}</div>
             ),
             getProps: (state, row) => {
               return { style: { fontWeight: 'bold' } }

@@ -31,7 +31,9 @@ const initialState = {
   specdietOptions: [],
   specdietOptionsCurrent: [],
   meals: [],
-  activeMeal: -1,
+  activeMeal: {
+    meal_id: -1
+  },
   activeMealUpdated: {},
   initialMeal: {
     name: 'Uusi ateria',
@@ -200,11 +202,11 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_USER_MEALS': {
       const meals = action.data.sort((a, b) => b.meal_id - a.meal_id)
-      const activeMeal = meals.length > 0 ? meals[0].meal_id : -1 // set active meal to be 'meal_id' of last element (newest meal) or initial (-1) if empty
+      const activeMeal = meals.length > 0 ? { ...meals[0], foods: [...meals[0].foods] } : { meal_id: -1} // set active meal to be 'meal_id' of last element (newest meal) or initial (-1) if empty
       return { ...state, meals: [...meals], activeMeal: activeMeal }
     }
     case 'SET_ACTIVE_MEAL': {
-      return { ...state, activeMeal: action.data }
+      return { ...state, activeMeal: { ...action.data, foods: [...action.data.foods]} }
     }
     case 'UPDATE_ACTIVE_MEAL_UPDATED': {
       return {
@@ -222,7 +224,7 @@ const reducer = (state = initialState, action) => {
       let foods
       let index
       for (let i = 0; i < state.meals.length; i++) {
-        if (state.meals[i].meal_id === state.activeMeal) {
+        if (state.meals[i].meal_id === state.activeMeal.meal_id) {
           foods = [
             ...state.meals[i].foods.filter(
               food => food.foodid !== action.data.foodid
@@ -245,22 +247,26 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         meals: [{ ...state.initialMeal }, ...state.meals],
-        activeMeal: -1
+        activeMeal: { meal_id: -1 }
       }
     }
     case 'CHANGE_MEAL_NAME': {
+      if (action.data === state.activeMeal.name) {
+        return state
+      }
+      
       let index
       let newState = { ...state, meals: [...state.meals] }
       for (let i = 0; i < state.meals.length; i++) {
-        if (state.meals[i].meal_id === state.activeMeal) {
+        if (state.meals[i].meal_id === state.activeMeal.meal_id) {
           index = i
           break
         }
       }
       //console.log("newState.meals[index].name", newState.meals[index].name)
-      if (newState.meals[index].name === action.data) {
-        return state // don't change unless the name is actually different, fix this later
-      }
+      // if (newState.meals[index].name === action.data) {
+      //   return state // don't change unless the name is actually different, fix this later
+      // }
 
       newState.meals[index] = {
         ...newState.meals[index],
@@ -282,7 +288,7 @@ const reducer = (state = initialState, action) => {
       if (action.data.meal_id > 0 && !added) {
         meals = [action.data].concat(meals)
       }
-      return { ...state, meals: meals, activeMeal: action.data.meal_id }
+      return { ...state, meals: meals, activeMeal: action.data }
     }
     case 'SET_ERROR_MESSAGE': {
       return { ...state, errorMessage: action.data }
@@ -294,12 +300,12 @@ const reducer = (state = initialState, action) => {
       const highestMealId = meals.reduce((max, meal) => {
         return max > meal.meal_id ? max : meal.meal_id
       }, 0)
-      return { ...state, meals: meals, activeMeal: highestMealId }
+      return { ...state, meals: meals, activeMeal: { meal_id: highestMealId } }
     }
     case 'ADD_UPDATED_MEAL': {
       return {
         ...state,
-        activeMeal: action.data.meal_id,
+        activeMeal: action.data,
         meals: [
           ...state.meals.map(meal => {
             return meal.meal_id === action.data.meal_id
@@ -489,6 +495,7 @@ export const setUserMeals = data => {
 }
 
 export const setActiveMeal = data => {
+  console.log(data)
   return {
     type: 'SET_ACTIVE_MEAL',
     data: data
