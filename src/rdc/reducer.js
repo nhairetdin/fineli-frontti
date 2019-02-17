@@ -1,5 +1,11 @@
 import dataservice from '../srv/dataservice'
 import cloneDeep from '../clonedeep'
+import { 
+  applySpecdietFilters,
+  applyFilters,
+  sortResult,
+  sortMeals 
+} from './helperfunctions'
 
 // Reducer and action creators for redux store, it is used to interact
 // with the store. Each and every operation in the application's
@@ -41,61 +47,6 @@ const initialState = {
     foods: []
   },
   errorMessage: null
-}
-
-const applySpecdietFilters = newState => {
-  if (newState.specdietOptionsCurrent.length === 0) {
-    return newState.basedata
-  }
-
-  let filtered = []
-  newState.basedata.forEach(row => {
-    let count = 0
-    for (let i = 0; i < newState.specdietOptionsCurrent.length; i++) {
-      if (
-        !row.specdiet ||
-        !row.specdiet.includes(newState.specdietOptionsCurrent[i])
-      ) {
-        count = 0
-        continue
-      }
-      count++
-      if (count === newState.specdietOptionsCurrent.length) {
-        filtered = [...filtered, { ...row }]
-      }
-    }
-  })
-  return [...filtered]
-}
-
-const applyFilters = newState => {
-  //let start = window.performance.now()
-  const filterKeys = Object.keys(newState.filters)
-  const data = newState.basedataFilteredBySpecdiet
-  const filteredArray = data.filter(food => {
-    for (let i = 0; i < filterKeys.length; i++) {
-      if (food[filterKeys[i]] < newState.filters[filterKeys[i]]) {
-        return false
-      }
-    }
-    return true
-  })
-  return filteredArray
-}
-
-const sortResult = (data, sortCode, sortOrderDecreasing) => {
-  return data.sort((a, b) => {
-    a = a[sortCode]
-    b = b[sortCode]
-    a = (a === null || a === undefined) ? 0 : a
-    b = (b === null || b === undefined) ? 0 : b
-
-    if (!sortOrderDecreasing) {
-      return parseFloat(b) < parseFloat(a) ? 1 : -1
-    } else {
-      return parseFloat(b) < parseFloat(a) ? -1 : 1
-    }
-  })
 }
 
 const reducer = (state = initialState, action) => {
@@ -201,7 +152,8 @@ const reducer = (state = initialState, action) => {
       return newState
     }
     case 'SET_USER_MEALS': {
-      const meals = action.data.sort((a, b) => b.meal_id - a.meal_id)
+      //const meals = action.data.sort((a, b) => b.meal_id - a.meal_id)
+      const meals = sortMeals(action.data)
       const activeMeal = meals.length > 0 ? { ...meals[0], foods: [...meals[0].foods] } : { meal_id: -1} // set active meal to be 'meal_id' of last element (newest meal) or initial (-1) if empty
       return { ...state, meals: [...meals], activeMeal: activeMeal }
     }
@@ -361,6 +313,21 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_COMPONENT_ITEM_HOVER': {
       return { ...state, componentItemHover: action.data }
+    }
+    case 'SET_MEAL_DATE': {
+      let meals = state.meals.map(meal => {
+        if (meal.meal_id !== action.data.meal_id) {
+          return meal
+        }
+        return {
+          ...meal,
+          pvm: action.data.dateString
+        }
+      })
+
+      meals = sortMeals(meals)
+
+      return { ...state, meals: meals }
     }
     default:
       return state
@@ -611,6 +578,16 @@ export const setComponentItemHover = (code) => {
   return {
     type: 'SET_COMPONENT_ITEM_HOVER',
     data: code
+  }
+}
+
+export const setMealDate = (meal_id, dateString) => {
+  return {
+    type: 'SET_MEAL_DATE',
+    data: {
+      meal_id: meal_id,
+      dateString: dateString
+    }
   }
 }
 

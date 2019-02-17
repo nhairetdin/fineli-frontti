@@ -6,6 +6,7 @@ import { Icon, Button } from 'semantic-ui-react'
 
 import MealFoodTable from './MealFoodTable'
 import dataservice from '../srv/dataservice'
+import { dateToObj } from '../srv/dateformat'
 import tablestyles from '../styles/tablestyles'
 import {
   setActiveMeal,
@@ -16,9 +17,12 @@ import {
   removeMeal,
   updateMeal,
   setFoodItemHoverFromMeal,
-  changeMealName
+  changeMealName,
+  setMealDate
 } from '../rdc/reducer'
 
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 // This component creates the table (react-table) on the right side of the page,
 // displaying users meals. Notable thing is the SubComponent which contains
 // another react-table for displaying all the foods inside each meal
@@ -32,6 +36,17 @@ class MealTable extends Component {
   handleRowClick = (meal) => {
     this.props.resetActiveMealUpdated()
     this.props.setActiveMeal(meal)
+  }
+
+  onDateChange = async (row, date) => {
+    const dateObj = dateToObj(date)
+    const response = await dataservice.changeMealDate(row.meal_id, dateObj)
+    if (response.status === 200) {
+      const dateString = response.data.dateString
+      this.props.setMealDate(row.meal_id, dateString)
+    } else {
+      console.log("failed to update")
+    }
   }
 
   handleMouseOver = foods => {
@@ -105,6 +120,7 @@ class MealTable extends Component {
 
   render() {
     //console.log('EXPANDED: ', this.state.expanded)
+    console.log("render mealtable")
     return (
       <ReactTable
         collapseOnDataChange={false}
@@ -157,7 +173,18 @@ class MealTable extends Component {
             sortable: false,
             width: 80,
             Cell: row => (
-              <div onClick={() => this.handleRowClick(row.original)}>{row.original.pvm}</div>
+              <DatePicker
+                selected={ new Date() }
+                onChange={ (date) => this.onDateChange(row.original, date) }
+                customInput={<div>{row.original.pvm}</div>}
+                popperModifiers={{
+                  preventOverflow: {
+                    enabled: true,
+                    escapeWithReference: false, // force popper to stay in viewport (even when input is scrolled out of view)
+                    boundariesElement: 'viewport'
+                  }
+                }}
+              />
             ),
             getProps: (state, row) => {
               return { style: { fontWeight: 'bold' } }
@@ -252,6 +279,7 @@ export default connect(
     removeMeal,
     updateMeal,
     setFoodItemHoverFromMeal,
-    changeMealName
+    changeMealName,
+    setMealDate
   }
 )(MealTable)

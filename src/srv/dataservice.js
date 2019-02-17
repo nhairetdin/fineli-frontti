@@ -8,6 +8,7 @@ import axios from 'axios'
 // together with try/catch.
 
 const url = 'https://www.fineli.xyz/'
+//const url = 'http://localhost:3002/'
 const cfg = token => {
   return {
     headers: { authorization: `bearer ${token}` }
@@ -90,6 +91,19 @@ const setRecommendedValuesForUser = async (token, data) => {
   return response.data
 }
 
+const changeMealDate = async (meal_id, date) => {
+  try {
+    const user = JSON.parse(window.localStorage.getItem('user'))
+    const response = await axios.put(`${url}meal/date/${meal_id}`, date, cfg(user.token))
+    return response
+  } catch (err) {
+    return err.response
+  }
+  // const user = JSON.parse(window.localStorage.getItem('user'))
+  // const response = await axios.put(`${url}meal/date/${meal_id}`, date, cfg(user.token))
+  // return response
+}
+
 const getMealForUser = async token => {
   // let data
   // token = 'bearer ' + token
@@ -115,5 +129,6 @@ export default {
   saveNewMeal,
   deleteMeal,
   updateMeal,
-  setRecommendedValuesForUser
+  setRecommendedValuesForUser,
+  changeMealDate
 }
