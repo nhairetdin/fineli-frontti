@@ -3,15 +3,11 @@ import { connect } from 'react-redux'
 import { Table, Input, Form, Button, Icon } from 'semantic-ui-react'
 import { removeFoodFromMeal } from '../rdc/reducer'
 
-// This components creates the inner table for user's personal foods, 
-// showing all foods inside each meal
 class MealFoodTable extends Component {
-  // Changes the meal name, does not save anything, only redux store changes
   handleNameChange = event => {
     this.props.changeMealName(event.target.value)
   }
 
-  // Delete, does not save anything, only redux store changes
   handleDeletebutton = (meal_id, foodid) => {
     this.props.removeFoodFromMeal(meal_id, foodid)
   }
@@ -34,7 +30,12 @@ class MealFoodTable extends Component {
                     size="small"
                     color="red"
                     style={{ maxHeight: '1rem', padding: '2px' }}
-                    onClick={() => this.handleDeletebutton(this.props.foods.meal_id, food.foodid)}>
+                    onClick={() =>
+                      this.handleDeletebutton(
+                        this.props.foods.meal_id,
+                        food.foodid
+                      )
+                    }>
                     <Icon fitted size="small" name="trash alternate" />
                   </Button>
                 </Table.Cell>
@@ -53,7 +54,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { removeFoodFromMeal }
-)(MealFoodTable)
+export default connect(mapStateToProps, { removeFoodFromMeal })(MealFoodTable)

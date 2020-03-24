@@ -23,9 +23,6 @@ import {
 
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-// This component creates the table (react-table) on the right side of the page,
-// displaying users meals. Notable thing is the SubComponent which contains
-// another react-table for displaying all the foods inside each meal
 class MealTable extends Component {
   state = {
     activeMealId: -1,
@@ -33,7 +30,7 @@ class MealTable extends Component {
   }
 
   // Functions for click events
-  handleRowClick = (meal) => {
+  handleRowClick = meal => {
     this.props.resetActiveMealUpdated()
     this.props.setActiveMeal(meal)
   }
@@ -45,7 +42,7 @@ class MealTable extends Component {
       const dateString = response.data.dateString
       this.props.setMealDate(row.meal_id, dateString)
     } else {
-      console.log("failed to update")
+      console.log('failed to update')
     }
   }
 
@@ -86,7 +83,7 @@ class MealTable extends Component {
     }
   }
 
-  renderEditable = (cellInfo) => {
+  renderEditable = cellInfo => {
     return (
       <div
         onKeyPress={e => {
@@ -98,14 +95,16 @@ class MealTable extends Component {
           e.preventDefault()
         }}
         spellCheck={false}
-        onClick={() => this.handleRowClick(cellInfo.original, cellInfo.original.meal_id)}
+        onClick={() =>
+          this.handleRowClick(cellInfo.original, cellInfo.original.meal_id)
+        }
         onMouseOver={() => this.handleMouseOver(cellInfo.original.foods)}
         contentEditable
         suppressContentEditableWarning
         onBlur={e => {
           //const regexp = new RegExp(String.fromCharCode(160), "g")
           let value = e.target.innerHTML
-          value = value.replace(/\&nbsp;|;/g, "")
+          value = value.replace(/\&nbsp;|;/g, '')
           const data = [...this.props.meals]
           //data[cellInfo.index][cellInfo.column.id] = value
           console.log(value)
@@ -120,7 +119,7 @@ class MealTable extends Component {
 
   render() {
     //console.log('EXPANDED: ', this.state.expanded)
-    console.log("render mealtable")
+    console.log('render mealtable')
     return (
       <ReactTable
         collapseOnDataChange={false}
@@ -146,7 +145,11 @@ class MealTable extends Component {
         getTrProps={(state, rowInfo, column, instance) => {
           return {
             style: {
-              backgroundColor: rowInfo ? (rowInfo.original.meal_id === this.props.activeMeal.meal_id ? '#fbbd08' : null) : null
+              backgroundColor: rowInfo
+                ? rowInfo.original.meal_id === this.props.activeMeal.meal_id
+                  ? '#fbbd08'
+                  : null
+                : null
             }
           }
         }}
@@ -174,8 +177,8 @@ class MealTable extends Component {
             width: 80,
             Cell: row => (
               <DatePicker
-                selected={ new Date() }
-                onChange={ (date) => this.onDateChange(row.original, date) }
+                selected={new Date()}
+                onChange={date => this.onDateChange(row.original, date)}
                 customInput={<div>{row.original.pvm}</div>}
                 popperModifiers={{
                   preventOverflow: {
@@ -246,7 +249,12 @@ class MealTable extends Component {
             <div>
               <MealFoodTable foods={row.original} />
               {row.original.notSaved ? (
-                <Button positive fluid compact size="mini" onClick={() => this.handleSavebutton(row.original.meal_id)}>
+                <Button
+                  positive
+                  fluid
+                  compact
+                  size="mini"
+                  onClick={() => this.handleSavebutton(row.original.meal_id)}>
                   Tallenna
                 </Button>
               ) : null}
@@ -268,18 +276,15 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    setActiveMeal,
-    setActiveMealUpdated,
-    resetActiveMealUpdated,
-    addNewMeal,
-    saveNewMeal,
-    removeMeal,
-    updateMeal,
-    setFoodItemHoverFromMeal,
-    changeMealName,
-    setMealDate
-  }
-)(MealTable)
+export default connect(mapStateToProps, {
+  setActiveMeal,
+  setActiveMealUpdated,
+  resetActiveMealUpdated,
+  addNewMeal,
+  saveNewMeal,
+  removeMeal,
+  updateMeal,
+  setFoodItemHoverFromMeal,
+  changeMealName,
+  setMealDate
+})(MealTable)

@@ -5,7 +5,6 @@ import { setSearchKeyword } from '../rdc/reducer'
 import SpecdietDropdown from './SpecdietDropdown'
 import suistyles from '../styles/suistyles'
 
-// Input field for search and search options dropdown, see SpecdietDropdown.js
 class SearchOptions extends React.Component {
   onChange = event => {
     this.props.setSearchKeyword(event.target.value)
@@ -24,7 +23,4 @@ class SearchOptions extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  { setSearchKeyword }
-)(SearchOptions)
+export default connect(null, { setSearchKeyword })(SearchOptions)

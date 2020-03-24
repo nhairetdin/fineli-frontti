@@ -1,16 +1,11 @@
 import dataservice from '../srv/dataservice'
 import cloneDeep from '../clonedeep'
-import { 
+import {
   applySpecdietFilters,
   applyFilters,
   sortResult,
-  sortMeals 
+  sortMeals
 } from './helperfunctions'
-
-// Reducer and action creators for redux store, it is used to interact
-// with the store. Each and every operation in the application's
-// state is defined in this file as it's own action and corresponding
-// handler in the reducer (switch-case structure).
 
 const initialState = {
   filters: {},
@@ -81,17 +76,22 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_SORTCODE': {
       let sortOrderDecreasing
-      if (action.data === state.sortCode) { // if user clicked same component, reverse sort ordering
+      if (action.data === state.sortCode) {
+        // if user clicked same component, reverse sort ordering
         sortOrderDecreasing = !state.sortOrderDecreasing
         console.log(sortOrderDecreasing)
-      } else { // else decreasing
+      } else {
+        // else decreasing
         sortOrderDecreasing = true
       }
-      return { 
-        ...state, 
+      return {
+        ...state,
         sortCode: action.data, // action.data is the new sortcode
         sortOrderDecreasing: sortOrderDecreasing,
-        results: [...sortResult(state.results, action.data, sortOrderDecreasing)] } // also give the sort order
+        results: [
+          ...sortResult(state.results, action.data, sortOrderDecreasing)
+        ]
+      } // also give the sort order
     }
     case 'SET_USER': {
       return { ...state, user: action.data }
@@ -154,11 +154,17 @@ const reducer = (state = initialState, action) => {
     case 'SET_USER_MEALS': {
       //const meals = action.data.sort((a, b) => b.meal_id - a.meal_id)
       const meals = sortMeals(action.data)
-      const activeMeal = meals.length > 0 ? { ...meals[0], foods: [...meals[0].foods] } : { meal_id: -1} // set active meal to be 'meal_id' of last element (newest meal) or initial (-1) if empty
+      const activeMeal =
+        meals.length > 0
+          ? { ...meals[0], foods: [...meals[0].foods] }
+          : { meal_id: -1 } // set active meal to be 'meal_id' of last element (newest meal) or initial (-1) if empty
       return { ...state, meals: [...meals], activeMeal: activeMeal }
     }
     case 'SET_ACTIVE_MEAL': {
-      return { ...state, activeMeal: { ...action.data, foods: [...action.data.foods]} }
+      return {
+        ...state,
+        activeMeal: { ...action.data, foods: [...action.data.foods] }
+      }
     }
     case 'UPDATE_ACTIVE_MEAL_UPDATED': {
       return {
@@ -206,7 +212,7 @@ const reducer = (state = initialState, action) => {
       if (action.data === state.activeMeal.name) {
         return state
       }
-      
+
       let index
       let newState = { ...state, meals: [...state.meals] }
       for (let i = 0; i < state.meals.length; i++) {
@@ -304,12 +310,20 @@ const reducer = (state = initialState, action) => {
           break
         }
       }
-      return { ...state, basedataPinned: [...state.basedataPinned, { ...pinnedFood }]}
+      return {
+        ...state,
+        basedataPinned: [...state.basedataPinned, { ...pinnedFood }]
+      }
     }
     case 'UNPIN_FOOD': {
-      return { ...state, basedataPinned: [ ...state.basedataPinned.filter((item) => {
-        return item.foodid !== action.data
-      })]}
+      return {
+        ...state,
+        basedataPinned: [
+          ...state.basedataPinned.filter(item => {
+            return item.foodid !== action.data
+          })
+        ]
+      }
     }
     case 'SET_COMPONENT_ITEM_HOVER': {
       return { ...state, componentItemHover: action.data }
@@ -336,9 +350,10 @@ const reducer = (state = initialState, action) => {
 
 // Action creators:
 
-export const initBasedata = (data) => {
+export const initBasedata = data => {
   return {
-    type: 'INIT_BASEDATA', ...data 
+    type: 'INIT_BASEDATA',
+    ...data
   }
 }
 
@@ -560,21 +575,21 @@ export const removeFoodFromMeal = (meal_id, foodid) => {
   }
 }
 
-export const pinFood = (foodid) => {
+export const pinFood = foodid => {
   return {
     type: 'PIN_FOOD',
     data: foodid
   }
 }
 
-export const unpinFood = (foodid) => {
+export const unpinFood = foodid => {
   return {
     type: 'UNPIN_FOOD',
     data: foodid
   }
 }
 
-export const setComponentItemHover = (code) => {
+export const setComponentItemHover = code => {
   return {
     type: 'SET_COMPONENT_ITEM_HOVER',
     data: code

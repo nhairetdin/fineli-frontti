@@ -9,12 +9,16 @@ import BarChart from './BarChart'
 import TextHighlighter from './TextHighlighter'
 import Pin from './Pin'
 import Sum from './Sum'
-import { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword, pinFood, unpinFood } from '../rdc/reducer'
+import {
+  setFoodItemHover,
+  setFoodItemHoverNull,
+  addFoodForMeal,
+  setSearchKeyword,
+  pinFood,
+  unpinFood
+} from '../rdc/reducer'
 
-// This component creates the react-table for displaying the search results, foods
 class SearchResultsTable extends Component {
-  // When foodname is mouse hovered, set it's data in state so that it
-  // can be accessed by other components and set null when leave
   mouseoverFoodnameColumn = row => this.props.setFoodItemHover(row)
   mouseLeaveTable = e => this.props.setFoodItemHoverNull()
   togglePin = row => {
@@ -25,34 +29,29 @@ class SearchResultsTable extends Component {
     }
   }
 
-  // First column needs a little special treatment, other columns are defined
-  // in <ReactTable columns={}... in return()
   firstColumn = {
     Header: 'Elintarvike',
     accessor: 'foodname',
     id: 666,
     Cell: row => (
-      <div onClick={ () => { this.togglePin(row) } }>
-        <TextHighlighter textToHighlight={ row.original.foodname }/>
+      <div
+        onClick={() => {
+          this.togglePin(row)
+        }}>
+        <TextHighlighter textToHighlight={row.original.foodname} />
       </div>
     )
   }
 
   tableColumnSortOverride = (a, b) => parseFloat(b) - parseFloat(a)
 
-  // react-table has built in functionality for text search including an input field,
-  // but I'm using custom input field for search, so I need a reference to the
-  // react-table's built-in searchfield, and since the search is based on foodname (elintarvike)
-  // I need to pass in a ref of that, which is the firstColumn.
   searchphraseInputchange = e => {
-    e.target.value !== undefined ? this.props.setSearchKeyword(e.target.value) : null
+    e.target.value !== undefined
+      ? this.props.setSearchKeyword(e.target.value)
+      : null
     this.refs.reactTable.filterColumn(this.firstColumn, e.target.value)
   }
 
-  // Called from inputfield's onKeyDown listener, if
-  // enter is hit, add this food and amount for users
-  // selected meal. The selected meal is figured out in
-  // the action handler
   handleEnter = (row, e) => {
     if (e.which === 13) {
       //console.log(row)
@@ -65,22 +64,22 @@ class SearchResultsTable extends Component {
   }
 
   render() {
-    console.log("RENDER resultstable")
+    console.log('RENDER resultstable')
     return (
       <ReactTable
-        getProps={ () => { 
-          return { style: tablestyles.stickyTable } 
+        getProps={() => {
+          return { style: tablestyles.stickyTable }
         }}
         getTableProps={() => {
           return { onMouseLeave: e => this.mouseLeaveTable(e) }
         }}
         ref="reactTable"
-        data={ [...this.props.basedataPinned, ...this.props.basedata] }
+        data={[...this.props.basedataPinned, ...this.props.basedata]}
         columns={[
           this.firstColumn,
           {
             width: 30,
-            Cell: row => <Pin row={ row } onClick={ this.togglePin } />,
+            Cell: row => <Pin row={row} onClick={this.togglePin} />,
             style: tablestyles.cellCenterContent
           },
           {
@@ -112,13 +111,19 @@ class SearchResultsTable extends Component {
             Cell: row => <div>{Math.round(0.2388 * parseFloat(row.value))}</div>
           },
           {
-            Header: row => <Sum row={row.original} header={ true } />,
+            Header: row => <Sum row={row.original} header={true} />,
             width: 60,
             Cell: row => <Sum row={row.original} />
           },
           {
             Header: 'Jakauma (prot, fat, hh)',
-            Cell: row => <BarChart prot={row.original.PROT} fat={row.original.FAT} hh={row.original.CHOAVL} />
+            Cell: row => (
+              <BarChart
+                prot={row.original.PROT}
+                fat={row.original.FAT}
+                hh={row.original.CHOAVL}
+              />
+            )
           },
           {
             Header: <Icon disabled name="add circle" />,
@@ -135,7 +140,7 @@ class SearchResultsTable extends Component {
           }
         ]}
         getTrProps={(state, row, column) => {
-          let trProps = { 
+          let trProps = {
             onMouseEnter: () => this.props.setFoodItemHover(row.original)
           }
 
@@ -171,27 +176,33 @@ class SearchResultsTable extends Component {
         defaultPageSize={35}
         className={'-highlight'}
         filterable
-        sortable={ false }
+        sortable={false}
         defaultFilterMethod={(filter, row) => {
-          return String(row[filter.id]).includes(filter.value.toUpperCase()) || row._original.pinned === true
+          return (
+            String(row[filter.id]).includes(filter.value.toUpperCase()) ||
+            row._original.pinned === true
+          )
         }}
-        SubComponent={row => { // Simply print out the food data when food row is expanded
+        SubComponent={row => {
+          // Simply print out the food data when food row is expanded
           return (
             <Container fluid>
               <Grid.Row>
                 <Grid.Column width={16}>
                   <List
                     style={tablestyles.list}
-                    items={this.props.componentsOriginalRows[0].map(component => {
-                      return (
-                        component.nimi +
-                        ': ' +
-                        row.original[component.koodi] +
-                        ' (' +
-                        row.original[component.koodi] +
-                        ')'
-                      )
-                    })}
+                    items={this.props.componentsOriginalRows[0].map(
+                      component => {
+                        return (
+                          component.nimi +
+                          ': ' +
+                          row.original[component.koodi] +
+                          ' (' +
+                          row.original[component.koodi] +
+                          ')'
+                        )
+                      }
+                    )}
                   />
                 </Grid.Column>
               </Grid.Row>
@@ -215,7 +226,14 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { setFoodItemHover, setFoodItemHoverNull, addFoodForMeal, setSearchKeyword, pinFood, unpinFood },
+  {
+    setFoodItemHover,
+    setFoodItemHoverNull,
+    addFoodForMeal,
+    setSearchKeyword,
+    pinFood,
+    unpinFood
+  },
   null,
   { withRef: true }
 )(SearchResultsTable)

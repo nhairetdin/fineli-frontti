@@ -12,13 +12,8 @@ import {
   ResponsiveContainer
 } from 'recharts'
 
-// This component is used to draw and control the diagram, LineChart from recharts library
 class Diagram extends Component {
   render() {
-    // These following functions (before return()) are used to transform all the neccessary data
-    // taken from store into a proper form, so that it can be eventually fed to
-    // the LineChart component. The data is constructed from user's personal
-    // diary (meals) combined together with the basedata from fineli.
     const basedataAsObject = this.props.basedata.reduce((res, food) => {
       res[food.foodid] = food
       return res
@@ -27,7 +22,9 @@ class Diagram extends Component {
     const preparedData = this.props.meals.reduce((res, meal) => {
       if (!res[meal.pvm]) {
         res[meal.pvm] = {}
-        Object.keys(this.props.suggestions).forEach(key => (res[meal.pvm][key] = 0))
+        Object.keys(this.props.suggestions).forEach(
+          key => (res[meal.pvm][key] = 0)
+        )
       }
       meal.foods.forEach(food => {
         Object.keys(this.props.suggestions).forEach(key => {
@@ -35,7 +32,8 @@ class Diagram extends Component {
             res[meal.pvm][key] =
               Math.round(
                 (res[meal.pvm][key] +
-                  parseFloat(basedataAsObject[food.foodid][key.toUpperCase()]) * (food.amount / 100)) *
+                  parseFloat(basedataAsObject[food.foodid][key.toUpperCase()]) *
+                    (food.amount / 100)) *
                   100
               ) / 100
           }
@@ -49,10 +47,17 @@ class Diagram extends Component {
         const d = date.split('-')
         let final = {
           pvm: date,
-          dateObj: new Date(parseInt(d[0], 10), parseInt(d[1] - 1, 10), parseInt(d[2], 10))
+          dateObj: new Date(
+            parseInt(d[0], 10),
+            parseInt(d[1] - 1, 10),
+            parseInt(d[2], 10)
+          )
         }
         Object.keys(preparedData[date]).forEach(foodComp => {
-          final[foodComp] = Math.round((100 / this.props.suggestions[foodComp]) * preparedData[date][foodComp])
+          final[foodComp] = Math.round(
+            (100 / this.props.suggestions[foodComp]) *
+              preparedData[date][foodComp]
+          )
         })
         return final
       })
@@ -60,7 +65,9 @@ class Diagram extends Component {
 
     return (
       <ResponsiveContainer width="100%" aspect={3}>
-        <LineChart data={dataForDiagram} margin={{ top: 5, right: 30, bottom: 5 }}>
+        <LineChart
+          data={dataForDiagram}
+          margin={{ top: 5, right: 30, bottom: 5 }}>
           <XAxis dataKey="pvm" />
           <YAxis type="number" domain={[0, 300]} />
           <CartesianGrid strokeDasharray="5 5" />
@@ -70,7 +77,12 @@ class Diagram extends Component {
             }}
           />
           <Legend />
-          <ReferenceLine y={100} label="Saantisuositus" stroke="red" strokeWidth="3" />
+          <ReferenceLine
+            y={100}
+            label="Saantisuositus"
+            stroke="red"
+            strokeWidth="3"
+          />
           {Object.keys(this.props.suggestions).map((key, index) => {
             return (
               <Line
